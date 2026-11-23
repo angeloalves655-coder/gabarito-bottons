@@ -70,6 +70,7 @@
     touch-action: manipulation;
   }
   .btn:active { opacity: 0.85; transform: scale(0.98); }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
   .btn-emerald { background: var(--emerald); border-color: var(--emerald); color: #052e16; font-weight: 700; }
   .btn-danger { background: rgba(239, 68, 68, 0.16); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
@@ -128,7 +129,6 @@
   }
   .mode-btn.active { background: var(--primary); color: #fff; }
 
-  /* Palco com rolagem totalmente livre no celular */
   .canvas-wrap {
     position: relative; width: 100%; max-width: 320px; aspect-ratio: 1 / 1;
     margin: 0 auto; background: #0c0c10; border-radius: 16px;
@@ -162,7 +162,7 @@
   .step-btn:active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
   input[type="range"] { flex: 1; accent-color: var(--primary); height: 8px; cursor: pointer; }
-  input[type="text"], input[type="number"], select {
+  input[type="text"], input[type="number"], input[type="password"], select {
     width: 100%; background: var(--bg); border: 1px solid var(--border);
     color: var(--text); border-radius: 10px; padding: 10px 11px; font-size: 14px;
   }
@@ -197,12 +197,27 @@
     border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 12px; padding: 11px; margin-top: 10px;
   }
+  .ai-key-drawer {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    display: none;
+  }
+  .ai-key-drawer.open { display: block; }
   .ai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
   .ai-thumb {
-    aspect-ratio: 1/1; border-radius: 10px; overflow: hidden;
+    position: relative; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden;
     border: 2px solid var(--border); cursor: pointer; background: var(--bg);
   }
+  .ai-thumb:active { border-color: var(--primary); transform: scale(0.98); }
   .ai-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ai-thumb-badge {
+    position: absolute; bottom: 6px; right: 6px;
+    background: rgba(9, 9, 11, 0.85); color: #fff;
+    font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px;
+  }
 
   .sheet-banner {
     background: rgba(16, 185, 129, 0.16);
@@ -295,7 +310,7 @@
   <div class="tab-panel active" id="tab-studio">
     <div class="studio-grid">
 
-      <!-- PALCO CENTRAL PRIMEIRO NO CELULAR PARA FÁCIL ACESSO -->
+      <!-- PALCO CENTRAL -->
       <div id="tab-studio-center">
         <div class="stage-card">
           <div class="mode-switch">
@@ -340,7 +355,7 @@
       <div id="tab-studio-left">
         <div class="card">
           <div class="acc-header" data-acc="acc-photo">
-            <span class="acc-title">1. Foto, Zoom & Posição</span>
+            <span class="acc-title">1. Foto, Gerador IA & Posição</span>
             <span>▼</span>
           </div>
           <div class="acc-body" id="acc-photo">
@@ -350,21 +365,35 @@
               <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="quality-badge">Toque aqui para escolher da galeria</div>
             </div>
 
+            <!-- GERADOR DE ARTE COM IA (FUNCIONA COM OU SEM CHAVE API) -->
             <div class="ai-box">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <span style="font-size:12px;font-weight:700;color:#c7d2fe;">✨ Gerar Opções de Arte com IA</span>
-                <button type="button" class="btn btn-sm" id="btn-ai-key" style="padding:4px 8px;font-size:11px;">🔑 Chave API</button>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:6px;">
+                <span style="font-size:12px;font-weight:700;color:#c7d2fe;">✨ Gerador de Arte com IA</span>
+                <button type="button" class="btn btn-sm" id="btn-toggle-key" style="padding:4px 8px;font-size:11px;">🔑 Chave API</button>
               </div>
+
+              <!-- GAVETA INLINE PARA CHAVE API (SEM PROMPT BLOQUEADO) -->
+              <div class="ai-key-drawer" id="ai-key-drawer">
+                <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">
+                  Cole sua chave gratuita do <b>Google AI Studio</b> (começa com <code>AIza...</code>) para usar o motor Gemini/Imagen, ou deixe vazio para usar o gerador gratuito integrado:
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <input type="text" id="inp-api-key" placeholder="Cole sua chave AIza... aqui">
+                  <button type="button" class="btn btn-emerald btn-sm" id="btn-save-key">Salvar</button>
+                </div>
+                <div id="key-saved-msg" style="font-size:11px;color:#6ee7b7;margin-top:5px;display:none;"></div>
+              </div>
+
               <div style="margin-bottom:6px;">
-                <input type="text" id="ai-prompt" placeholder="Ex: Jesus, Leão de Judá, Flores...">
+                <input type="text" id="ai-prompt" placeholder="Ex: Jesus, Leão de Judá, Flores, Aniversário...">
               </div>
               <div style="display:flex;gap:6px;">
                 <select id="ai-style" style="flex:1;">
-                  <option value="ilustração digital vibrante e detalhada">Ilustração Moderna</option>
-                  <option value="pintura em aquarela suave artística">Aquarela</option>
-                  <option value="desenho fofo estilo chibi kawaii">Fofo / Chibi</option>
-                  <option value="arte estilo vitral colorido iluminado">Vitral</option>
-                  <option value="arte minimalista traço limpo">Minimalista</option>
+                  <option value="ilustração digital vibrante e detalhada, arte centralizada">Ilustração Moderna</option>
+                  <option value="pintura em aquarela suave artística, fundo limpo">Aquarela</option>
+                  <option value="desenho fofo estilo chibi kawaii, cores alegres">Fofo / Chibi</option>
+                  <option value="arte estilo vitral colorido iluminado, composição circular">Vitral</option>
+                  <option value="arte minimalista traço limpo, elegante">Minimalista</option>
                   <option value="fotografia realista iluminação cinematográfica">Realista</option>
                 </select>
                 <button type="button" class="btn btn-primary btn-sm" id="btn-ai-gen">Gerar 4</button>
@@ -748,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // --- PERSISTÊNCIA SEGURA ---
-  const DB_NAME = 'BottonsProDB_v2';
+  const DB_NAME = 'BottonsProDB_v3';
   let db = null;
   function openDB() {
     return new Promise((resolve) => {
@@ -785,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     try {
       const lite = Object.assign({}, payload, { imgDataUrl: null, sheetItems: [], savedArts: [] });
-      localStorage.setItem('bottonsProLite_v2', JSON.stringify(lite));
+      localStorage.setItem('bottonsProLite_v3', JSON.stringify(lite));
     } catch (e) {}
   }
 
@@ -801,15 +830,16 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {}
       }
       try {
-        const raw = localStorage.getItem('bottonsProLite_v2');
+        const raw = localStorage.getItem('bottonsProLite_v3');
         resolve(raw ? JSON.parse(raw) : null);
       } catch (e) { resolve(null); }
     });
   }
 
-  function loadImageFromSource(src) {
+  function loadImageFromSource(src, useCors = false) {
     return new Promise((resolve, reject) => {
       const img = new Image();
+      if (useCors) img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
       img.onerror = reject;
       img.src = src;
@@ -1110,6 +1140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $('inp-paper').value = state.paper;
     $('inp-gap').value = state.gapMm;
     $('val-gap').textContent = state.gapMm + ' mm';
+    $('inp-api-key').value = state.apiKey || '';
 
     $('shape-round').classList.toggle('active', state.shape === 'round');
     $('shape-square').classList.toggle('active', state.shape === 'square');
@@ -1117,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateQualityBadge();
   }
 
-  // --- BOTÕES + E - COM CLICK SIMPLES E CONFIÁVEL ---
+  // --- STEPPERS + E - ---
   function applyStep(targetId, step) {
     const inp = $(targetId);
     if (!inp) return;
@@ -1137,7 +1168,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- BINDING DOS INPUTS ---
   const bindInput = (id, key, isNum = true, reRenderSheet = false) => {
     const el = $(id);
     if (!el) return;
@@ -1219,81 +1249,204 @@ document.addEventListener('DOMContentLoaded', function() {
     e.target.value = '';
   });
 
-  // --- GERADOR DE ARTE COM IA ---
-  $('btn-ai-key').addEventListener('click', () => {
-    const k = prompt('Cole sua chave de API gratuita do Google AI Studio:', state.apiKey || '');
-    if (k !== null) {
-      state.apiKey = k.trim();
-      savePersist();
-      alert('Chave API salva!');
-    }
+  // --- GERADOR DE ARTE COM IA (INLINE DRAWER + MOTOR GRATUITO + GEMINI/IMAGEN) ---
+  $('btn-toggle-key').addEventListener('click', () => {
+    $('ai-key-drawer').classList.toggle('open');
   });
+
+  $('btn-save-key').addEventListener('click', () => {
+    state.apiKey = $('inp-api-key').value.trim();
+    savePersist();
+    const msg = $('key-saved-msg');
+    msg.style.display = 'block';
+    msg.textContent = state.apiKey
+      ? '✅ Chave API salva! O motor Gemini/Imagen será usado.'
+      : 'ℹ️ Chave limpa. Usando o gerador gratuito integrado.';
+    setTimeout(() => { $('ai-key-drawer').classList.remove('open'); }, 1200);
+  });
+
+  // Traduz termos comuns PT -> EN para melhorar resultados no motor gratuito
+  function translatePromptToEn(ptText) {
+    const dict = {
+      'jesus': 'Jesus Christ peaceful portrait',
+      'leao de juda': 'Lion of Judah majestic',
+      'leão de judá': 'Lion of Judah majestic',
+      'leao': 'majestic lion',
+      'leão': 'majestic lion',
+      'flores': 'beautiful flowers floral wreath',
+      'aniversario': 'happy birthday celebration balloons',
+      'aniversário': 'happy birthday celebration balloons',
+      'igreja': 'christian cross light rays',
+      'cruz': 'golden cross light rays',
+      'nossa senhora': 'Virgin Mary sacred art',
+      'amor': 'heart love romantic',
+      'cachorro': 'cute dog puppy',
+      'gato': 'cute cat kitten',
+      'futebol': 'soccer ball stadium',
+      'musica': 'music notes headphones',
+      'música': 'music notes headphones'
+    };
+    const low = ptText.toLowerCase().trim();
+    if (dict[low]) return dict[low];
+    return ptText;
+  }
+
+  function mapStyleToEn(ptStyle) {
+    if (ptStyle.includes('Aquarela') || ptStyle.includes('aquarela')) return 'watercolor painting, soft pastel colors, white clean background';
+    if (ptStyle.includes('chibi') || ptStyle.includes('Fofo')) return 'cute chibi kawaii illustration, vibrant colors, centered';
+    if (ptStyle.includes('vitral')) return 'stained glass window art, glowing vibrant colors, circular emblem';
+    if (ptStyle.includes('minimalista')) return 'minimalist vector flat illustration, clean lines, centered';
+    if (ptStyle.includes('Realista') || ptStyle.includes('realista')) return 'cinematic realistic portrait, warm lighting, high detail';
+    return 'vibrant digital illustration, detailed circular sticker art, centered composition';
+  }
+
+  // Converte imagem remota em DataURL para nunca dar erro de CORS na impressão 300 DPI
+  function fetchRemoteImageAsDataUrl(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth || 768;
+          c.height = img.naturalHeight || 768;
+          c.getContext('2d').drawImage(img, 0, 0);
+          resolve(c.toDataURL('image/png'));
+        } catch (e) {
+          resolve(url);
+        }
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
 
   $('btn-ai-gen').addEventListener('click', async () => {
     const topic = $('ai-prompt').value.trim();
-    if (!topic) { alert('Digite o tema da imagem (ex: Jesus, Leão, Flores).'); return; }
-    const style = $('ai-style').value;
     const statusEl = $('ai-status');
     const gridEl = $('ai-results');
+    const genBtn = $('btn-ai-gen');
 
     statusEl.style.display = 'block';
-    if (!state.apiKey) {
-      statusEl.textContent = '⚠️ Clique em "🔑 Chave API" acima e cole sua chave do Google AI Studio para gerar imagens.';
+    if (!topic) {
+      statusEl.style.color = '#fcd34d';
+      statusEl.textContent = '⚠️ Digite o que você quer desenhar no campo acima (ex: Jesus, Leão, Flores).';
+      $('ai-prompt').focus();
       return;
     }
 
-    statusEl.textContent = '⏳ Gerando 4 opções exclusivas para botton...';
+    const ptStyle = $('ai-style').value;
+    genBtn.disabled = true;
+    genBtn.textContent = 'Gerando...';
     gridEl.innerHTML = '';
 
-    const variations = [
-      `Arte circular centralizada para botton sobre ${topic}, estilo ${style}, composição limpa sem textos cortados`,
-      `Ilustração artística centralizada de ${topic}, estilo ${style}, cores vibrantes e fundo harmonioso`,
-      `Emblema criativo centralizado de ${topic}, estilo ${style}, alta definição`,
-      `Desenho expressivo centralizado de ${topic}, estilo ${style}, foco no centro`
+    // MODO 1: COM CHAVE API GOOGLE AI STUDIO
+    if (state.apiKey) {
+      statusEl.style.color = '#c7d2fe';
+      statusEl.textContent = '⏳ Gerando 4 opções via Google Gemini / Imagen...';
+      const variations = [
+        `Arte circular centralizada para botton sobre ${topic}, ${ptStyle}, composição limpa sem textos cortados`,
+        `Ilustração artística centralizada de ${topic}, ${ptStyle}, cores vibrantes e fundo harmonioso`,
+        `Emblema criativo centralizado de ${topic}, ${ptStyle}, alta definição`,
+        `Desenho expressivo centralizado de ${topic}, ${ptStyle}, foco total no centro`
+      ];
+
+      try {
+        const promises = variations.map(async (p) => {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${encodeURIComponent(state.apiKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              instances: [{ prompt: p }],
+              parameters: { sampleCount: 1, aspectRatio: '1:1' }
+            })
+          });
+          if (!res.ok) return null;
+          const data = await res.json();
+          const b64 = data && data.predictions && data.predictions[0] && data.predictions[0].bytesBase64Encoded;
+          return b64 ? `data:image/png;base64,${b64}` : null;
+        });
+
+        const urls = (await Promise.all(promises)).filter(Boolean);
+        if (urls.length > 0) {
+          renderAiThumbs(urls);
+          statusEl.style.color = '#6ee7b7';
+          statusEl.textContent = '✅ Pronto! Toque na opção desejada para aplicar no botton:';
+          genBtn.disabled = false;
+          genBtn.textContent = 'Gerar 4';
+          return;
+        }
+      } catch (e) {}
+    }
+
+    // MODO 2: MOTOR GRATUITO INTEGRADO (SEM PRECISAR DE CHAVE)
+    statusEl.style.color = '#c7d2fe';
+    statusEl.textContent = '⏳ Criando 4 variações artísticas gratuitas (aguarde ~6s)...';
+
+    const enTopic = translatePromptToEn(topic);
+    const enStyle = mapStyleToEn(ptStyle);
+    const baseSeed = Math.floor(Math.random() * 90000) + 1000;
+    const prompts = [
+      `${enTopic}, ${enStyle}, centered circular badge artwork, no text`,
+      `${enTopic}, ${enStyle}, glowing light rays, centered composition, no text`,
+      `${enTopic}, ${enStyle}, artistic emblem, clean background, no text`,
+      `${enTopic}, ${enStyle}, vibrant colors, centered portrait, no text`
     ];
 
     try {
-      const promises = variations.map(async (p) => {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${encodeURIComponent(state.apiKey)}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            instances: [{ prompt: p }],
-            parameters: { sampleCount: 1, aspectRatio: '1:1' }
-          })
-        });
-        const data = await res.json();
-        const b64 = data && data.predictions && data.predictions[0] && data.predictions[0].bytesBase64Encoded;
-        return b64 ? `data:image/png;base64,${b64}` : null;
-      });
+      const results = await Promise.all(prompts.map((pr, idx) => {
+        const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(pr)}?width=768&height=768&seed=${baseSeed + idx * 37}&nologo=true&model=flux`;
+        return fetchRemoteImageAsDataUrl(url);
+      }));
 
-      const urls = (await Promise.all(promises)).filter(Boolean);
-      if (!urls.length) {
-        statusEl.textContent = 'Não foi possível gerar imagens. Verifique sua chave no Google AI Studio.';
-        return;
+      const validUrls = results.filter(Boolean);
+      if (validUrls.length > 0) {
+        renderAiThumbs(validUrls);
+        statusEl.style.color = '#6ee7b7';
+        statusEl.textContent = '✅ Toque na imagem que você mais gostou para jogar no botton:';
+      } else {
+        statusEl.style.color = '#fca5a5';
+        statusEl.textContent = '⚠️ O servidor gratuito está ocupado no momento. Tente novamente em alguns segundos ou cole uma Chave API do Google AI Studio.';
       }
-      statusEl.textContent = '✅ Toque na opção desejada para aplicar no botton:';
-      urls.forEach(url => {
-        const div = document.createElement('div');
-        div.className = 'ai-thumb';
-        const im = document.createElement('img');
-        im.src = url;
-        div.appendChild(im);
-        div.addEventListener('click', async () => {
-          const loaded = await loadImageFromSource(url);
+    } catch (err) {
+      statusEl.style.color = '#fca5a5';
+      statusEl.textContent = '⚠️ Falha de rede ao gerar imagens. Verifique sua conexão e tente novamente.';
+    } finally {
+      genBtn.disabled = false;
+      genBtn.textContent = 'Gerar 4';
+    }
+  });
+
+  function renderAiThumbs(urls) {
+    const gridEl = $('ai-results');
+    gridEl.innerHTML = '';
+    urls.forEach((url, i) => {
+      const div = document.createElement('div');
+      div.className = 'ai-thumb';
+      const im = document.createElement('img');
+      im.src = url;
+      const badge = document.createElement('span');
+      badge.className = 'ai-thumb-badge';
+      badge.textContent = `Opção ${i + 1}`;
+      div.appendChild(im);
+      div.appendChild(badge);
+      div.addEventListener('click', async () => {
+        try {
+          const loaded = await loadImageFromSource(url, true);
           state.imgDataUrl = url;
           state.imgObj = loaded;
           state.x = 0; state.y = 0; state.zoom = 100;
           syncInputsFromState();
           renderEditor();
           savePersist();
-        });
-        gridEl.appendChild(div);
+          $('tab-studio-center').scrollIntoView({ behavior: 'smooth' });
+        } catch (e) {
+          alert('Não foi possível carregar esta miniatura. Tente outra opção.');
+        }
       });
-    } catch (err) {
-      statusEl.textContent = 'Erro ao conectar ao gerador de imagens.';
-    }
-  });
+      gridEl.appendChild(div);
+    });
+  }
 
   // --- FOLHA DE IMPRESSÃO ---
   function getPaperDimsMm() {
