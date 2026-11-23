@@ -2,15 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gabarito de Bottons Pro — Dark Studio 300 DPI</title>
 <style>
   :root {
     --bg: #09090b;
     --panel: #121216;
     --card: #18181f;
-    --card-2: #202029;
-    --border: #272732;
+    --card-2: #22222c;
+    --border: #2a2a36;
     --text: #f4f4f6;
     --muted: #9ca3af;
     --primary: #6366f1;
@@ -22,22 +22,24 @@
     --radius: 14px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
+  html, body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.4;
     min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
 
-  /* Header */
   header {
     position: sticky; top: 0; z-index: 40;
-    background: rgba(12, 12, 16, 0.94);
-    backdrop-filter: blur(12px);
+    background: rgba(12, 12, 16, 0.96);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
-    padding: 12px 16px;
+    padding: 12px 14px;
   }
   .header-inner {
     max-width: 1380px; margin: 0 auto;
@@ -45,44 +47,37 @@
   }
   .brand { display: flex; align-items: center; gap: 10px; }
   .logo-badge {
-    width: 38px; height: 38px; border-radius: 11px;
+    width: 36px; height: 36px; border-radius: 10px;
     background: linear-gradient(135deg, #6366f1, #4338ca);
     display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 16px; color: #fff;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+    font-weight: 800; font-size: 15px; color: #fff;
   }
-  .brand h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand h1 { font-size: 15px; font-weight: 700; }
   .brand p { font-size: 11px; color: var(--muted); }
   .header-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-  /* Buttons */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     border: 1px solid var(--border);
     background: var(--card-2);
     color: var(--text);
-    padding: 9px 14px;
+    padding: 10px 14px;
     border-radius: 10px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, transform 0.08s;
     user-select: none;
+    touch-action: manipulation;
   }
-  .btn:active { transform: scale(0.98); }
-  .btn:hover { border-color: #3f3f52; background: #262632; }
+  .btn:active { opacity: 0.85; transform: scale(0.98); }
   .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
-  .btn-primary:hover { background: var(--primary-hover); }
   .btn-emerald { background: var(--emerald); border-color: var(--emerald); color: #052e16; font-weight: 700; }
-  .btn-emerald:hover { background: var(--emerald-hover); color: #fff; }
-  .btn-amber { background: var(--amber); border-color: var(--amber); color: #1c1917; font-weight: 700; }
-  .btn-danger { background: rgba(239, 68, 68, 0.14); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5; }
-  .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+  .btn-danger { background: rgba(239, 68, 68, 0.16); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
+  .btn-sm { padding: 7px 11px; font-size: 12px; border-radius: 8px; }
   .btn-full { width: 100%; }
 
-  /* Tabs */
   .nav-tabs {
-    max-width: 1380px; margin: 12px auto 0; padding: 0 16px;
+    max-width: 1380px; margin: 12px auto 0; padding: 0 14px;
     display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
   }
   .nav-tabs::-webkit-scrollbar { display: none; }
@@ -91,33 +86,21 @@
     background: var(--panel); color: var(--muted);
     font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;
     display: inline-flex; align-items: center; gap: 6px;
+    touch-action: manipulation;
   }
-  .tab-btn.active {
-    background: var(--primary); border-color: var(--primary); color: #fff;
-  }
-  .badge-count {
-    background: rgba(0, 0, 0, 0.3); padding: 1px 7px; border-radius: 999px; font-size: 11px;
-  }
+  .tab-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .badge-count { background: rgba(0, 0, 0, 0.32); padding: 1px 7px; border-radius: 999px; font-size: 11px; }
 
-  /* Layout */
-  .container { max-width: 1380px; margin: 0 auto; padding: 14px 16px 80px; }
+  .container { max-width: 1380px; margin: 0 auto; padding: 14px 14px 96px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  .studio-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+  .studio-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   @media (min-width: 1024px) {
-    .studio-grid {
-      grid-template-columns: 370px 1fr 410px;
-      align-items: start;
-    }
+    .studio-grid { grid-template-columns: 370px 1fr 410px; align-items: start; }
   }
 
-  /* Cards & Accordions */
-  .card {
+  .card, .stage-card {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -126,44 +109,40 @@
   }
   .acc-header {
     display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; user-select: none; padding: 2px 0;
+    cursor: pointer; user-select: none; padding: 4px 0;
+    touch-action: manipulation;
   }
-  .acc-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .acc-title { font-size: 14px; font-weight: 700; }
   .acc-body { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
   .acc-body.collapsed { display: none; }
 
-  /* Stage / Canvas Preview */
-  .stage-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px;
-  }
   .mode-switch {
     display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
     background: var(--bg); padding: 4px; border-radius: 11px; border: 1px solid var(--border);
     margin-bottom: 12px;
   }
   .mode-btn {
-    padding: 8px; border-radius: 8px; border: none; background: transparent;
+    padding: 9px; border-radius: 8px; border: none; background: transparent;
     color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer;
+    touch-action: manipulation;
   }
   .mode-btn.active { background: var(--primary); color: #fff; }
+
+  /* Palco com rolagem totalmente livre no celular */
   .canvas-wrap {
-    position: relative; width: 100%; max-width: 380px; aspect-ratio: 1 / 1;
+    position: relative; width: 100%; max-width: 320px; aspect-ratio: 1 / 1;
     margin: 0 auto; background: #0c0c10; border-radius: 16px;
     border: 1px solid var(--border); overflow: hidden;
-    touch-action: none;
+    touch-action: pan-y;
   }
-  #editor-canvas { width: 100%; height: 100%; display: block; cursor: grab; }
-  #editor-canvas:active { cursor: grabbing; }
+  #editor-canvas { width: 100%; height: 100%; display: block; pointer-events: none; }
+
   .legend-row {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
     margin-top: 10px; font-size: 11px; color: var(--muted);
   }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
 
-  /* Controls & Stepper */
   .ctrl-group { margin-bottom: 12px; }
   .ctrl-group:last-child { margin-bottom: 0; }
   .ctrl-label {
@@ -171,86 +150,73 @@
     font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 600;
   }
   .ctrl-val { color: var(--text); font-weight: 700; }
-  .stepper-row {
-    display: flex; align-items: center; gap: 8px;
-  }
+  .stepper-row { display: flex; align-items: center; gap: 8px; }
   .step-btn {
-    width: 38px; height: 38px; flex-shrink: 0;
+    width: 40px; height: 40px; flex-shrink: 0;
     border-radius: 10px; border: 1px solid var(--border);
     background: var(--card-2); color: var(--text);
-    font-size: 18px; font-weight: 700; cursor: pointer;
+    font-size: 20px; font-weight: 700; cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
     user-select: none; touch-action: manipulation;
   }
   .step-btn:active { background: var(--primary); border-color: var(--primary); color: #fff; }
-  input[type="range"] {
-    flex: 1; accent-color: var(--primary); height: 6px; cursor: pointer;
-  }
-  input[type="text"], input[type="number"], select, textarea {
+
+  input[type="range"] { flex: 1; accent-color: var(--primary); height: 8px; cursor: pointer; }
+  input[type="text"], input[type="number"], select {
     width: 100%; background: var(--bg); border: 1px solid var(--border);
-    color: var(--text); border-radius: 10px; padding: 9px 11px; font-size: 13px;
+    color: var(--text); border-radius: 10px; padding: 10px 11px; font-size: 14px;
   }
   input[type="color"] {
-    width: 42px; height: 36px; border: 1px solid var(--border); border-radius: 8px;
+    width: 44px; height: 38px; border: 1px solid var(--border); border-radius: 8px;
     background: var(--bg); cursor: pointer; padding: 2px;
   }
 
-  /* Presets Grid */
   .preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
   .preset-btn {
-    padding: 8px 4px; border-radius: 9px; border: 1px solid var(--border);
+    padding: 9px 4px; border-radius: 9px; border: 1px solid var(--border);
     background: var(--card-2); color: var(--text); font-size: 12px; font-weight: 700;
-    cursor: pointer; text-align: center;
+    cursor: pointer; text-align: center; touch-action: manipulation;
   }
-  .preset-btn.star { border-color: rgba(245, 158, 11, 0.45); color: #fcd34d; }
+  .preset-btn.star { border-color: rgba(245, 158, 11, 0.5); color: #fcd34d; }
   .preset-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
-  /* Upload Overlay */
   .upload-box {
     position: relative; overflow: hidden;
-    border: 1.5px dashed #4f46e5;
-    background: rgba(99, 102, 241, 0.1);
+    border: 1.5px dashed #6366f1;
+    background: rgba(99, 102, 241, 0.12);
     border-radius: 12px; padding: 14px; text-align: center;
     cursor: pointer; margin-bottom: 10px;
   }
   .upload-box input[type="file"] {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    opacity: 0; cursor: pointer; z-index: 10; font-size: 100px;
+    opacity: 0; cursor: pointer; z-index: 5; font-size: 100px;
   }
 
-  /* AI Grid */
   .ai-box {
-    background: rgba(99, 102, 241, 0.07);
-    border: 1px solid rgba(99, 102, 241, 0.28);
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 12px; padding: 11px; margin-top: 10px;
   }
-  .ai-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px;
-  }
+  .ai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
   .ai-thumb {
-    position: relative; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden;
+    aspect-ratio: 1/1; border-radius: 10px; overflow: hidden;
     border: 2px solid var(--border); cursor: pointer; background: var(--bg);
   }
-  .ai-thumb:hover { border-color: var(--primary); }
   .ai-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* Banner */
   .sheet-banner {
-    background: rgba(16, 185, 129, 0.14);
-    border: 1px solid rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.45);
     border-radius: 12px; padding: 11px; margin-top: 10px;
-    display: flex; flex-direction: column; gap: 8px;
+    display: none; flex-direction: column; gap: 8px;
   }
 
-  /* Sheet Preview */
   .sheet-item-row {
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
     background: var(--card); border: 1px solid var(--border);
     padding: 8px 10px; border-radius: 10px; margin-bottom: 8px;
   }
-  .sheet-item-thumb {
-    width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: #fff; flex-shrink: 0;
-  }
+  .sheet-item-thumb { width: 38px; height: 38px; object-fit: cover; background: #fff; flex-shrink: 0; }
   .paper-wrap {
     background: #1f1f27; border-radius: 12px; padding: 12px;
     display: flex; flex-direction: column; align-items: center; gap: 14px;
@@ -262,36 +228,32 @@
     max-width: 100%; height: auto; display: block;
   }
 
-  /* Saved Library */
-  .saved-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;
-  }
+  .saved-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .saved-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 11px;
     display: flex; flex-direction: column; gap: 8px;
   }
-  .saved-card.selected { border-color: var(--primary); background: rgba(99, 102, 241, 0.08); }
+  .saved-card.selected { border-color: var(--primary); background: rgba(99, 102, 241, 0.1); }
   .saved-preview {
     width: 100%; aspect-ratio: 1/1; border-radius: 10px; background: #0c0c10;
     object-fit: contain; cursor: pointer;
   }
 
-  /* Modal */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.85);
     display: none; align-items: center; justify-content: center; padding: 14px;
+    overflow-y: auto;
   }
   .modal-backdrop.open { display: flex; }
   .modal-box {
     background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
-    max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 18px;
+    max-width: 680px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 16px;
   }
 
-  /* Print Rules */
   @media print {
     body { background: #fff !important; color: #000 !important; }
-    header, .nav-tabs, .no-print, #tab-studio-left, #tab-studio-center, #tab-saved, #tab-calc, #tab-orders {
+    header, .nav-tabs, #tab-studio-left, #tab-studio-center, #tab-saved, #tab-calc, #tab-orders {
       display: none !important;
     }
     .container, .studio-grid, #tab-studio, #sheet-column {
@@ -299,11 +261,7 @@
       padding: 0 !important; margin: 0 !important; border: none !important; background: #fff !important;
     }
     .paper-wrap { background: #fff !important; padding: 0 !important; gap: 0 !important; }
-    .paper-canvas {
-      box-shadow: none !important;
-      width: 100% !important;
-      page-break-after: always;
-    }
+    .paper-canvas { box-shadow: none !important; width: 100% !important; page-break-after: always; }
     .paper-canvas:last-child { page-break-after: auto; }
   }
 </style>
@@ -320,86 +278,84 @@
       </div>
     </div>
     <div class="header-actions">
-      <button class="btn" id="btn-new-art">✨ Nova Arte</button>
-      <button class="btn btn-emerald" id="btn-open-print">🖨️ Imprimir / Baixar</button>
+      <button type="button" class="btn" id="btn-new-art">✨ Nova Arte</button>
+      <button type="button" class="btn btn-emerald" id="btn-open-print">🖨️ Imprimir / Baixar</button>
     </div>
   </div>
 </header>
 
 <div class="nav-tabs">
-  <button class="tab-btn active" data-tab="studio">🎨 Estúdio & Folha</button>
-  <button class="tab-btn" data-tab="saved">💾 Arquivos Salvos <span class="badge-count" id="saved-badge">0</span></button>
-  <button class="tab-btn" data-tab="calc">🧮 Calculadora</button>
-  <button class="tab-btn" data-tab="orders">📦 Pedidos <span class="badge-count" id="orders-badge">0</span></button>
+  <button type="button" class="tab-btn active" data-tab="studio">🎨 Estúdio & Folha</button>
+  <button type="button" class="tab-btn" data-tab="saved">💾 Arquivos Salvos <span class="badge-count" id="saved-badge">0</span></button>
+  <button type="button" class="tab-btn" data-tab="calc">🧮 Calculadora</button>
+  <button type="button" class="tab-btn" data-tab="orders">📦 Pedidos <span class="badge-count" id="orders-badge">0</span></button>
 </div>
 
 <div class="container">
-  <!-- ABA 1: ESTÚDIO & FOLHA -->
   <div class="tab-panel active" id="tab-studio">
     <div class="studio-grid">
-      
-      <!-- COLUNA ESQUERDA: CONTROLES -->
-      <div id="tab-studio-left">
-        <!-- 1. MEDIDA & FORMATO -->
-        <div class="card">
-          <div class="acc-header" data-acc="acc-size">
-            <span class="acc-title">1. Medida & Formato</span>
-            <span>▼</span>
+
+      <!-- PALCO CENTRAL PRIMEIRO NO CELULAR PARA FÁCIL ACESSO -->
+      <div id="tab-studio-center">
+        <div class="stage-card">
+          <div class="mode-switch">
+            <button type="button" class="mode-btn active" id="view-guide">🎯 Modo Gabarito</button>
+            <button type="button" class="mode-btn" id="view-3d">✨ Simulação 3D</button>
           </div>
-          <div class="acc-body" id="acc-size">
-            <div class="mode-switch" style="margin-bottom:10px;">
-              <button class="mode-btn active" id="shape-round">⭕ Redondo</button>
-              <button class="mode-btn" id="shape-square">⬜ Quadrado</button>
-            </div>
-            <div class="ctrl-label"><span>Suas Medidas (★) e Padrões</span></div>
-            <div class="preset-grid" id="presets-container"></div>
 
-            <div class="ctrl-group">
-              <div class="ctrl-label">
-                <span>Frente Visível (mm)</span>
-                <span class="ctrl-val mono" id="val-front">44 mm</span>
-              </div>
-              <div class="stepper-row">
-                <button class="step-btn" data-target="inp-front" data-step="-1">−</button>
-                <input type="range" id="inp-front" min="20" max="90" step="1" value="44">
-                <button class="step-btn" data-target="inp-front" data-step="1">+</button>
-              </div>
-            </div>
+          <div class="canvas-wrap">
+            <canvas id="editor-canvas"></canvas>
+          </div>
 
-            <div class="ctrl-group">
-              <div class="ctrl-label">
-                <span>Sangria de Dobra (+mm total)</span>
-                <span class="ctrl-val mono" id="val-bleed">+10 mm</span>
-              </div>
-              <div class="stepper-row">
-                <button class="step-btn" data-target="inp-bleed" data-step="-1">−</button>
-                <input type="range" id="inp-bleed" min="4" max="20" step="1" value="10">
-                <button class="step-btn" data-target="inp-bleed" data-step="1">+</button>
-              </div>
+          <div class="legend-row" id="guide-legend">
+            <span><i class="dot" style="background:#38bdf8;"></i>Corte (<b id="leg-cut">54mm</b>)</span>
+            <span><i class="dot" style="background:#10b981;"></i>Frente (<b id="leg-front">44mm</b>)</span>
+            <span><i class="dot" style="background:#f59e0b;"></i>Zona Segura</span>
+          </div>
+
+          <div id="bleed-warning" style="display:none;margin-top:8px;padding:7px 10px;border-radius:9px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.4);font-size:11px;color:#fcd34d;text-align:center;">
+            ⚠️ Há área de fundo na sangria de dobra. Aumente o Zoom se quiser preencher toda a borda.
+          </div>
+
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+            <button type="button" class="btn btn-full" id="btn-save-art">💾 Salvar Arte</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button type="button" class="btn btn-primary" id="btn-add-one">+ Adicionar 1 na Folha</button>
+              <button type="button" class="btn btn-emerald" id="btn-fill-sheet">Preencher Folha Inteira</button>
             </div>
+          </div>
+
+          <div class="sheet-banner" id="sheet-banner">
+            <div style="font-size:12px;font-weight:700;color:#6ee7b7;" id="sheet-banner-text">
+              ✅ Adicionado! Total na folha: 0 bottons.
+            </div>
+            <button type="button" class="btn btn-emerald btn-sm btn-full" id="btn-scroll-sheet">
+              📄 Ver Folha de Impressão →
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- 2. FOTO, ZOOM & POSIÇÃO -->
+      <!-- CONTROLES -->
+      <div id="tab-studio-left">
         <div class="card">
           <div class="acc-header" data-acc="acc-photo">
-            <span class="acc-title">2. Foto, Zoom & Posição</span>
+            <span class="acc-title">1. Foto, Zoom & Posição</span>
             <span>▼</span>
           </div>
           <div class="acc-body" id="acc-photo">
             <div class="upload-box">
               <input type="file" id="inp-file" accept="image/*,.heic,.heif">
               <div style="font-weight:700;font-size:14px;">📸 Carregar ou Trocar Foto</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="quality-badge">Nenhuma foto carregada • Pronto para 300 DPI</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="quality-badge">Toque aqui para escolher da galeria</div>
             </div>
 
-            <!-- GERADOR DE ARTE COM IA -->
             <div class="ai-box">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                 <span style="font-size:12px;font-weight:700;color:#c7d2fe;">✨ Gerar Opções de Arte com IA</span>
-                <button class="btn btn-sm" id="btn-ai-key" style="padding:3px 7px;font-size:11px;">🔑 Chave API</button>
+                <button type="button" class="btn btn-sm" id="btn-ai-key" style="padding:4px 8px;font-size:11px;">🔑 Chave API</button>
               </div>
-              <div style="display:flex;gap:6px;margin-bottom:6px;">
+              <div style="margin-bottom:6px;">
                 <input type="text" id="ai-prompt" placeholder="Ex: Jesus, Leão de Judá, Flores...">
               </div>
               <div style="display:flex;gap:6px;">
@@ -411,7 +367,7 @@
                   <option value="arte minimalista traço limpo">Minimalista</option>
                   <option value="fotografia realista iluminação cinematográfica">Realista</option>
                 </select>
-                <button class="btn btn-primary btn-sm" id="btn-ai-gen">Gerar 4</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-ai-gen">Gerar 4</button>
               </div>
               <div id="ai-status" style="font-size:11px;color:var(--muted);margin-top:6px;display:none;"></div>
               <div class="ai-grid" id="ai-results"></div>
@@ -423,9 +379,9 @@
                 <span class="ctrl-val mono" id="val-zoom">100%</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-zoom" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-zoom" data-step="-2">−</button>
                 <input type="range" id="inp-zoom" min="30" max="300" step="1" value="100">
-                <button class="step-btn" data-target="inp-zoom" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-zoom" data-step="2">+</button>
               </div>
             </div>
 
@@ -435,9 +391,9 @@
                 <span class="ctrl-val mono" id="val-x">0</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-x" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-x" data-step="-3">−</button>
                 <input type="range" id="inp-x" min="-200" max="200" step="1" value="0">
-                <button class="step-btn" data-target="inp-x" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-x" data-step="3">+</button>
               </div>
             </div>
 
@@ -447,9 +403,9 @@
                 <span class="ctrl-val mono" id="val-y">0</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-y" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-y" data-step="-3">−</button>
                 <input type="range" id="inp-y" min="-200" max="200" step="1" value="0">
-                <button class="step-btn" data-target="inp-y" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-y" data-step="3">+</button>
               </div>
             </div>
 
@@ -459,23 +415,60 @@
                 <span class="ctrl-val mono" id="val-rot">0°</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-rot" data-step="-1">−</button>
+                <button type="button" class="step-btn" data-target="inp-rot" data-step="-1">−</button>
                 <input type="range" id="inp-rot" min="-180" max="180" step="1" value="0">
-                <button class="step-btn" data-target="inp-rot" data-step="1">+</button>
+                <button type="button" class="step-btn" data-target="inp-rot" data-step="1">+</button>
               </div>
             </div>
 
             <div class="ctrl-group" style="display:flex;align-items:center;justify-content:space-between;">
-              <span style="font-size:12px;color:var(--muted);font-weight:600;">Cor de Fundo / Borda de Dobra</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Cor de Fundo / Borda</span>
               <div style="display:flex;align-items:center;gap:6px;">
-                <button class="btn btn-sm" id="btn-center-photo">Centralizar</button>
+                <button type="button" class="btn btn-sm" id="btn-center-photo">Centralizar</button>
                 <input type="color" id="inp-bg" value="#ffffff">
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 3. TEXTO & CURVATURA -->
+        <div class="card">
+          <div class="acc-header" data-acc="acc-size">
+            <span class="acc-title">2. Medida & Formato (25, 32, 44, 58mm)</span>
+            <span>▼</span>
+          </div>
+          <div class="acc-body" id="acc-size">
+            <div class="mode-switch" style="margin-bottom:10px;">
+              <button type="button" class="mode-btn active" id="shape-round">⭕ Redondo</button>
+              <button type="button" class="mode-btn" id="shape-square">⬜ Quadrado</button>
+            </div>
+            <div class="preset-grid" id="presets-container"></div>
+
+            <div class="ctrl-group">
+              <div class="ctrl-label">
+                <span>Frente Visível (mm)</span>
+                <span class="ctrl-val mono" id="val-front">44 mm</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="step-btn" data-target="inp-front" data-step="-1">−</button>
+                <input type="range" id="inp-front" min="20" max="90" step="1" value="44">
+                <button type="button" class="step-btn" data-target="inp-front" data-step="1">+</button>
+              </div>
+            </div>
+
+            <div class="ctrl-group">
+              <div class="ctrl-label">
+                <span>Sangria de Dobra (+mm total)</span>
+                <span class="ctrl-val mono" id="val-bleed">+10 mm</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="step-btn" data-target="inp-bleed" data-step="-1">−</button>
+                <input type="range" id="inp-bleed" min="4" max="20" step="1" value="10">
+                <button type="button" class="step-btn" data-target="inp-bleed" data-step="1">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="acc-header" data-acc="acc-text">
             <span class="acc-title">3. Texto & Curvatura</span>
@@ -500,9 +493,9 @@
                 <span class="ctrl-val mono" id="val-fsize">22 px</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-fsize" data-step="-1">−</button>
+                <button type="button" class="step-btn" data-target="inp-fsize" data-step="-1">−</button>
                 <input type="range" id="inp-fsize" min="10" max="64" step="1" value="22">
-                <button class="step-btn" data-target="inp-fsize" data-step="1">+</button>
+                <button type="button" class="step-btn" data-target="inp-fsize" data-step="1">+</button>
               </div>
             </div>
             <div class="ctrl-group">
@@ -511,15 +504,14 @@
                 <span class="ctrl-val mono" id="val-ty">65%</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-ty" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-ty" data-step="-2">−</button>
                 <input type="range" id="inp-ty" min="-95" max="95" step="1" value="65">
-                <button class="step-btn" data-target="inp-ty" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-ty" data-step="2">+</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 4. ACABAMENTO, MOLDURA & QR CODE -->
         <div class="card">
           <div class="acc-header" data-acc="acc-fx">
             <span class="acc-title">4. Acabamento, Moldura & QR Code</span>
@@ -532,9 +524,9 @@
                 <span class="ctrl-val mono" id="val-bright">100%</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-bright" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-bright" data-step="-2">−</button>
                 <input type="range" id="inp-bright" min="60" max="150" step="1" value="100">
-                <button class="step-btn" data-target="inp-bright" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-bright" data-step="2">+</button>
               </div>
             </div>
             <div class="ctrl-group">
@@ -543,80 +535,37 @@
                 <span class="ctrl-val mono" id="val-contrast">100%</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-contrast" data-step="-2">−</button>
+                <button type="button" class="step-btn" data-target="inp-contrast" data-step="-2">−</button>
                 <input type="range" id="inp-contrast" min="60" max="150" step="1" value="100">
-                <button class="step-btn" data-target="inp-contrast" data-step="2">+</button>
+                <button type="button" class="step-btn" data-target="inp-contrast" data-step="2">+</button>
               </div>
             </div>
             <div class="ctrl-group">
               <div class="ctrl-label">
-                <span>Anel / Moldura Interna (px)</span>
+                <span>Anel / Moldura Interna</span>
                 <span class="ctrl-val mono" id="val-ring">0 px</span>
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
-                <button class="step-btn" data-target="inp-ring" data-step="-1">−</button>
+                <button type="button" class="step-btn" data-target="inp-ring" data-step="-1">−</button>
                 <input type="range" id="inp-ring" min="0" max="24" step="1" value="0">
-                <button class="step-btn" data-target="inp-ring" data-step="1">+</button>
+                <button type="button" class="step-btn" data-target="inp-ring" data-step="1">+</button>
                 <input type="color" id="inp-ring-color" value="#f59e0b">
               </div>
             </div>
             <div class="ctrl-group">
-              <div class="ctrl-label"><span>QR Code Centralizado (Link/Pix/Insta)</span></div>
+              <div class="ctrl-label"><span>QR Code Centralizado</span></div>
               <input type="text" id="inp-qr" placeholder="Cole o link aqui para gerar QR Code">
             </div>
           </div>
         </div>
       </div>
 
-      <!-- COLUNA CENTRAL: PALCO DO BOTTON -->
-      <div id="tab-studio-center">
-        <div class="stage-card">
-          <div class="mode-switch">
-            <button class="mode-btn active" id="view-guide">🎯 Modo Gabarito</button>
-            <button class="mode-btn" id="view-3d">✨ Simulação 3D</button>
-          </div>
-
-          <div class="canvas-wrap">
-            <canvas id="editor-canvas"></canvas>
-          </div>
-
-          <div class="legend-row" id="guide-legend">
-            <span><i class="dot" style="background:#38bdf8;"></i>Corte (<b id="leg-cut">54mm</b>)</span>
-            <span><i class="dot" style="background:#10b981;"></i>Frente (<b id="leg-front">44mm</b>)</span>
-            <span><i class="dot" style="background:#f59e0b;"></i>Zona Segura</span>
-          </div>
-
-          <div id="bleed-warning" style="display:none;margin-top:8px;padding:7px 10px;border-radius:9px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);font-size:11px;color:#fcd34d;text-align:center;">
-            ⚠️ Há área de fundo na sangria de dobra. Aumente o Zoom se quiser preencher toda a borda.
-          </div>
-
-          <!-- AÇÕES DIRETAS ABAIXO DA FOTO -->
-          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-            <button class="btn btn-full" id="btn-save-art">💾 Salvar Arte</button>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <button class="btn btn-primary" id="btn-add-one">+ Adicionar 1 na Folha</button>
-              <button class="btn btn-emerald" id="btn-fill-sheet">Preencher Folha Inteira</button>
-            </div>
-          </div>
-
-          <!-- BANNER DE CONFIRMAÇÃO DA FOLHA -->
-          <div class="sheet-banner" id="sheet-banner" style="display:none;">
-            <div style="font-size:12px;font-weight:700;color:#6ee7b7;" id="sheet-banner-text">
-              ✅ Adicionado! Total na folha: 0 bottons.
-            </div>
-            <button class="btn btn-emerald btn-sm btn-full" id="btn-scroll-sheet">
-              📄 Ver Folha de Impressão →
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- COLUNA DIREITA: FOLHA DE IMPRESSÃO -->
+      <!-- FOLHA DE IMPRESSÃO -->
       <div id="sheet-column">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <span style="font-size:14px;font-weight:700;">📄 Folha de Impressão (1:1)</span>
-            <button class="btn btn-danger btn-sm" id="btn-clear-sheet">Limpar Folha</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-clear-sheet">Limpar Folha</button>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
@@ -633,15 +582,14 @@
                 <span class="ctrl-val mono" id="val-gap">4 mm</span>
               </div>
               <div class="stepper-row">
-                <button class="step-btn" data-target="inp-gap" data-step="-1" style="width:32px;height:34px;">−</button>
+                <button type="button" class="step-btn" data-target="inp-gap" data-step="-1" style="width:34px;height:36px;">−</button>
                 <input type="range" id="inp-gap" min="1" max="15" step="1" value="4">
-                <button class="step-btn" data-target="inp-gap" data-step="1" style="width:32px;height:34px;">+</button>
+                <button type="button" class="step-btn" data-target="inp-gap" data-step="1" style="width:34px;height:36px;">+</button>
               </div>
             </div>
           </div>
 
           <div id="sheet-items-list" style="margin-bottom:10px;"></div>
-
           <div class="paper-wrap" id="paper-pages-container"></div>
         </div>
       </div>
@@ -655,24 +603,23 @@
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
         <div>
           <h2 style="font-size:16px;font-weight:700;">💾 Arquivos Salvos</h2>
-          <p style="font-size:12px;color:var(--muted);">Selecione várias artes salvas para combinar na mesma folha de impressão.</p>
+          <p style="font-size:12px;color:var(--muted);">Selecione várias artes salvas para combinar na mesma folha.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          <button class="btn btn-sm" id="btn-select-all">☑️ Selecionar Todos</button>
-          <button class="btn btn-sm" id="btn-export-backup">⬇️ Backup (.json)</button>
+          <button type="button" class="btn btn-sm" id="btn-select-all">☑️ Selecionar Todos</button>
+          <button type="button" class="btn btn-sm" id="btn-export-backup">⬇️ Backup (.json)</button>
           <label class="btn btn-sm" style="cursor:pointer;">
             ⬆️ Restaurar <input type="file" id="inp-import-backup" accept=".json" style="display:none;">
           </label>
         </div>
       </div>
 
-      <!-- BARRA DE AÇÕES EM LOTE -->
-      <div id="batch-bar" style="display:none;background:rgba(99,102,241,0.14);border:1px solid rgba(99,102,241,0.4);border-radius:12px;padding:10px;margin-bottom:12px;">
+      <div id="batch-bar" style="display:none;background:rgba(99,102,241,0.16);border:1px solid rgba(99,102,241,0.45);border-radius:12px;padding:10px;margin-bottom:12px;">
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
           <span style="font-size:13px;font-weight:700;" id="batch-summary">0 selecionados</span>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button class="btn btn-primary btn-sm" id="btn-batch-add">+ Adicionar Selecionados à Folha</button>
-            <button class="btn btn-emerald btn-sm" id="btn-batch-fill">Distribuir Selecionados na Folha</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-batch-add">+ Adicionar Selecionados à Folha</button>
+            <button type="button" class="btn btn-emerald btn-sm" id="btn-batch-fill">Distribuir Selecionados na Folha</button>
           </div>
         </div>
       </div>
@@ -712,7 +659,7 @@
         </div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;" id="calc-result"></div>
-      <button class="btn btn-emerald btn-full" id="btn-copy-quote">📋 Copiar Orçamento para WhatsApp</button>
+      <button type="button" class="btn btn-emerald btn-full" id="btn-copy-quote">📋 Copiar Orçamento para WhatsApp</button>
     </div>
   </div>
 
@@ -720,7 +667,7 @@
   <div class="tab-panel" id="tab-orders">
     <div class="card" style="max-width:720px;margin:0 auto;">
       <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;">📦 Controle de Pedidos & Produção</h2>
-      <div style="display:grid;grid-template-columns:1fr 100px 110px auto;gap:8px;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:1fr 90px 105px auto;gap:8px;margin-bottom:14px;">
         <input type="text" id="ord-client" placeholder="Nome do Cliente / Tema">
         <input type="number" id="ord-qty" placeholder="Qtd" value="20" min="1">
         <select id="ord-size">
@@ -730,7 +677,7 @@
           <option value="58mm">58mm</option>
           <option value="Quadrado">Quadrado</option>
         </select>
-        <button class="btn btn-primary" id="btn-add-order">+ Pedido</button>
+        <button type="button" class="btn btn-primary" id="btn-add-order">+ Pedido</button>
       </div>
       <div id="orders-list"></div>
     </div>
@@ -742,22 +689,23 @@
   <div class="modal-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <h3 style="font-size:16px;font-weight:700;">🖨️ Folha Pronta em 300 DPI (Escala 1:1)</h3>
-      <button class="btn btn-sm" id="btn-close-print">✕ Fechar</button>
+      <button type="button" class="btn btn-sm" id="btn-close-print">✕ Fechar</button>
     </div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
-      Para impressão exata sem redução de tamanho: clique em <b>Imprimir Direto</b> e marque <b>"Tamanho Real / Escala 100%"</b>, ou baixe a imagem PNG em 300 DPI para imprimir pela galeria/computador.
+      Para impressão exata sem redução: clique em <b>Imprimir Direto</b> e marque <b>"Tamanho Real / Escala 100%"</b>, ou baixe a imagem PNG em 300 DPI para imprimir pela galeria/computador.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-      <button class="btn btn-primary" id="btn-native-print">🖨️ Imprimir Direto (Ctrl+P)</button>
-      <button class="btn btn-emerald" id="btn-download-pngs">⬇️ Baixar Folha PNG (300 DPI)</button>
+      <button type="button" class="btn btn-primary" id="btn-native-print">🖨️ Imprimir Direto (Ctrl+P)</button>
+      <button type="button" class="btn btn-emerald" id="btn-download-pngs">⬇️ Baixar Folha PNG (300 DPI)</button>
     </div>
     <div id="modal-pages-preview" style="display:flex;flex-direction:column;gap:12px;align-items:center;"></div>
   </div>
 </div>
 
 <script>
-(function() {
-  const GEMINI_API = ""; // Chave opcional; usuário pode configurar via botão Chave API
+document.addEventListener('DOMContentLoaded', function() {
+  const $ = (id) => document.getElementById(id);
+
   const PRESETS = [
     { label: '★ 25mm', size: 25, bleed: 8, star: true },
     { label: '★ 32mm', size: 32, bleed: 8, star: true },
@@ -793,27 +741,30 @@
     gapMm: 4,
     imgDataUrl: null,
     imgObj: null,
-    sheetItems: [], // { id, name, frontMm, bleedMm, shape, qty, dataUrl300 }
-    savedArts: [],  // { id, name, createdAt, stateSnapshot, thumbUrl, selected, batchQty }
+    sheetItems: [],
+    savedArts: [],
     orders: [],
     apiKey: ''
   };
 
-  // --- INDEXED DB PERSISTENCE ---
-  const DB_NAME = 'BottonsProDB_v1';
+  // --- PERSISTÊNCIA SEGURA ---
+  const DB_NAME = 'BottonsProDB_v2';
   let db = null;
   function openDB() {
     return new Promise((resolve) => {
-      if (!window.indexedDB) return resolve(null);
-      const req = indexedDB.open(DB_NAME, 1);
-      req.onupgradeneeded = (e) => {
-        const d = e.target.result;
-        if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
-      };
-      req.onsuccess = (e) => { db = e.target.result; resolve(db); };
-      req.onerror = () => resolve(null);
+      try {
+        if (!window.indexedDB) return resolve(null);
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const d = e.target.result;
+          if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
+        };
+        req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+        req.onerror = () => resolve(null);
+      } catch (err) { resolve(null); }
     });
   }
+
   function savePersist() {
     const payload = {
       shape: state.shape, frontMm: state.frontMm, bleedMm: state.bleedMm,
@@ -834,9 +785,10 @@
     }
     try {
       const lite = Object.assign({}, payload, { imgDataUrl: null, sheetItems: [], savedArts: [] });
-      localStorage.setItem('bottonsProLite', JSON.stringify(lite));
+      localStorage.setItem('bottonsProLite_v2', JSON.stringify(lite));
     } catch (e) {}
   }
+
   function loadPersist() {
     return new Promise((resolve) => {
       if (db) {
@@ -849,35 +801,22 @@
         } catch (e) {}
       }
       try {
-        const raw = localStorage.getItem('bottonsProLite');
+        const raw = localStorage.getItem('bottonsProLite_v2');
         resolve(raw ? JSON.parse(raw) : null);
       } catch (e) { resolve(null); }
     });
   }
 
-  // --- DOM HELPERS ---
-  const $ = (id) => document.getElementById(id);
-
-  // --- PRESETS ---
-  function renderPresets() {
-    const wrap = $('presets-container');
-    wrap.innerHTML = '';
-    PRESETS.forEach(p => {
-      const b = document.createElement('button');
-      b.className = 'preset-btn' + (p.star ? ' star' : '') + (state.frontMm === p.size ? ' active' : '');
-      b.textContent = p.label;
-      b.onclick = () => {
-        state.frontMm = p.size;
-        state.bleedMm = p.bleed;
-        syncInputsFromState();
-        renderEditor();
-        savePersist();
-      };
-      wrap.appendChild(b);
+  function loadImageFromSource(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
     });
   }
 
-  // --- UNIFIED ARTWORK RENDERER (100% IDENTICAL BETWEEN STUDIO & 300 DPI SHEET) ---
+  // --- RENDERIZAÇÃO UNIFICADA (ESTÚDIO E 300 DPI) ---
   function drawBottonArtwork(ctx, sizePx, cfg, imgElement, is3DPreview) {
     const cutMm = cfg.frontMm + cfg.bleedMm;
     const frontRatio = cfg.frontMm / cutMm;
@@ -887,30 +826,31 @@
     ctx.save();
     ctx.clearRect(0, 0, sizePx, sizePx);
 
-    // Clip to outer cut shape (or front circle when in 3D mode)
     const activeRadius = is3DPreview ? (sizePx / 2) * 0.88 : (sizePx / 2);
     const scaleFactor = is3DPreview ? (0.88 / frontRatio) : 1.0;
 
     ctx.beginPath();
     if (cfg.shape === 'square') {
       const side = activeRadius * 2;
-      const r = side * 0.08;
-      ctx.roundRect(cx - activeRadius, cy - activeRadius, side, side, r);
+      ctx.rect(cx - activeRadius, cy - activeRadius, side, side);
     } else {
       ctx.arc(cx, cy, activeRadius, 0, Math.PI * 2);
     }
     ctx.clip();
 
-    // Background fill
     ctx.fillStyle = cfg.bgColor || '#ffffff';
     ctx.fillRect(0, 0, sizePx, sizePx);
 
-    // Image
     if (imgElement && imgElement.width && imgElement.height) {
       ctx.save();
-      ctx.translate(cx + (cfg.x / 200) * sizePx * 0.5 * scaleFactor, cy + (cfg.y / 200) * sizePx * 0.5 * scaleFactor);
+      ctx.translate(
+        cx + (cfg.x / 200) * sizePx * 0.5 * scaleFactor,
+        cy + (cfg.y / 200) * sizePx * 0.5 * scaleFactor
+      );
       ctx.rotate((cfg.rot * Math.PI) / 180);
-      ctx.filter = `brightness(${cfg.bright}%) contrast(${cfg.contrast}%)`;
+      if ('filter' in ctx) {
+        ctx.filter = `brightness(${cfg.bright}%) contrast(${cfg.contrast}%)`;
+      }
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
@@ -922,7 +862,6 @@
       ctx.restore();
     }
 
-    // Inner decorative ring
     if (cfg.ringSize > 0) {
       const ringW = (cfg.ringSize / 360) * sizePx;
       const frontR = (sizePx / 2) * frontRatio * scaleFactor - ringW;
@@ -939,12 +878,10 @@
       ctx.restore();
     }
 
-    // QR Code Matrix (Simple deterministic high-contrast matrix)
     if (cfg.qrText && cfg.qrText.trim().length > 0) {
       drawSimpleQR(ctx, cx, cy, sizePx * frontRatio * scaleFactor * 0.48, cfg.qrText.trim());
     }
 
-    // Text
     if (cfg.text && cfg.text.trim().length > 0) {
       const fPx = (cfg.fontSize / 360) * sizePx * scaleFactor;
       ctx.save();
@@ -979,13 +916,12 @@
       ctx.restore();
     }
 
-    // 3D Vivid Dome Overlay (Only in 3D mode)
     if (is3DPreview) {
       const grad = ctx.createRadialGradient(
         cx - activeRadius * 0.32, cy - activeRadius * 0.35, activeRadius * 0.05,
         cx, cy, activeRadius
       );
-      grad.addColorStop(0, 'rgba(255,255,255,0.22)');
+      grad.addColorStop(0, 'rgba(255,255,255,0.20)');
       grad.addColorStop(0.55, 'rgba(255,255,255,0.02)');
       grad.addColorStop(0.88, 'rgba(0,0,0,0.12)');
       grad.addColorStop(1, 'rgba(0,0,0,0.34)');
@@ -1006,9 +942,7 @@
 
     ctx.save();
     ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.roundRect(x0, y0, boxSize, boxSize, boxSize * 0.08);
-    ctx.fill();
+    ctx.fillRect(x0, y0, boxSize, boxSize);
 
     let hash = 2166136261;
     for (let i = 0; i < text.length; i++) {
@@ -1039,12 +973,12 @@
     ctx.restore();
   }
 
-  // --- EDITOR CANVAS RENDER ---
   function renderEditor() {
     const canvas = $('editor-canvas');
+    if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.max(window.devicePixelRatio || 1, 3);
-    const px = Math.round((rect.width || 360) * dpr);
+    const px = Math.round((rect.width || 320) * dpr);
     canvas.width = px;
     canvas.height = px;
     const ctx = canvas.getContext('2d');
@@ -1056,7 +990,6 @@
     const is3D = state.viewMode === '3d';
     drawBottonArtwork(ctx, px, state, state.imgObj, is3D);
 
-    // Bleed coverage check
     let hasBleedGap = false;
     if (state.imgObj) {
       const ratio = state.imgObj.width / state.imgObj.height;
@@ -1065,7 +998,6 @@
     }
     $('bleed-warning').style.display = (is3D && hasBleedGap) ? 'block' : 'none';
 
-    // Draw Guide Lines in Gabarito Mode
     if (!is3D) {
       const cx = px / 2;
       const cy = px / 2;
@@ -1076,20 +1008,17 @@
       ctx.save();
       ctx.lineWidth = 2.2 * dpr;
 
-      // Outer cut line (Cyan)
       ctx.strokeStyle = '#38bdf8';
       ctx.beginPath();
       if (state.shape === 'square') ctx.strokeRect(cx - cutR, cy - cutR, cutR * 2, cutR * 2);
       else { ctx.arc(cx, cy, cutR, 0, Math.PI * 2); ctx.stroke(); }
 
-      // Front visible line (Emerald dashed)
       ctx.setLineDash([6 * dpr, 5 * dpr]);
       ctx.strokeStyle = '#10b981';
       ctx.beginPath();
       if (state.shape === 'square') ctx.strokeRect(cx - frontR, cy - frontR, frontR * 2, frontR * 2);
       else { ctx.arc(cx, cy, frontR, 0, Math.PI * 2); ctx.stroke(); }
 
-      // Safe zone (Amber dotted)
       ctx.setLineDash([3 * dpr, 4 * dpr]);
       ctx.strokeStyle = '#f59e0b';
       ctx.beginPath();
@@ -1100,7 +1029,6 @@
     }
   }
 
-  // Generate 300 DPI DataURL for Sheet Placement
   function generate300DpiDataUrl(cfg, imgEl) {
     const cutMm = cfg.frontMm + cfg.bleedMm;
     const targetPx = Math.max(800, Math.round((cutMm / 25.4) * 300));
@@ -1112,7 +1040,44 @@
     return off.toDataURL('image/png');
   }
 
-  // --- SYNC CONTROLS ---
+  function renderPresets() {
+    const wrap = $('presets-container');
+    wrap.innerHTML = '';
+    PRESETS.forEach(p => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'preset-btn' + (p.star ? ' star' : '') + (state.frontMm === p.size ? ' active' : '');
+      b.textContent = p.label;
+      b.addEventListener('click', () => {
+        state.frontMm = p.size;
+        state.bleedMm = p.bleed;
+        syncInputsFromState();
+        renderEditor();
+        savePersist();
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  function updateQualityBadge() {
+    const badge = $('quality-badge');
+    if (!state.imgObj) {
+      badge.textContent = 'Toque aqui para escolher da galeria';
+      badge.style.color = 'var(--muted)';
+      return;
+    }
+    const cutMm = state.frontMm + state.bleedMm;
+    const minPxNeeded = Math.round((cutMm / 25.4) * 300 * (state.zoom / 100));
+    const actualPx = Math.min(state.imgObj.width, state.imgObj.height);
+    if (actualPx >= minPxNeeded * 0.85) {
+      badge.textContent = `${state.imgObj.width}×${state.imgObj.height}px • Alta Nitidez (300 DPI)`;
+      badge.style.color = '#6ee7b7';
+    } else {
+      badge.textContent = `${state.imgObj.width}×${state.imgObj.height}px • Resolução Média`;
+      badge.style.color = '#fcd34d';
+    }
+  }
+
   function syncInputsFromState() {
     $('inp-front').value = state.frontMm;
     $('val-front').textContent = state.frontMm + ' mm';
@@ -1152,34 +1117,7 @@
     updateQualityBadge();
   }
 
-  function updateQualityBadge() {
-    const badge = $('quality-badge');
-    if (!state.imgObj) {
-      badge.textContent = 'Nenhuma foto carregada • Pronto para 300 DPI';
-      badge.style.color = 'var(--muted)';
-      return;
-    }
-    const cutMm = state.frontMm + state.bleedMm;
-    const minPxNeeded = Math.round((cutMm / 25.4) * 300 * (state.zoom / 100));
-    const actualPx = Math.min(state.imgObj.width, state.imgObj.height);
-    if (actualPx >= minPxNeeded * 0.85) {
-      badge.textContent = `${state.imgObj.width}×${state.imgObj.height}px • Alta Nitidez (300 DPI)`;
-      badge.style.color = '#6ee7b7';
-    } else {
-      badge.textContent = `${state.imgObj.width}×${state.imgObj.height}px • Resolução Média (evite zoom alto)`;
-      badge.style.color = '#fcd34d';
-    }
-  }
-
-  // --- SINGLETON STEPPER (+ / -) ---
-  let holdTimer = null;
-  let holdInterval = null;
-  function stopStepper() {
-    clearTimeout(holdTimer);
-    clearInterval(holdInterval);
-    holdTimer = null;
-    holdInterval = null;
-  }
+  // --- BOTÕES + E - COM CLICK SIMPLES E CONFIÁVEL ---
   function applyStep(targetId, step) {
     const inp = $(targetId);
     if (!inp) return;
@@ -1192,24 +1130,18 @@
     inp.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
-  document.addEventListener('pointerdown', (e) => {
-    const btn = e.target.closest('.step-btn');
-    if (!btn) return;
-    e.preventDefault();
-    stopStepper();
-    const targetId = btn.dataset.target;
-    const step = parseFloat(btn.dataset.step);
-    applyStep(targetId, step);
-    holdTimer = setTimeout(() => {
-      holdInterval = setInterval(() => applyStep(targetId, step), 75);
-    }, 420);
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      applyStep(btn.dataset.target, parseFloat(btn.dataset.step));
+    });
   });
-  window.addEventListener('pointerup', stopStepper);
-  window.addEventListener('pointercancel', stopStepper);
 
-  // --- INPUT LISTENERS ---
+  // --- BINDING DOS INPUTS ---
   const bindInput = (id, key, isNum = true, reRenderSheet = false) => {
-    $(id).addEventListener('input', (e) => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', (e) => {
       state[key] = isNum ? parseFloat(e.target.value) : e.target.value;
       syncInputsFromState();
       renderEditor();
@@ -1237,57 +1169,29 @@
   bindInput('inp-paper', 'paper', false, true);
   bindInput('inp-gap', 'gapMm', true, true);
 
-  $('shape-round').onclick = () => { state.shape = 'round'; syncInputsFromState(); renderEditor(); savePersist(); };
-  $('shape-square').onclick = () => { state.shape = 'square'; syncInputsFromState(); renderEditor(); savePersist(); };
-  $('view-guide').onclick = () => {
+  $('shape-round').addEventListener('click', () => { state.shape = 'round'; syncInputsFromState(); renderEditor(); savePersist(); });
+  $('shape-square').addEventListener('click', () => { state.shape = 'square'; syncInputsFromState(); renderEditor(); savePersist(); });
+
+  $('view-guide').addEventListener('click', () => {
     state.viewMode = 'guide';
     $('view-guide').classList.add('active');
     $('view-3d').classList.remove('active');
     $('guide-legend').style.display = 'flex';
     renderEditor();
-  };
-  $('view-3d').onclick = () => {
+  });
+  $('view-3d').addEventListener('click', () => {
     state.viewMode = '3d';
     $('view-3d').classList.add('active');
     $('view-guide').classList.remove('active');
     $('guide-legend').style.display = 'none';
     renderEditor();
-  };
-  $('btn-center-photo').onclick = () => {
+  });
+  $('btn-center-photo').addEventListener('click', () => {
     state.x = 0; state.y = 0; state.rot = 0;
     syncInputsFromState(); renderEditor(); savePersist();
-  };
-
-  // --- DRAG TO PAN ON CANVAS ---
-  let dragging = false, lastPt = null;
-  const cvs = $('editor-canvas');
-  cvs.addEventListener('pointerdown', (e) => {
-    dragging = true;
-    lastPt = { x: e.clientX, y: e.clientY };
-    cvs.setPointerCapture(e.pointerId);
   });
-  cvs.addEventListener('pointermove', (e) => {
-    if (!dragging || !lastPt) return;
-    const dx = e.clientX - lastPt.x;
-    const dy = e.clientY - lastPt.y;
-    lastPt = { x: e.clientX, y: e.clientY };
-    state.x = Math.max(-200, Math.min(200, Math.round(state.x + dx * 0.8)));
-    state.y = Math.max(-200, Math.min(200, Math.round(state.y + dy * 0.8)));
-    syncInputsFromState();
-    renderEditor();
-  });
-  cvs.addEventListener('pointerup', () => { if (dragging) { dragging = false; savePersist(); } });
 
-  // --- IMAGE UPLOAD (iOS / SAFARI / ANDROID / DESKTOP) ---
-  function loadImageFromSource(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-
+  // --- UPLOAD DE FOTO ---
   $('inp-file').addEventListener('change', (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
@@ -1315,35 +1219,34 @@
     e.target.value = '';
   });
 
-  // --- AI IMAGE GENERATOR ---
-  $('btn-ai-key').onclick = () => {
-    const k = prompt('Cole sua chave de API do Google AI Studio (opcional na prévia, necessária no GitHub/Vercel):', state.apiKey || '');
+  // --- GERADOR DE ARTE COM IA ---
+  $('btn-ai-key').addEventListener('click', () => {
+    const k = prompt('Cole sua chave de API gratuita do Google AI Studio:', state.apiKey || '');
     if (k !== null) {
       state.apiKey = k.trim();
       savePersist();
-      alert('Chave API salva no navegador!');
+      alert('Chave API salva!');
     }
-  };
+  });
 
-  $('btn-ai-gen').onclick = async () => {
+  $('btn-ai-gen').addEventListener('click', async () => {
     const topic = $('ai-prompt').value.trim();
     if (!topic) { alert('Digite o tema da imagem (ex: Jesus, Leão, Flores).'); return; }
     const style = $('ai-style').value;
     const statusEl = $('ai-status');
     const gridEl = $('ai-results');
-    const keyToUse = state.apiKey || GEMINI_API;
 
     statusEl.style.display = 'block';
-    statusEl.textContent = '⏳ Gerando 4 opções exclusivas para botton...';
-    gridEl.innerHTML = '';
-
-    if (!keyToUse) {
-      statusEl.textContent = '⚠️ Configure sua Chave API gratuita do Google AI Studio clicando em "🔑 Chave API" acima para gerar imagens no seu navegador.';
+    if (!state.apiKey) {
+      statusEl.textContent = '⚠️ Clique em "🔑 Chave API" acima e cole sua chave do Google AI Studio para gerar imagens.';
       return;
     }
 
+    statusEl.textContent = '⏳ Gerando 4 opções exclusivas para botton...';
+    gridEl.innerHTML = '';
+
     const variations = [
-      `Arte circular centralizada para botton sobre ${topic}, estilo ${style}, composição limpa sem textos cortados nas bordas`,
+      `Arte circular centralizada para botton sobre ${topic}, estilo ${style}, composição limpa sem textos cortados`,
       `Ilustração artística centralizada de ${topic}, estilo ${style}, cores vibrantes e fundo harmonioso`,
       `Emblema criativo centralizado de ${topic}, estilo ${style}, alta definição`,
       `Desenho expressivo centralizado de ${topic}, estilo ${style}, foco no centro`
@@ -1351,7 +1254,7 @@
 
     try {
       const promises = variations.map(async (p) => {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${encodeURIComponent(keyToUse)}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${encodeURIComponent(state.apiKey)}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1366,7 +1269,7 @@
 
       const urls = (await Promise.all(promises)).filter(Boolean);
       if (!urls.length) {
-        statusEl.textContent = 'Não foi possível gerar imagens com essa chave. Verifique sua cota no Google AI Studio.';
+        statusEl.textContent = 'Não foi possível gerar imagens. Verifique sua chave no Google AI Studio.';
         return;
       }
       statusEl.textContent = '✅ Toque na opção desejada para aplicar no botton:';
@@ -1376,7 +1279,7 @@
         const im = document.createElement('img');
         im.src = url;
         div.appendChild(im);
-        div.onclick = async () => {
+        div.addEventListener('click', async () => {
           const loaded = await loadImageFromSource(url);
           state.imgDataUrl = url;
           state.imgObj = loaded;
@@ -1384,15 +1287,15 @@
           syncInputsFromState();
           renderEditor();
           savePersist();
-        };
+        });
         gridEl.appendChild(div);
       });
     } catch (err) {
       statusEl.textContent = 'Erro ao conectar ao gerador de imagens.';
     }
-  };
+  });
 
-  // --- SHEET MANAGEMENT & 300 DPI PAGE RENDERING ---
+  // --- FOLHA DE IMPRESSÃO ---
   function getPaperDimsMm() {
     return state.paper === 'letter' ? { w: 215.9, h: 279.4, label: 'Carta' } : { w: 210, h: 297, label: 'A4' };
   }
@@ -1419,7 +1322,7 @@
     }
   }
 
-  $('btn-add-one').onclick = () => {
+  $('btn-add-one').addEventListener('click', () => {
     const dataUrl300 = generate300DpiDataUrl(state, state.imgObj);
     const cutMm = state.frontMm + state.bleedMm;
     state.sheetItems.push({
@@ -1436,9 +1339,9 @@
     renderSheetPages();
     showSheetBanner();
     savePersist();
-  };
+  });
 
-  $('btn-fill-sheet').onclick = () => {
+  $('btn-fill-sheet').addEventListener('click', () => {
     const dataUrl300 = generate300DpiDataUrl(state, state.imgObj);
     const cutMm = state.frontMm + state.bleedMm;
     const cap = calculateCapacityForItem(cutMm);
@@ -1456,19 +1359,19 @@
     renderSheetPages();
     showSheetBanner();
     savePersist();
-  };
+  });
 
-  $('btn-scroll-sheet').onclick = () => {
+  $('btn-scroll-sheet').addEventListener('click', () => {
     $('sheet-column').scrollIntoView({ behavior: 'smooth' });
-  };
+  });
 
-  $('btn-clear-sheet').onclick = () => {
+  $('btn-clear-sheet').addEventListener('click', () => {
     state.sheetItems = [];
     renderSheetItemsList();
     renderSheetPages();
     showSheetBanner();
     savePersist();
-  };
+  });
 
   function renderSheetItemsList() {
     const list = $('sheet-items-list');
@@ -1485,10 +1388,10 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button class="btn btn-sm" data-sact="dec" data-idx="${idx}">−</button>
+          <button type="button" class="btn btn-sm" data-sact="dec" data-idx="${idx}">−</button>
           <span class="mono" style="font-size:12px;font-weight:700;min-width:22px;text-align:center;">${item.qty}</span>
-          <button class="btn btn-sm" data-sact="inc" data-idx="${idx}">+</button>
-          <button class="btn btn-danger btn-sm" data-sact="del" data-idx="${idx}">✕</button>
+          <button type="button" class="btn btn-sm" data-sact="inc" data-idx="${idx}">+</button>
+          <button type="button" class="btn btn-danger btn-sm" data-sact="del" data-idx="${idx}">✕</button>
         </div>
       `;
       list.appendChild(row);
@@ -1512,7 +1415,6 @@
     savePersist();
   });
 
-  // Render pages at 300 DPI (or scaled preview)
   async function buildSheetCanvases(dpi = 150) {
     const p = getPaperDimsMm();
     const mmToPx = (mm) => (mm / 25.4) * dpi;
@@ -1522,12 +1424,11 @@
     const topHeader = mmToPx(18);
     const gap = mmToPx(state.gapMm);
 
-    // Expand flat list of bottons
     const queue = [];
     for (const item of state.sheetItems) {
       const img = await loadImageFromSource(item.dataUrl300);
       for (let i = 0; i < item.qty; i++) {
-        queue.push({ item, img, cutPx: mmToPx(item.cutMm), frontPx: mmToPx(item.frontMm) });
+        queue.push({ item, img, cutPx: mmToPx(item.cutMm) });
       }
     }
 
@@ -1541,7 +1442,6 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, pageW, pageH);
 
-      // 50mm Calibration Ruler
       const rX = margin;
       const rY = mmToPx(7);
       const rW = mmToPx(50);
@@ -1560,7 +1460,7 @@
 
       ctx.fillStyle = '#111827';
       ctx.font = `bold ${Math.round(mmToPx(2.8))}px sans-serif`;
-      ctx.fillText(`RÉGUA DE CONFERÊNCIA: 50 mm (Imprimir em Escala 100%) • ${p.label} • Pág. ${pageNum}`, rX + rW + mmToPx(4), rY + mmToPx(2.2));
+      ctx.fillText(`RÉGUA: 50 mm (Escala 100%) • ${p.label} • Pág. ${pageNum}`, rX + rW + mmToPx(4), rY + mmToPx(2.2));
       return { canvas: c, ctx };
     }
 
@@ -1601,7 +1501,6 @@
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(entry.img, curX, curY, entry.cutPx, entry.cutPx);
 
-      // Subtle cut guide border
       ctx.strokeStyle = '#cbd5e1';
       ctx.lineWidth = Math.max(1, dpi / 200);
       ctx.beginPath();
@@ -1634,9 +1533,9 @@
     });
   }
 
-  // --- PRINT / EXPORT 300 DPI MODAL ---
+  // --- IMPRIMIR / EXPORTAR ---
   let exportCanvases300 = [];
-  $('btn-open-print').onclick = async () => {
+  $('btn-open-print').addEventListener('click', async () => {
     const modal = $('print-modal');
     const prev = $('modal-pages-preview');
     prev.innerHTML = '<div style="padding:20px;color:var(--muted);">Gerando folhas em 300 DPI reais...</div>';
@@ -1649,28 +1548,29 @@
       const title = document.createElement('div');
       title.style.cssText = 'font-size:12px;font-weight:700;margin-bottom:6px;color:#6ee7b7;';
       title.textContent = `Página ${idx + 1} (${c.width} × ${c.height} px • 300 DPI)`;
-      c.style.maxHeight = '420px';
+      c.style.maxHeight = '380px';
       wrap.appendChild(title);
       wrap.appendChild(c);
       prev.appendChild(wrap);
     });
-  };
-  $('btn-close-print').onclick = () => $('print-modal').classList.remove('open');
-  $('btn-native-print').onclick = () => {
+  });
+
+  $('btn-close-print').addEventListener('click', () => $('print-modal').classList.remove('open'));
+  $('btn-native-print').addEventListener('click', () => {
     $('print-modal').classList.remove('open');
     setTimeout(() => window.print(), 150);
-  };
-  $('btn-download-pngs').onclick = () => {
+  });
+  $('btn-download-pngs').addEventListener('click', () => {
     exportCanvases300.forEach((c, idx) => {
       const a = document.createElement('a');
       a.download = `folha-bottons-300dpi-pag${idx + 1}.png`;
       a.href = c.toDataURL('image/png');
       a.click();
     });
-  };
+  });
 
-  // --- NEW ART ---
-  $('btn-new-art').onclick = () => {
+  // --- NOVA ARTE ---
+  $('btn-new-art').addEventListener('click', () => {
     const keepSheet = state.sheetItems.length > 0 && confirm('Deseja manter os bottons que já estão na folha de impressão?
 
 OK = Limpar só o editor (manter folha)
@@ -1689,10 +1589,10 @@ Cancelar = Zerar tudo');
     syncInputsFromState();
     renderEditor();
     savePersist();
-  };
+  });
 
-  // --- SAVED ARTS LIBRARY + MULTI-SELECT ---
-  $('btn-save-art').onclick = () => {
+  // --- ARQUIVOS SALVOS + SELEÇÃO MÚLTIPLA ---
+  $('btn-save-art').addEventListener('click', () => {
     const defaultName = `Botton ${state.frontMm}mm #${state.savedArts.length + 1}`;
     const name = prompt('Nome para salvar esta arte:', defaultName);
     if (!name) return;
@@ -1716,7 +1616,7 @@ Cancelar = Zerar tudo');
     renderSavedGrid();
     savePersist();
     alert('✅ Arte salva na aba "Arquivos Salvos"!');
-  };
+  });
 
   function renderSavedGrid() {
     $('saved-badge').textContent = state.savedArts.length;
@@ -1744,7 +1644,7 @@ Cancelar = Zerar tudo');
       card.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;">
-            <input type="checkbox" data-act="toggle-sel" data-idx="${idx}" ${art.selected ? 'checked' : ''} style="width:16px;height:16px;">
+            <input type="checkbox" data-act="toggle-sel" data-idx="${idx}" ${art.selected ? 'checked' : ''} style="width:18px;height:18px;">
             Selecionar
           </label>
           <span class="mono" style="font-size:11px;color:var(--muted);">${art.snapshot.frontMm}mm</span>
@@ -1755,16 +1655,16 @@ Cancelar = Zerar tudo');
           <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);padding:5px 8px;border-radius:8px;border:1px solid var(--border);">
             <span style="font-size:11px;color:var(--muted);">Cópias na folha:</span>
             <div style="display:flex;align-items:center;gap:6px;">
-              <button class="btn btn-sm" data-act="b-dec" data-idx="${idx}" style="padding:2px 8px;">−</button>
+              <button type="button" class="btn btn-sm" data-act="b-dec" data-idx="${idx}" style="padding:3px 9px;">−</button>
               <span class="mono" style="font-size:12px;font-weight:700;">${art.batchQty || 1}</span>
-              <button class="btn btn-sm" data-act="b-inc" data-idx="${idx}" style="padding:2px 8px;">+</button>
+              <button type="button" class="btn btn-sm" data-act="b-inc" data-idx="${idx}" style="padding:3px 9px;">+</button>
             </div>
           </div>
         ` : ''}
         <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;">
-          <button class="btn btn-primary btn-sm" data-act="edit" data-idx="${idx}">Editar</button>
-          <button class="btn btn-emerald btn-sm" data-act="add1" data-idx="${idx}">+1 Folha</button>
-          <button class="btn btn-danger btn-sm" data-act="del" data-idx="${idx}">🗑️</button>
+          <button type="button" class="btn btn-primary btn-sm" data-act="edit" data-idx="${idx}">Editar</button>
+          <button type="button" class="btn btn-emerald btn-sm" data-act="add1" data-idx="${idx}">+1 Folha</button>
+          <button type="button" class="btn btn-danger btn-sm" data-act="del" data-idx="${idx}">🗑️</button>
         </div>
       `;
       grid.appendChild(card);
@@ -1822,13 +1722,13 @@ Cancelar = Zerar tudo');
     }
   });
 
-  $('btn-select-all').onclick = () => {
+  $('btn-select-all').addEventListener('click', () => {
     const allSelected = state.savedArts.length > 0 && state.savedArts.every(a => a.selected);
     state.savedArts.forEach(a => { a.selected = !allSelected; if (!a.batchQty) a.batchQty = 1; });
     renderSavedGrid();
-  };
+  });
 
-  $('btn-batch-add').onclick = () => {
+  $('btn-batch-add').addEventListener('click', () => {
     const sel = state.savedArts.filter(a => a.selected);
     sel.forEach(art => {
       const cutMm = art.snapshot.frontMm + art.snapshot.bleedMm;
@@ -1849,9 +1749,9 @@ Cancelar = Zerar tudo');
     savePersist();
     switchTab('studio');
     $('sheet-column').scrollIntoView({ behavior: 'smooth' });
-  };
+  });
 
-  $('btn-batch-fill').onclick = () => {
+  $('btn-batch-fill').addEventListener('click', () => {
     const sel = state.savedArts.filter(a => a.selected);
     if (!sel.length) return;
     const firstCut = sel[0].snapshot.frontMm + sel[0].snapshot.bleedMm;
@@ -1873,16 +1773,16 @@ Cancelar = Zerar tudo');
     savePersist();
     switchTab('studio');
     $('sheet-column').scrollIntoView({ behavior: 'smooth' });
-  };
+  });
 
-  // Backup Export / Import
-  $('btn-export-backup').onclick = () => {
+  $('btn-export-backup').addEventListener('click', () => {
     const blob = new Blob([JSON.stringify({ savedArts: state.savedArts, orders: state.orders })], { type: 'application/json' });
     const a = document.createElement('a');
     a.download = `backup-bottons-pro-${new Date().toISOString().slice(0, 10)}.json`;
     a.href = URL.createObjectURL(blob);
     a.click();
-  };
+  });
+
   $('inp-import-backup').addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
@@ -1901,7 +1801,7 @@ Cancelar = Zerar tudo');
     r.readAsText(f);
   });
 
-  // --- CALCULATOR ---
+  // --- CALCULADORA ---
   function updateCalc() {
     const qty = Math.max(1, parseFloat($('calc-qty').value) || 1);
     const perSheet = Math.max(1, parseFloat($('calc-per-sheet').value) || 1);
@@ -1932,7 +1832,7 @@ Cancelar = Zerar tudo');
   ['calc-qty', 'calc-per-sheet', 'calc-unit-insumo', 'calc-sheet-cost', 'calc-pack', 'calc-margin'].forEach(id => {
     $(id).addEventListener('input', updateCalc);
   });
-  $('btn-copy-quote').onclick = () => {
+  $('btn-copy-quote').addEventListener('click', () => {
     const { qty, unitSell, totalSell } = updateCalc();
     const msg = `✨ *Orçamento de Bottons Personalizados*
 • Quantidade: ${qty} unidades
@@ -1941,9 +1841,9 @@ Cancelar = Zerar tudo');
 
 Produção em alta definição (300 DPI) com película protetora!`;
     navigator.clipboard.writeText(msg).then(() => alert('📋 Orçamento copiado para colar no WhatsApp!'));
-  };
+  });
 
-  // --- ORDERS ---
+  // --- PEDIDOS ---
   function renderOrders() {
     $('orders-badge').textContent = state.orders.length;
     const list = $('orders-list');
@@ -1965,13 +1865,13 @@ Produção em alta definição (300 DPI) com película protetora!`;
           <select data-oact="status" data-idx="${idx}" style="padding:5px 8px;font-size:12px;">
             ${statuses.map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''}>${s}</option>`).join('')}
           </select>
-          <button class="btn btn-danger btn-sm" data-oact="del" data-idx="${idx}">✕</button>
+          <button type="button" class="btn btn-danger btn-sm" data-oact="del" data-idx="${idx}">✕</button>
         </div>
       `;
       list.appendChild(div);
     });
   }
-  $('btn-add-order').onclick = () => {
+  $('btn-add-order').addEventListener('click', () => {
     const client = $('ord-client').value.trim();
     if (!client) return;
     state.orders.unshift({
@@ -1983,7 +1883,7 @@ Produção em alta definição (300 DPI) com película protetora!`;
     $('ord-client').value = '';
     renderOrders();
     savePersist();
-  };
+  });
   $('orders-list').addEventListener('change', (e) => {
     const sel = e.target.closest('select[data-oact="status"]');
     if (!sel) return;
@@ -1998,32 +1898,38 @@ Produção em alta definição (300 DPI) com película protetora!`;
     savePersist();
   });
 
-  // --- TABS & ACCORDIONS ---
+  // --- ABAS E SANFONAS ---
   function switchTab(tabName) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tabName));
     if (tabName === 'studio') renderEditor();
   }
   document.querySelectorAll('.tab-btn').forEach(b => {
-    b.onclick = () => switchTab(b.dataset.tab);
+    b.addEventListener('click', () => switchTab(b.dataset.tab));
   });
   document.querySelectorAll('.acc-header').forEach(h => {
-    h.onclick = () => {
+    h.addEventListener('click', () => {
       const body = $(h.dataset.acc);
       const isCollapsed = body.classList.toggle('collapsed');
       h.querySelector('span:last-child').textContent = isCollapsed ? '▶' : '▼';
-    };
+    });
   });
 
-  // --- INIT ---
-  (async function init() {
-    await openDB();
-    const saved = await loadPersist();
-    if (saved) {
-      Object.assign(state, saved);
-      if (state.imgDataUrl) {
-        try { state.imgObj = await loadImageFromSource(state.imgDataUrl); } catch (e) { state.imgObj = null; }
-      }
+  // --- INICIALIZAÇÃO IMEDIATA ---
+  syncInputsFromState();
+  renderEditor();
+  renderSheetItemsList();
+  renderSheetPages();
+  renderSavedGrid();
+  updateCalc();
+  renderOrders();
+  window.addEventListener('resize', renderEditor);
+
+  openDB().then(loadPersist).then(async (saved) => {
+    if (!saved) return;
+    Object.assign(state, saved);
+    if (state.imgDataUrl) {
+      try { state.imgObj = await loadImageFromSource(state.imgDataUrl); } catch (e) { state.imgObj = null; }
     }
     syncInputsFromState();
     renderEditor();
@@ -2031,11 +1937,9 @@ Produção em alta definição (300 DPI) com película protetora!`;
     renderSheetPages();
     showSheetBanner();
     renderSavedGrid();
-    updateCalc();
     renderOrders();
-    window.addEventListener('resize', renderEditor);
-  })();
-})();
+  });
+});
 </script>
 </body>
 </html>
