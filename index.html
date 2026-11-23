@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Estúdio de Bottons Pro — Dark Studio 300 DPI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #09090b;
+      color: #f4f4f5;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Sliders otimizados para toque */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #27272a;
+      border-radius: 999px;
+      outline: none;
+      touch-action: pan-y;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #6366f1;
+      border: 2.5px solid #ffffff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #6366f1;
+      border: 2.5px solid #ffffff;
+      cursor: pointer;
+    }
+
+    /* Botão nativo de upload 100% compatível com Safari iOS */
+    .file-btn-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .file-btn-wrap input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 20;
+      font-size: 100px;
+    }
+
+    /* Canvas interativo com arraste e pinça */
+    #editorCanvas {
+      touch-action: none;
+      user-select: none;
+    }
+
+    /* Impressão 1:1 limpa */
+    #printArea {
+      display: none;
+    }
+    @media print {
+      @page {
+        margin: 0;
+        size: auto;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+      #printArea, #printArea * {
+        visibility: visible !important;
+      }
+      #printArea {
+        display: block !important;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        background: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+      #printArea img {
+        width: 100%;
+        height: auto;
+        display: block;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 pb-16">
+
+  <!-- Toast de Feedback -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 bg-zinc-900 border border-indigo-500/70 text-white px-4 py-2.5 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 max-w-[92vw]">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">Pronto!</span>
+  </div>
+
+  <!-- Cabeçalho Compacto -->
+  <header class="sticky top-0 z-30 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 px-3 py-2.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-extrabold text-white text-sm shadow">
+          BP
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-sm sm:text-base font-extrabold text-white leading-none">Estúdio de Bottons Pro</h1>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">300 DPI</span>
+          </div>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Dark Studio • Gabarito 1:1</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <button type="button" onclick="appResetStudio()" class="px-2.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-300 active:scale-95 transition">
+          Limpar
+        </button>
+        <button type="button" onclick="appOpenPrintModal()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 active:scale-95 transition flex items-center gap-1">
+          <span>🖨️</span><span>Imprimir</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Abas Principais -->
+    <nav class="max-w-5xl mx-auto mt-2.5 flex gap-1 overflow-x-auto no-scrollbar" aria-label="Abas Principais">
+      <button type="button" data-tab="studio" onclick="appSwitchTab('studio')" class="main-tab flex-1 min-w-[84px] py-2 px-2 rounded-xl text-xs font-bold bg-indigo-600 text-white transition flex items-center justify-center gap-1">
+        <span>🎨</span><span>Estúdio</span>
+      </button>
+      <button type="button" data-tab="sheet" onclick="appSwitchTab('sheet')" class="main-tab flex-1 min-w-[92px] py-2 px-2 rounded-xl text-xs font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1">
+        <span>📄</span><span>Folha</span>
+        <span id="badgeSheet" class="px-1.5 rounded-full bg-indigo-500/30 text-indigo-200 text-[10px]">0</span>
+      </button>
+      <button type="button" data-tab="saved" onclick="appSwitchTab('saved')" class="main-tab flex-1 min-w-[92px] py-2 px-2 rounded-xl text-xs font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1">
+        <span>💾</span><span>Salvos</span>
+        <span id="badgeSaved" class="px-1.5 rounded-full bg-zinc-800 text-zinc-300 text-[10px]">0</span>
+      </button>
+      <button type="button" data-tab="calc" onclick="appSwitchTab('calc')" class="main-tab flex-1 min-w-[100px] py-2 px-2 rounded-xl text-xs font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1">
+        <span>🧮</span><span>Orçamento</span>
+      </button>
+      <button type="button" data-tab="orders" onclick="appSwitchTab('orders')" class="main-tab flex-1 min-w-[90px] py-2 px-2 rounded-xl text-xs font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1">
+        <span>📦</span><span>Pedidos</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-5xl w-full mx-auto px-3 pt-3 flex-1">
+
+    <!-- ==================== ABA 1: ESTÚDIO ERGONÔMICO ==================== -->
+    <section id="view-studio" class="tab-view grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+
+      <!-- COLUNA ESQUERDA / TOPO: PREVIEW DO BOTTON + BARRA DE AÇÕES RÁPIDAS -->
+      <div class="lg:col-span-5 bg-zinc-900 border border-zinc-800 rounded-2xl p-3 shadow-xl">
+
+        <!-- Preview Compacto no Topo para caber junto com os ajustes no celular -->
+        <div class="relative w-full max-w-[250px] sm:max-w-[290px] aspect-square mx-auto bg-zinc-950 rounded-2xl border border-zinc-800 flex items-center justify-center overflow-hidden shadow-inner">
+          <canvas id="editorCanvas" class="w-full h-full block"></canvas>
+          <div id="canvasGestureHint" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-zinc-950/85 border border-zinc-800 px-2 py-0.5 rounded-full text-[10px] text-zinc-300 pointer-events-none whitespace-nowrap">
+            👆 Arraste (1 dedo) ou Pinça (2 dedos)
+          </div>
+        </div>
+
+        <!-- Legenda / Aviso de Sangria 3D -->
+        <div id="guideLegend" class="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] text-zinc-300">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 bg-rose-500 inline-block"></span>Corte (<strong id="lblCutMm">54</strong>mm)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 bg-emerald-400 inline-block"></span>Frente (<strong id="lblFrontMm">44</strong>mm)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 bg-amber-400 inline-block"></span>Segura</span>
+        </div>
+
+        <div id="bleedWarning3D" class="hidden mt-2 px-2.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-200 text-[11px] text-center leading-snug">
+          ⚠️ A foto não preenche toda a margem de dobra. Aumente o <strong>Zoom</strong> ou ajuste a <strong>Cor de Fundo</strong>.
+        </div>
+
+        <!-- Barra Rápida de Ações Imediatas Abaixo da Imagem -->
+        <div class="mt-2.5 grid grid-cols-2 gap-1.5">
+          <!-- Botão Escolher Foto (100% compatível com iOS Safari) -->
+          <div class="file-btn-wrap py-2.5 px-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 active:scale-95 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <input type="file" id="photoInput" accept="image/*" onchange="appHandlePhotoUpload(this)" />
+            <span>📸</span><span>Escolher Foto</span>
+          </div>
+
+          <!-- Alternar Gabarito / 3D -->
+          <div class="grid grid-cols-2 gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+            <button type="button" id="btnModeGuide" onclick="appSetPreviewMode('guide')" class="rounded-lg text-[11px] font-bold bg-indigo-600 text-white transition">
+              🎯 Gabarito
+            </button>
+            <button type="button" id="btnMode3D" onclick="appSetPreviewMode('3d')" class="rounded-lg text-[11px] font-bold text-zinc-400 hover:text-white transition">
+              ✨ 3D
+            </button>
+          </div>
+        </div>
+
+        <!-- Ações de Salvamento e Folha -->
+        <div class="mt-1.5 grid grid-cols-3 gap-1.5">
+          <button type="button" onclick="appSaveCurrentArt()" class="py-2.5 px-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-100 font-bold text-xs active:scale-95 transition flex items-center justify-center gap-1">
+            <span>💾</span><span>Salvar</span>
+          </button>
+          <button type="button" onclick="appAddOneToSheet()" class="py-2.5 px-2 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-200 font-bold text-xs active:scale-95 transition flex items-center justify-center gap-1">
+            <span>+1 Folha</span>
+          </button>
+          <button type="button" onclick="appFillFullSheet()" class="py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs active:scale-95 transition flex items-center justify-center gap-1">
+            <span>Preencher Folha</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- COLUNA DIREITA / IMEDIATAMENTE ABAIXO: PAINEL COMPACTO DE AJUSTES COM 4 ABAS INTERNAS -->
+      <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl p-3 shadow-xl">
+
+        <!-- 4 Abas Internas de Ajuste Rápido -->
+        <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-3">
+          <button type="button" data-subtab="pos" onclick="appSwitchSubTab('pos')" class="sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold bg-indigo-600 text-white transition text-center leading-tight">
+            1. Foto &amp; Posição
+          </button>
+          <button type="button" data-subtab="size" onclick="appSwitchSubTab('size')" class="sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold text-zinc-400 hover:text-white transition text-center leading-tight">
+            2. Medida
+          </button>
+          <button type="button" data-subtab="text" onclick="appSwitchSubTab('text')" class="sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold text-zinc-400 hover:text-white transition text-center leading-tight">
+            3. Texto
+          </button>
+          <button type="button" data-subtab="fx" onclick="appSwitchSubTab('fx')" class="sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold text-zinc-400 hover:text-white transition text-center leading-tight">
+            4. Efeitos &amp; QR
+          </button>
+        </div>
+
+        <!-- SUB-ABA 1: FOTO & POSIÇÃO -->
+        <div id="subview-pos" class="sub-view space-y-2.5">
+          <!-- Zoom -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Zoom</span>
+              <span id="valZoom" class="text-indigo-400 font-bold">100%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeZoom', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">−</button>
+              <input type="range" id="rangeZoom" min="30" max="300" step="1" value="100" oninput="appSyncTransform()" />
+              <button type="button" onclick="appStepRange('rangeZoom', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">+</button>
+            </div>
+          </div>
+
+          <!-- Posição X e Y -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span class="text-zinc-400">Posição X</span>
+                <span id="valPosX" class="text-zinc-200 font-bold">0</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="appStepRange('rangePosX', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">−</button>
+                <input type="range" id="rangePosX" min="-200" max="200" step="1" value="0" oninput="appSyncTransform()" />
+                <button type="button" onclick="appStepRange('rangePosX', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">+</button>
+              </div>
+            </div>
+
+            <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span class="text-zinc-400">Posição Y</span>
+                <span id="valPosY" class="text-zinc-200 font-bold">0</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="appStepRange('rangePosY', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">−</button>
+                <input type="range" id="rangePosY" min="-200" max="200" step="1" value="0" oninput="appSyncTransform()" />
+                <button type="button" onclick="appStepRange('rangePosY', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rotação -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Rotação</span>
+              <span id="valRotation" class="text-zinc-200 font-bold">0°</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeRotation', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">−</button>
+              <input type="range" id="rangeRotation" min="-180" max="180" step="1" value="0" oninput="appSyncTransform()" />
+              <button type="button" onclick="appStepRange('rangeRotation', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-lg flex items-center justify-center shrink-0 active:scale-95">+</button>
+            </div>
+          </div>
+
+          <!-- Centralizar + Cor de Fundo/Borda -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" onclick="appCenterImage()" class="h-12 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-indigo-300 font-bold text-xs sm:text-sm active:scale-95 transition flex items-center justify-center gap-1.5">
+              <span>🎯</span><span>Centralizar</span>
+            </button>
+            <div class="h-12 bg-zinc-950 px-3 rounded-xl border border-zinc-800 flex items-center justify-between">
+              <span class="text-xs font-semibold text-zinc-400">Fundo / Borda</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="bgColorPicker" value="#ffffff" oninput="appRenderCanvas()" class="w-8 h-8 rounded-lg border border-zinc-700 bg-transparent cursor-pointer" />
+                <span id="bgColorHex" class="text-[11px] font-mono text-zinc-300">#FFFFFF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-ABA 2: MEDIDA & FORMATO -->
+        <div id="subview-size" class="sub-view hidden space-y-2.5">
+          <!-- Formato Redondo / Quadrado -->
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btnShapeCircle" onclick="appSetShape('circle')" class="py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-bold text-xs border border-indigo-500 transition">
+              ⚪ Redondo
+            </button>
+            <button type="button" id="btnShapeSquare" onclick="appSetShape('square')" class="py-2.5 px-3 rounded-xl bg-zinc-950 text-zinc-400 font-bold text-xs border border-zinc-800 transition">
+              ⬜ Quadrado
+            </button>
+          </div>
+
+          <!-- Presets Rápidos -->
+          <div class="grid grid-cols-4 gap-1.5" id="sizePresets">
+            <button type="button" onclick="appSelectSizePreset(25, 10)" data-mm="25" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-amber-300">★ 25mm</button>
+            <button type="button" onclick="appSelectSizePreset(32, 10)" data-mm="32" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-amber-300">★ 32mm</button>
+            <button type="button" onclick="appSelectSizePreset(44, 10)" data-mm="44" class="size-btn py-2.5 rounded-xl bg-indigo-600 border border-indigo-400 text-xs font-bold text-white">★ 44mm</button>
+            <button type="button" onclick="appSelectSizePreset(58, 12)" data-mm="58" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-amber-300">★ 58mm</button>
+            <button type="button" onclick="appSelectSizePreset(37, 10)" data-mm="37" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-300">37mm</button>
+            <button type="button" onclick="appSelectSizePreset(50, 11)" data-mm="50" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-300">50mm</button>
+            <button type="button" onclick="appSelectSizePreset(65, 12)" data-mm="65" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-300">65mm</button>
+            <button type="button" onclick="appSelectSizePreset(75, 13)" data-mm="75" class="size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-300">75mm</button>
+          </div>
+
+          <!-- Frente Visível e Sangria de Dobra -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Frente Visível</span>
+              <span id="valFrontMm" class="text-emerald-400 font-bold">44 mm</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeFrontMm', -1)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeFrontMm" min="18" max="100" step="1" value="44" oninput="appUpdateDimensions()" />
+              <button type="button" onclick="appStepRange('rangeFrontMm', 1)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Sangria de Dobra</span>
+              <span id="valBleedMm" class="text-rose-400 font-bold">+10 mm (Corte 54mm)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeBleedMm', -1)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeBleedMm" min="4" max="22" step="1" value="10" oninput="appUpdateDimensions()" />
+              <button type="button" onclick="appStepRange('rangeBleedMm', 1)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-ABA 3: TEXTO -->
+        <div id="subview-text" class="sub-view hidden space-y-2.5">
+          <input type="text" id="textInput" placeholder="Digite o texto do botton (ex: Ana 15 Anos)..." oninput="appRenderCanvas()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500" />
+
+          <div class="grid grid-cols-3 gap-1.5">
+            <button type="button" data-tmode="straight" onclick="appSetTextMode('straight')" class="tmode-btn py-2.5 px-2 rounded-xl bg-indigo-600 text-white text-xs font-bold border border-indigo-500">
+              Texto Reto
+            </button>
+            <button type="button" data-tmode="arcTop" onclick="appSetTextMode('arcTop')" class="tmode-btn py-2.5 px-2 rounded-xl bg-zinc-950 text-zinc-400 text-xs font-bold border border-zinc-800">
+              Curvado Cima
+            </button>
+            <button type="button" data-tmode="arcBottom" onclick="appSetTextMode('arcBottom')" class="tmode-btn py-2.5 px-2 rounded-xl bg-zinc-950 text-zinc-400 text-xs font-bold border border-zinc-800">
+              Curvado Baixo
+            </button>
+          </div>
+
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Tamanho da Fonte</span>
+              <span id="valFontSize" class="text-zinc-200 font-bold">34 px</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeFontSize', -2)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeFontSize" min="14" max="84" step="1" value="34" oninput="appRenderCanvas()" />
+              <button type="button" onclick="appStepRange('rangeFontSize', 2)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+            <div class="sm:col-span-8 bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span class="text-zinc-400">Posição / Raio</span>
+                <span id="valTextOffset" class="text-zinc-200 font-bold">75%</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="appStepRange('rangeTextOffset', -4)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+                <input type="range" id="rangeTextOffset" min="-90" max="95" step="1" value="75" oninput="appRenderCanvas()" />
+                <button type="button" onclick="appStepRange('rangeTextOffset', 4)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+              </div>
+            </div>
+
+            <div class="sm:col-span-4 bg-zinc-950 p-2.5 rounded-xl border border-zinc-800 flex flex-col justify-between">
+              <span class="text-xs font-semibold text-zinc-400">Cor &amp; Contorno</span>
+              <div class="flex items-center gap-2 mt-1">
+                <input type="color" id="textColorPicker" value="#111827" oninput="appRenderCanvas()" title="Cor do Texto" class="w-9 h-9 rounded-lg border border-zinc-700 bg-transparent cursor-pointer" />
+                <input type="color" id="textStrokePicker" value="#ffffff" oninput="appRenderCanvas()" title="Contorno do Texto" class="w-9 h-9 rounded-lg border border-zinc-700 bg-transparent cursor-pointer" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-ABA 4: EFEITOS & QR CODE -->
+        <div id="subview-fx" class="sub-view hidden space-y-2.5">
+          <!-- Brilho -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Brilho</span>
+              <span id="valBrightness" class="text-zinc-200 font-bold">100%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeBrightness', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeBrightness" min="60" max="150" step="1" value="100" oninput="appRenderCanvas()" />
+              <button type="button" onclick="appStepRange('rangeBrightness', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+
+          <!-- Contraste -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Contraste</span>
+              <span id="valContrast" class="text-zinc-200 font-bold">100%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeContrast', -5)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeContrast" min="60" max="150" step="1" value="100" oninput="appRenderCanvas()" />
+              <button type="button" onclick="appStepRange('rangeContrast', 5)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+
+          <!-- Anel / Moldura Interna -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Anel / Moldura Interna (Espessura)</span>
+              <div class="flex items-center gap-2">
+                <span id="valRingWidth" class="text-indigo-300 font-bold">0 px</span>
+                <input type="color" id="ringColorPicker" value="#6366f1" oninput="appRenderCanvas()" class="w-7 h-7 rounded border border-zinc-700 bg-transparent cursor-pointer" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="appStepRange('rangeRingWidth', -2)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">−</button>
+              <input type="range" id="rangeRingWidth" min="0" max="28" step="1" value="0" oninput="appRenderCanvas()" />
+              <button type="button" onclick="appStepRange('rangeRingWidth', 2)" class="w-10 h-10 rounded-xl bg-zinc-800 text-white font-extrabold text-lg shrink-0">+</button>
+            </div>
+          </div>
+
+          <!-- QR Code Central -->
+          <div class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+            <label class="block text-xs font-semibold text-zinc-400 mb-1.5">QR Code Central (Link, Instagram, Pix ou WhatsApp)</label>
+            <input type="text" id="qrLinkInput" placeholder="https://..." oninput="appRenderCanvas()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== ABA 2: FOLHA DE IMPRESSÃO (1:1 300 DPI) ==================== -->
+    <section id="view-sheet" class="tab-view hidden space-y-3">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h2 class="text-base font-extrabold text-white">📄 Folha de Impressão 1:1 (300 DPI)</h2>
+            <p id="sheetCapacityText" class="text-xs text-zinc-400">Configure o tamanho do papel e o espaçamento.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="appClearSheet()" class="px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs font-bold">
+              Limpar Folha
+            </button>
+            <button type="button" onclick="appOpenPrintModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20">
+              🖨️ Imprimir / Baixar PNG
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-3">
+          <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800">
+            <label class="block text-xs font-semibold text-zinc-400 mb-1">Papel</label>
+            <select id="paperSelect" onchange="appRenderSheetPreview()" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-bold text-white">
+              <option value="A4">A4 (210 × 297 mm)</option>
+              <option value="LETTER">Carta (215,9 × 279,4 mm)</option>
+            </select>
+          </div>
+
+          <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-zinc-400">Espaçamento</span>
+              <span id="valSheetGap" class="text-indigo-400 font-bold">3 mm</span>
+            </div>
+            <input type="range" id="rangeSheetGap" min="1" max="15" step="0.5" value="3" oninput="appRenderSheetPreview()" />
+          </div>
+
+          <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex items-center gap-2">
+            <button type="button" onclick="appAddOneToSheet(); appRenderSheetPreview();" class="flex-1 py-2.5 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">
+              +1 Arte Atual
+            </button>
+            <button type="button" onclick="appFillFullSheet(); appRenderSheetPreview();" class="flex-1 py-2.5 px-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-bold border border-zinc-700">
+              Preencher Folha
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de Modelos na Folha -->
+        <div id="sheetItemsList" class="space-y-2 mb-4"></div>
+
+        <!-- Prévia Visual da Página -->
+        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-3 flex flex-col items-center">
+          <div class="w-full flex items-center justify-between text-xs text-zinc-400 mb-2">
+            <span>Prévia da Página 1 (Régua superior de 50 mm)</span>
+            <span id="sheetPagesBadge" class="font-bold text-indigo-300">1 página</span>
+          </div>
+          <canvas id="sheetPreviewCanvas" class="max-w-full max-h-[520px] w-auto h-auto rounded-lg shadow-2xl border border-zinc-700 bg-white"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABA 3: SALVOS ==================== -->
+    <section id="view-saved" class="tab-view hidden space-y-3">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h2 class="text-base font-extrabold text-white">💾 Artes Salvas</h2>
+            <p class="text-xs text-zinc-400">Marque várias artes e defina a quantidade de cada modelo para montar folhas mistas.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="appSendSelectedToSheet(false)" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">
+              ➕ Adicionar Selecionados
+            </button>
+            <button type="button" onclick="appSendSelectedToSheet(true)" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">
+              📄 Distribuir na Folha
+            </button>
+            <button type="button" onclick="appExportBackupJson()" class="px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 text-xs font-semibold">
+              ⬇️ Backup .json
+            </button>
+            <div class="file-btn-wrap px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 text-xs font-semibold cursor-pointer">
+              <input type="file" accept=".json,application/json" onchange="appImportBackupJson(this)" />
+              <span>⬆️ Restaurar .json</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="savedArtsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      </div>
+    </section>
+
+    <!-- ==================== ABA 4: ORÇAMENTO ==================== -->
+    <section id="view-calc" class="tab-view hidden">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+        <div class="md:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl space-y-3">
+          <h2 class="text-base font-extrabold text-white">🧮 Calculadora de Custos &amp; Orçamento</h2>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Quantidade (un.)</label>
+              <input type="number" id="calcQty" value="50" min="1" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Bottons por Folha</label>
+              <input type="number" id="calcPerSheet" value="15" min="1" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Insumo Unitário (R$)</label>
+              <input type="number" id="calcSupplyUnit" value="0.65" step="0.05" min="0" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Papel + Tinta / Folha (R$)</label>
+              <input type="number" id="calcSheetCost" value="1.80" step="0.10" min="0" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Embalagem Total (R$)</label>
+              <input type="number" id="calcPackCost" value="5.00" step="0.50" min="0" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1">Margem de Lucro (%)</label>
+              <input type="number" id="calcMargin" value="150" step="10" min="0" oninput="appCalcQuote()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm font-bold text-emerald-400" />
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2 text-sm">
+            <h3 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Resultado</h3>
+            <div class="flex justify-between py-1.5 border-b border-zinc-800">
+              <span class="text-zinc-400">Folhas Necessárias:</span>
+              <strong id="outSheets" class="text-white">4 folhas</strong>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-zinc-800">
+              <span class="text-zinc-400">Custo Unitário:</span>
+              <strong id="outUnitCost" class="text-zinc-200">R$ 0,89</strong>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-zinc-800">
+              <span class="text-zinc-400">Custo Total:</span>
+              <strong id="outTotalCost" class="text-rose-400">R$ 44,70</strong>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-zinc-800">
+              <span class="text-zinc-400">Preço de Venda (Un.):</span>
+              <strong id="outUnitPrice" class="text-indigo-300 text-base">R$ 2,24</strong>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-zinc-800">
+              <span class="text-zinc-400">Total ao Cliente:</span>
+              <strong id="outTotalPrice" class="text-emerald-400 text-lg">R$ 111,75</strong>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-zinc-400">Lucro Líquido:</span>
+              <strong id="outProfit" class="text-emerald-300">R$ 67,05</strong>
+            </div>
+          </div>
+
+          <button type="button" onclick="appCopyWhatsAppQuote()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm shadow-lg active:scale-95 transition flex items-center justify-center gap-2">
+            <span>📲</span><span>Copiar Orçamento para WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABA 5: PEDIDOS ==================== -->
+    <section id="view-orders" class="tab-view hidden">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl space-y-3">
+        <h2 class="text-base font-extrabold text-white">📦 Controle de Pedidos</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <input type="text" id="ordClient" placeholder="Cliente / Evento" class="sm:col-span-4 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white" />
+          <input type="number" id="ordQty" value="30" min="1" placeholder="Qtd" class="sm:col-span-2 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white" />
+          <select id="ordSize" class="sm:col-span-2 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            <option value="25mm">25mm</option>
+            <option value="32mm">32mm</option>
+            <option value="44mm" selected>44mm</option>
+            <option value="58mm">58mm</option>
+            <option value="Quadrado">Quadrado</option>
+          </select>
+          <select id="ordStatus" class="sm:col-span-2 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white">
+            <option value="Aguardando Arte">Aguardando Arte</option>
+            <option value="Impresso">Impresso</option>
+            <option value="Prensado">Prensado</option>
+            <option value="Entregue">Entregue</option>
+          </select>
+          <button type="button" onclick="appAddOrder()" class="sm:col-span-2 py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm">
+            + Cadastrar
+          </button>
+        </div>
+        <div id="ordersList" class="space-y-2"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de Impressão / Download 300 DPI -->
+  <div id="printModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-base font-extrabold text-white">🖨️ Imprimir ou Baixar Folha 300 DPI</h3>
+        <button type="button" onclick="appClosePrintModal()" class="w-8 h-8 rounded-lg bg-zinc-800 text-zinc-300 font-bold">✕</button>
+      </div>
+      <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-300 space-y-1">
+        <p class="font-bold text-amber-300">⚠️ Atenção para Escala Real 1:1:</p>
+        <p>• Selecione <strong>Tamanho Real / Escala 100%</strong> nas opções da impressora.</p>
+        <p>• Meça a régua superior de <strong>50 mm</strong> no papel impresso.</p>
+      </div>
+      <div class="space-y-2">
+        <button type="button" onclick="appTriggerBrowserPrint()" class="w-full py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm shadow-lg">
+          🖨️ Imprimir (Escala 100%)
+        </button>
+        <button type="button" onclick="appDownloadSheetPng()" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm shadow-lg">
+          ⬇️ Baixar PNG 300 DPI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Área Oculta de Impressão -->
+  <div id="printArea"></div>
+
+  <script>
+    /* ==========================================================================
+       ESTÚDIO DE BOTTONS PRO — DARK STUDIO 300 DPI (SEM IA, FOCO TOTAL MOBILE)
+       ========================================================================== */
+
+    const DB_NAME = 'EstudioBottonsProDB';
+    const DB_VERSION = 1;
+    const STORE_ARTS = 'saved_arts';
+    const LS_ORDERS_KEY = 'ebp_orders_v2';
+    const LS_SAVED_FALLBACK = 'ebp_saved_fallback_v2';
+
+    const PAPER_SPECS = {
+      A4: { label: 'A4', w: 210, h: 297 },
+      LETTER: { label: 'Carta', w: 215.9, h: 279.4 }
+    };
+
+    const state = {
+      previewMode: 'guide', // 'guide' | '3d'
+      shape: 'circle',      // 'circle' | 'square'
+      frontMm: 44,
+      bleedMm: 10,
+      zoom: 100,
+      posX: 0,
+      posY: 0,
+      rotation: 0,
+      bgColor: '#ffffff',
+      text: '',
+      textMode: 'straight', // 'straight' | 'arcTop' | 'arcBottom'
+      fontSize: 34,
+      textOffset: 75,
+      textColor: '#111827',
+      textStroke: '#ffffff',
+      brightness: 100,
+      contrast: 100,
+      ringWidth: 0,
+      ringColor: '#6366f1',
+      qrLink: '',
+      imageObj: null,
+      imageDataUrl: null
+    };
+
+    let sheetItems = [];     // [{ id, name, frontMm, bleedMm, shape, qty, dataUrl }]
+    let savedArts = [];      // [{ id, title, date, thumbUrl, config }]
+    let selectedSaved = new Map(); // id -> qty
+    let orders = [];
+
+    /* --------------------------------------------------------------------------
+       1. UTILITÁRIOS & INDEXEDDB
+       -------------------------------------------------------------------------- */
+    function showToast(msg, icon = '✅') {
+      const el = document.getElementById('toast');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastMsg').textContent = msg;
+      el.classList.remove('opacity-0', 'translate-y-2');
+      el.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        el.classList.add('opacity-0', 'translate-y-2');
+        el.classList.remove('opacity-100', 'translate-y-0');
+      }, 2600);
+    }
+
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) return reject(new Error('No IDB'));
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = e => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_ARTS)) {
+            db.createObjectStore(STORE_ARTS, { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function loadAllPersistedData() {
+      try {
+        const db = await openDatabase();
+        const tx = db.transaction(STORE_ARTS, 'readonly');
+        const store = tx.objectStore(STORE_ARTS);
+        savedArts = await new Promise(res => {
+          const r = store.getAll();
+          r.onsuccess = () => res((r.result || []).sort((a, b) => b.createdAt - a.createdAt));
+          r.onerror = () => res([]);
+        });
+      } catch (e) {
+        try {
+          savedArts = JSON.parse(localStorage.getItem(LS_SAVED_FALLBACK) || '[]');
+        } catch (_) { savedArts = []; }
+      }
+
+      try {
+        orders = JSON.parse(localStorage.getItem(LS_ORDERS_KEY) || '[]');
+      } catch (e) { orders = []; }
+
+      updateBadges();
+      renderSavedArtsGrid();
+      renderOrdersList();
+      appCalcQuote();
+    }
+
+    async function persistSavedArts() {
+      try {
+        const db = await openDatabase();
+        const tx = db.transaction(STORE_ARTS, 'readwrite');
+        const store = tx.objectStore(STORE_ARTS);
+        store.clear();
+        savedArts.forEach(item => store.put(item));
+      } catch (e) {
+        try {
+          localStorage.setItem(LS_SAVED_FALLBACK, JSON.stringify(savedArts));
+        } catch (_) {}
+      }
+      updateBadges();
+    }
+
+    function updateBadges() {
+      const sheetTotal = sheetItems.reduce((sum, it) => sum + it.qty, 0);
+      document.getElementById('badgeSheet').textContent = sheetTotal;
+      document.getElementById('badgeSaved').textContent = savedArts.length;
+    }
+
+    /* --------------------------------------------------------------------------
+       2. NAVEGAÇÃO DE ABAS PRINCIPAIS E SUB-ABAS DO ESTÚDIO
+       -------------------------------------------------------------------------- */
+    function appSwitchTab(tab) {
+      document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+      const target = document.getElementById('view-' + tab);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.main-tab').forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tab;
+        btn.className = active
+          ? 'main-tab flex-1 min-w-[84px] py-2 px-2 rounded-xl text-xs font-bold bg-indigo-600 text-white transition flex items-center justify-center gap-1'
+          : 'main-tab flex-1 min-w-[84px] py-2 px-2 rounded-xl text-xs font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 transition flex items-center justify-center gap-1';
+      });
+
+      if (tab === 'sheet') appRenderSheetPreview();
+      if (tab === 'saved') renderSavedArtsGrid();
+      if (tab === 'calc') {
+        document.getElementById('calcPerSheet').value = getSheetSpec().perPage;
+        appCalcQuote();
+      }
+    }
+
+    function appSwitchSubTab(sub) {
+      document.querySelectorAll('.sub-view').forEach(v => v.classList.add('hidden'));
+      const target = document.getElementById('subview-' + sub);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.sub-tab').forEach(btn => {
+        const active = btn.getAttribute('data-subtab') === sub;
+        btn.className = active
+          ? 'sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold bg-indigo-600 text-white transition text-center leading-tight'
+          : 'sub-tab py-2 px-1 rounded-lg text-[11px] sm:text-xs font-bold text-zinc-400 hover:text-white transition text-center leading-tight';
+      });
+    }
+
+    /* --------------------------------------------------------------------------
+       3. UPLOAD DE FOTO (REDIMENSIONAMENTO SEGURO ATÉ 1600PX PARA iOS SAFARI)
+       -------------------------------------------------------------------------- */
+    function appHandlePhotoUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const objUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxDim = 1600;
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if (w > maxDim || h > maxDim) {
+            const ratio = Math.min(maxDim / w, maxDim / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          const off = document.createElement('canvas');
+          off.width = w;
+          off.height = h;
+          off.getContext('2d').drawImage(img, 0, 0, w, h);
+
+          const cleanDataUrl = off.toDataURL('image/jpeg', 0.92);
+          URL.revokeObjectURL(objUrl);
+
+          const finalImg = new Image();
+          finalImg.onload = () => {
+            state.imageObj = finalImg;
+            state.imageDataUrl = cleanDataUrl;
+            state.zoom = 100;
+            state.posX = 0;
+            state.posY = 0;
+            state.rotation = 0;
+            syncInputsFromState();
+            appRenderCanvas();
+            showToast('Foto carregada no botton!');
+          };
+          finalImg.src = cleanDataUrl;
+        } catch (err) {
+          URL.revokeObjectURL(objUrl);
+          showToast('Erro ao processar imagem.', '⚠️');
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objUrl);
+        showToast('Formato de imagem inválido.', '⚠️');
+      };
+      img.src = objUrl;
+    }
+
+    /* --------------------------------------------------------------------------
+       4. RENDERIZAÇÃO HIGH-DPI DO CANVAS (GABARITO, 3D E IMPRESSÃO 1:1)
+       -------------------------------------------------------------------------- */
+    function drawQrCode(ctx, text, cx, cy, size) {
+      if (!text) return;
+      const n = 21;
+      const cell = size / n;
+      const sx = cx - size / 2;
+      const sy = cy - size / 2;
+
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(sx - cell, sy - cell, size + cell * 2, size + cell * 2);
+      ctx.fillStyle = '#09090b';
+
+      let hash = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+
+      const finder = (gx, gy) => {
+        ctx.fillRect(sx + gx * cell, sy + gy * cell, 7 * cell, 7 * cell);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(sx + (gx + 1) * cell, sy + (gy + 1) * cell, 5 * cell, 5 * cell);
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(sx + (gx + 2) * cell, sy + (gy + 2) * cell, 3 * cell, 3 * cell);
+      };
+      finder(0, 0);
+      finder(n - 7, 0);
+      finder(0, n - 7);
+
+      for (let r = 0; r < n; r++) {
+        for (let c = 0; c < n; c++) {
+          if ((r < 8 && c < 8) || (r < 8 && c >= n - 8) || (r >= n - 8 && c < 8)) continue;
+          const bit = ((hash >>> ((r * 7 + c * 13) % 24)) ^ (r * 31 + c * 17 + text.charCodeAt((r + c) % text.length))) & 1;
+          if (bit) ctx.fillRect(sx + c * cell, sy + r * cell, cell * 0.96, cell * 0.96);
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawArcText(ctx, text, cx, cy, radius, isTop) {
+      if (!text) return;
+      const chars = text.split('');
+      const totalW = chars.reduce((acc, ch) => acc + ctx.measureText(ch).width, 0);
+      const totalAngle = totalW / radius;
+      let angle = isTop ? -Math.PI / 2 - totalAngle / 2 : Math.PI / 2 + totalAngle / 2;
+
+      chars.forEach(ch => {
+        const w = ctx.measureText(ch).width;
+        const half = (w / 2) / radius;
+        angle += isTop ? half : -half;
+
+        ctx.save();
+        ctx.translate(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        ctx.rotate(isTop ? angle + Math.PI / 2 : angle - Math.PI / 2);
+        ctx.strokeText(ch, 0, 0);
+        ctx.fillText(ch, 0, 0);
+        ctx.restore();
+
+        angle += isTop ? half : -half;
+      });
+    }
+
+    function checkBleedCoverage(cfg, outerRadius) {
+      if (!cfg.imageObj) return false;
+      const img = cfg.imageObj;
+      const baseScale = Math.max((outerRadius * 2) / img.width, (outerRadius * 2) / img.height);
+      const finalScale = baseScale * (cfg.zoom / 100);
+      const halfW = (img.width * finalScale) / 2;
+      const halfH = (img.height * finalScale) / 2;
+      const scaleFactor = outerRadius / (720 * 0.45);
+      const offX = Math.abs(cfg.posX * scaleFactor);
+      const offY = Math.abs(cfg.posY * scaleFactor);
+      return (halfW - offX < outerRadius * 0.98) || (halfH - offY < outerRadius * 0.98);
+    }
+
+    function renderButtonArt(canvas, cfg, forPrint = false) {
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const cx = W / 2;
+      const cy = H / 2;
+
+      ctx.clearRect(0, 0, W, H);
+
+      const cutMm = cfg.frontMm + cfg.bleedMm;
+      const frontRatio = cfg.frontMm / cutMm;
+      const outerR = forPrint ? W / 2 : W * 0.45;
+      const frontR = outerR * frontRatio;
+      const safeR = frontR * 0.82;
+      const clipR = (!forPrint && cfg.previewMode === '3d') ? frontR : outerR;
+
+      ctx.save();
+      ctx.beginPath();
+      if (cfg.shape === 'square') {
+        ctx.roundRect(cx - clipR, cy - clipR, clipR * 2, clipR * 2, clipR * 0.14);
+      } else {
+        ctx.arc(cx, cy, clipR, 0, Math.PI * 2);
+      }
+      ctx.clip();
+
+      // Fundo
+      ctx.fillStyle = cfg.bgColor || '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // Imagem
+      if (cfg.imageObj) {
+        ctx.save();
+        ctx.filter = `brightness(${cfg.brightness}%) contrast(${cfg.contrast}%)`;
+        const scaleFactor = W / 720;
+        ctx.translate(cx + cfg.posX * scaleFactor, cy + cfg.posY * scaleFactor);
+        ctx.rotate((cfg.rotation * Math.PI) / 180);
+
+        const img = cfg.imageObj;
+        const baseScale = Math.max((outerR * 2) / img.width, (outerR * 2) / img.height);
+        const finalScale = baseScale * (cfg.zoom / 100);
+        const drawW = img.width * finalScale;
+        const drawH = img.height * finalScale;
+        ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+        ctx.restore();
+      }
+
+      // Anel / Moldura Interna
+      if (cfg.ringWidth > 0) {
+        ctx.save();
+        const lw = cfg.ringWidth * (W / 720);
+        ctx.strokeStyle = cfg.ringColor || '#6366f1';
+        ctx.lineWidth = lw;
+        const rRing = frontR - lw * 0.75;
+        ctx.beginPath();
+        if (cfg.shape === 'square') {
+          ctx.roundRect(cx - rRing, cy - rRing, rRing * 2, rRing * 2, rRing * 0.12);
+        } else {
+          ctx.arc(cx, cy, rRing, 0, Math.PI * 2);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // QR Code Central
+      if (cfg.qrLink && cfg.qrLink.trim()) {
+        drawQrCode(ctx, cfg.qrLink.trim(), cx, cy, frontR * 0.66);
+      }
+
+      // Texto
+      if (cfg.text && cfg.text.trim()) {
+        const scaleFactor = W / 720;
+        const fontPx = Math.round(cfg.fontSize * scaleFactor);
+        ctx.save();
+        ctx.font = `800 ${fontPx}px Inter, sans-serif`;
+        ctx.fillStyle = cfg.textColor || '#111827';
+        ctx.strokeStyle = cfg.textStroke || '#ffffff';
+        ctx.lineWidth = Math.max(2, fontPx * 0.14);
+        ctx.lineJoin = 'round';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        if (cfg.textMode === 'straight' || cfg.shape === 'square') {
+          const yOff = ((cfg.textOffset - 50) / 50) * (frontR * 0.78);
+          ctx.strokeText(cfg.text, cx, cy + yOff);
+          ctx.fillText(cfg.text, cx, cy + yOff);
+        } else {
+          const pct = Math.max(35, Math.min(95, Math.abs(cfg.textOffset)));
+          drawArcText(ctx, cfg.text, cx, cy, frontR * (pct / 100), cfg.textMode === 'arcTop');
+        }
+        ctx.restore();
+      }
+
+      // Efeito 3D (somente na prévia 3D)
+      if (!forPrint && cfg.previewMode === '3d') {
+        const rim = ctx.createRadialGradient(cx, cy, frontR * 0.72, cx, cy, frontR);
+        rim.addColorStop(0, 'rgba(0,0,0,0)');
+        rim.addColorStop(0.84, 'rgba(0,0,0,0.16)');
+        rim.addColorStop(1, 'rgba(0,0,0,0.46)');
+        ctx.fillStyle = rim;
+        ctx.fillRect(0, 0, W, H);
+
+        const gloss = ctx.createLinearGradient(cx - frontR, cy - frontR, cx + frontR * 0.45, cy + frontR * 0.45);
+        gloss.addColorStop(0, 'rgba(255,255,255,0.40)');
+        gloss.addColorStop(0.35, 'rgba(255,255,255,0.08)');
+        gloss.addColorStop(0.6, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gloss;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      ctx.restore();
+
+      // Linhas de Gabarito ou Linha Fina de Corte na Impressão
+      if (!forPrint && cfg.previewMode === 'guide') {
+        ctx.save();
+        // Corte (Rosa)
+        ctx.strokeStyle = '#f43f5e';
+        ctx.lineWidth = Math.max(2.5, W * 0.004);
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        if (cfg.shape === 'square') ctx.roundRect(cx - outerR, cy - outerR, outerR * 2, outerR * 2, outerR * 0.14);
+        else ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Frente Visível (Verde)
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = Math.max(2.5, W * 0.004);
+        ctx.setLineDash([W * 0.016, W * 0.011]);
+        ctx.beginPath();
+        if (cfg.shape === 'square') ctx.roundRect(cx - frontR, cy - frontR, frontR * 2, frontR * 2, frontR * 0.14);
+        else ctx.arc(cx, cy, frontR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Zona Segura (Amarelo)
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = Math.max(2, W * 0.003);
+        ctx.setLineDash([W * 0.007, W * 0.01]);
+        ctx.beginPath();
+        if (cfg.shape === 'square') ctx.roundRect(cx - safeR, cy - safeR, safeR * 2, safeR * 2, safeR * 0.14);
+        else ctx.arc(cx, cy, safeR, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      } else if (forPrint) {
+        ctx.save();
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = Math.max(2, W * 0.003);
+        ctx.beginPath();
+        if (cfg.shape === 'square') ctx.roundRect(1, 1, W - 2, H - 2, (W / 2) * 0.14);
+        else ctx.arc(cx, cy, W / 2 - 1, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    function appRenderCanvas() {
+      state.bgColor = document.getElementById('bgColorPicker').value;
+      document.getElementById('bgColorHex').textContent = state.bgColor.toUpperCase();
+
+      state.text = document.getElementById('textInput').value;
+      state.fontSize = Number(document.getElementById('rangeFontSize').value);
+      state.textOffset = Number(document.getElementById('rangeTextOffset').value);
+      state.textColor = document.getElementById('textColorPicker').value;
+      state.textStroke = document.getElementById('textStrokePicker').value;
+
+      state.brightness = Number(document.getElementById('rangeBrightness').value);
+      state.contrast = Number(document.getElementById('rangeContrast').value);
+      state.ringWidth = Number(document.getElementById('rangeRingWidth').value);
+      state.ringColor = document.getElementById('ringColorPicker').value;
+      state.qrLink = document.getElementById('qrLinkInput').value;
+
+      document.getElementById('valFontSize').textContent = `${state.fontSize} px`;
+      document.getElementById('valTextOffset').textContent = `${state.textOffset}%`;
+      document.getElementById('valBrightness').textContent = `${state.brightness}%`;
+      document.getElementById('valContrast').textContent = `${state.contrast}%`;
+      document.getElementById('valRingWidth').textContent = `${state.ringWidth} px`;
+
+      const canvas = document.getElementById('editorCanvas');
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
+      const targetSize = Math.round(300 * dpr);
+      if (canvas.width !== targetSize || canvas.height !== targetSize) {
+        canvas.width = targetSize;
+        canvas.height = targetSize;
+      }
+
+      renderButtonArt(canvas, state, false);
+
+      // Aviso automático de sangria no modo 3D
+      const warnEl = document.getElementById('bleedWarning3D');
+      if (state.previewMode === '3d' && checkBleedCoverage(state, targetSize * 0.45)) {
+        warnEl.classList.remove('hidden');
+      } else {
+        warnEl.classList.add('hidden');
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       5. CONTROLES DO ESTÚDIO & GESTOS DE TOQUE (ARRASTE + PINÇA 2 DEDOS)
+       -------------------------------------------------------------------------- */
+    function appSetPreviewMode(mode) {
+      state.previewMode = mode;
+      const btnG = document.getElementById('btnModeGuide');
+      const btn3 = document.getElementById('btnMode3D');
+      const leg = document.getElementById('guideLegend');
+      if (mode === 'guide') {
+        btnG.className = 'rounded-lg text-[11px] font-bold bg-indigo-600 text-white transition';
+        btn3.className = 'rounded-lg text-[11px] font-bold text-zinc-400 hover:text-white transition';
+        leg.classList.remove('hidden');
+      } else {
+        btn3.className = 'rounded-lg text-[11px] font-bold bg-indigo-600 text-white transition';
+        btnG.className = 'rounded-lg text-[11px] font-bold text-zinc-400 hover:text-white transition';
+        leg.classList.add('hidden');
+      }
+      appRenderCanvas();
+    }
+
+    function appSetShape(shape) {
+      state.shape = shape;
+      document.getElementById('btnShapeCircle').className = shape === 'circle'
+        ? 'py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-bold text-xs border border-indigo-500 transition'
+        : 'py-2.5 px-3 rounded-xl bg-zinc-950 text-zinc-400 font-bold text-xs border border-zinc-800 transition';
+      document.getElementById('btnShapeSquare').className = shape === 'square'
+        ? 'py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-bold text-xs border border-indigo-500 transition'
+        : 'py-2.5 px-3 rounded-xl bg-zinc-950 text-zinc-400 font-bold text-xs border border-zinc-800 transition';
+      appRenderCanvas();
+    }
+
+    function appSelectSizePreset(frontMm, bleedMm) {
+      document.getElementById('rangeFrontMm').value = frontMm;
+      document.getElementById('rangeBleedMm').value = bleedMm;
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        const mm = Number(btn.getAttribute('data-mm'));
+        const isStar = [25, 32, 44, 58].includes(mm);
+        btn.className = mm === frontMm
+          ? 'size-btn py-2.5 rounded-xl bg-indigo-600 border border-indigo-400 text-xs font-bold text-white'
+          : `size-btn py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold ${isStar ? 'text-amber-300' : 'text-zinc-300'}`;
+      });
+      appUpdateDimensions();
+    }
+
+    function appUpdateDimensions() {
+      state.frontMm = Number(document.getElementById('rangeFrontMm').value);
+      state.bleedMm = Number(document.getElementById('rangeBleedMm').value);
+      const cutMm = state.frontMm + state.bleedMm;
+      document.getElementById('valFrontMm').textContent = `${state.frontMm} mm`;
+      document.getElementById('valBleedMm').textContent = `+${state.bleedMm} mm (Corte ${cutMm}mm)`;
+      document.getElementById('lblFrontMm').textContent = state.frontMm;
+      document.getElementById('lblCutMm').textContent = cutMm;
+      appRenderCanvas();
+    }
+
+    function appSyncTransform() {
+      state.zoom = Number(document.getElementById('rangeZoom').value);
+      state.posX = Number(document.getElementById('rangePosX').value);
+      state.posY = Number(document.getElementById('rangePosY').value);
+      state.rotation = Number(document.getElementById('rangeRotation').value);
+      document.getElementById('valZoom').textContent = `${state.zoom}%`;
+      document.getElementById('valPosX').textContent = `${state.posX}`;
+      document.getElementById('valPosY').textContent = `${state.posY}`;
+      document.getElementById('valRotation').textContent = `${state.rotation}°`;
+      appRenderCanvas();
+    }
+
+    function appStepRange(id, delta) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.value = Math.max(Number(el.min), Math.min(Number(el.max), Number(el.value) + delta));
+      if (id === 'rangeFrontMm' || id === 'rangeBleedMm') appUpdateDimensions();
+      else if (['rangeZoom', 'rangePosX', 'rangePosY', 'rangeRotation'].includes(id)) appSyncTransform();
+      else appRenderCanvas();
+    }
+
+    function appCenterImage() {
+      state.zoom = 100;
+      state.posX = 0;
+      state.posY = 0;
+      state.rotation = 0;
+      syncInputsFromState();
+      appRenderCanvas();
+      showToast('Foto centralizada!');
+    }
+
+    function appSetTextMode(mode) {
+      state.textMode = mode;
+      document.querySelectorAll('.tmode-btn').forEach(b => {
+        const active = b.getAttribute('data-tmode') === mode;
+        b.className = active
+          ? 'tmode-btn py-2.5 px-2 rounded-xl bg-indigo-600 text-white text-xs font-bold border border-indigo-500'
+          : 'tmode-btn py-2.5 px-2 rounded-xl bg-zinc-950 text-zinc-400 text-xs font-bold border border-zinc-800';
+      });
+      appRenderCanvas();
+    }
+
+    function syncInputsFromState() {
+      document.getElementById('rangeFrontMm').value = state.frontMm;
+      document.getElementById('rangeBleedMm').value = state.bleedMm;
+      document.getElementById('rangeZoom').value = state.zoom;
+      document.getElementById('rangePosX').value = state.posX;
+      document.getElementById('rangePosY').value = state.posY;
+      document.getElementById('rangeRotation').value = state.rotation;
+      document.getElementById('bgColorPicker').value = state.bgColor;
+      document.getElementById('textInput').value = state.text;
+      document.getElementById('rangeFontSize').value = state.fontSize;
+      document.getElementById('rangeTextOffset').value = state.textOffset;
+      document.getElementById('textColorPicker').value = state.textColor;
+      document.getElementById('textStrokePicker').value = state.textStroke;
+      document.getElementById('rangeBrightness').value = state.brightness;
+      document.getElementById('rangeContrast').value = state.contrast;
+      document.getElementById('rangeRingWidth').value = state.ringWidth;
+      document.getElementById('ringColorPicker').value = state.ringColor;
+      document.getElementById('qrLinkInput').value = state.qrLink;
+      appUpdateDimensions();
+      appSyncTransform();
+    }
+
+    function appResetStudio() {
+      Object.assign(state, {
+        imageObj: null,
+        imageDataUrl: null,
+        zoom: 100,
+        posX: 0,
+        posY: 0,
+        rotation: 0,
+        bgColor: '#ffffff',
+        text: '',
+        brightness: 100,
+        contrast: 100,
+        ringWidth: 0,
+        qrLink: ''
+      });
+      document.getElementById('photoInput').value = '';
+      syncInputsFromState();
+      appRenderCanvas();
+      showToast('Estúdio limpo!');
+    }
+
+    // Gestos no Canvas: Arraste (1 dedo/mouse) e Pinça (2 dedos)
+    (function bindCanvasTouchGestures() {
+      const canvas = document.getElementById('editorCanvas');
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let baseX = 0, baseY = 0;
+      let pinchStartDist = 0;
+      let pinchBaseZoom = 100;
+
+      const getDist = (t1, t2) => Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+
+      canvas.addEventListener('touchstart', e => {
+        if (!state.imageObj) return;
+        if (e.touches.length === 2) {
+          isDragging = false;
+          pinchStartDist = getDist(e.touches[0], e.touches[1]);
+          pinchBaseZoom = state.zoom;
+        } else if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          baseX = state.posX;
+          baseY = state.posY;
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchmove', e => {
+        if (!state.imageObj) return;
+        if (e.touches.length === 2 && pinchStartDist > 0) {
+          const dist = getDist(e.touches[0], e.touches[1]);
+          const nextZoom = Math.round(Math.max(30, Math.min(300, pinchBaseZoom * (dist / pinchStartDist))));
+          document.getElementById('rangeZoom').value = nextZoom;
+          appSyncTransform();
+        } else if (e.touches.length === 1 && isDragging) {
+          const rect = canvas.getBoundingClientRect();
+          const scale = 720 / rect.width;
+          const dx = Math.round((e.touches[0].clientX - startX) * scale);
+          const dy = Math.round((e.touches[0].clientY - startY) * scale);
+          document.getElementById('rangePosX').value = Math.max(-200, Math.min(200, baseX + dx));
+          document.getElementById('rangePosY').value = Math.max(-200, Math.min(200, baseY + dy));
+          appSyncTransform();
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchend', () => {
+        isDragging = false;
+        pinchStartDist = 0;
+      });
+
+      // Suporte Mouse Desktop
+      canvas.addEventListener('mousedown', e => {
+        if (!state.imageObj) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        baseX = state.posX;
+        baseY = state.posY;
+      });
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const rect = canvas.getBoundingClientRect();
+        const scale = 720 / rect.width;
+        document.getElementById('rangePosX').value = Math.max(-200, Math.min(200, baseX + Math.round((e.clientX - startX) * scale)));
+        document.getElementById('rangePosY').value = Math.max(-200, Math.min(200, baseY + Math.round((e.clientY - startY) * scale)));
+        appSyncTransform();
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+    })();
+
+    /* --------------------------------------------------------------------------
+       6. FOLHA DE IMPRESSÃO 1:1 (300 DPI)
+       -------------------------------------------------------------------------- */
+    function renderCurrentTile300Dpi() {
+      const cutMm = state.frontMm + state.bleedMm;
+      const pxPerMm = 300 / 25.4;
+      const px = Math.round(cutMm * pxPerMm);
+      const off = document.createElement('canvas');
+      off.width = px;
+      off.height = px;
+      renderButtonArt(off, state, true);
+      return off.toDataURL('image/png');
+    }
+
+    function getSheetSpec(customCutMm) {
+      const paperKey = document.getElementById('paperSelect').value || 'A4';
+      const paper = PAPER_SPECS[paperKey] || PAPER_SPECS.A4;
+      const gap = Number(document.getElementById('rangeSheetGap').value) || 3;
+      const cutMm = customCutMm || (state.frontMm + state.bleedMm);
+
+      const marginSide = 8;
+      const marginTop = 18;
+      const marginBot = 8;
+
+      const cols = Math.max(1, Math.floor((paper.w - marginSide * 2 + gap) / (cutMm + gap)));
+      const rows = Math.max(1, Math.floor((paper.h - marginTop - marginBot + gap) / (cutMm + gap)));
+      return { paper, cols, rows, perPage: cols * rows, gap, marginTop, cutMm };
+    }
+
+    function appAddOneToSheet() {
+      const label = state.text.trim() ? `${state.text.trim().slice(0, 18)} (${state.frontMm}mm)` : `Botton ${state.frontMm}mm`;
+      sheetItems.push({
+        id: 'sh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        name: label,
+        frontMm: state.frontMm,
+        bleedMm: state.bleedMm,
+        shape: state.shape,
+        qty: 1,
+        dataUrl: renderCurrentTile300Dpi()
+      });
+      updateBadges();
+      renderSheetItemsList();
+      showToast('+1 botton adicionado na folha!');
+    }
+
+    function appFillFullSheet() {
+      const spec = getSheetSpec();
+      const totalNow = sheetItems.reduce((s, it) => s + it.qty, 0);
+      const rem = totalNow % spec.perPage;
+      const addQty = rem === 0 ? spec.perPage : spec.perPage - rem;
+      const label = state.text.trim() ? `${state.text.trim().slice(0, 18)} (${state.frontMm}mm)` : `Botton ${state.frontMm}mm`;
+
+      sheetItems.push({
+        id: 'sh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        name: label,
+        frontMm: state.frontMm,
+        bleedMm: state.bleedMm,
+        shape: state.shape,
+        qty: addQty,
+        dataUrl: renderCurrentTile300Dpi()
+      });
+      updateBadges();
+      renderSheetItemsList();
+      showToast(`Folha preenchida (+${addQty} un.)!`);
+    }
+
+    function appClearSheet() {
+      sheetItems = [];
+      updateBadges();
+      renderSheetItemsList();
+      appRenderSheetPreview();
+      showToast('Folha limpa.');
+    }
+
+    function appStepSheetItem(id, delta) {
+      const idx = sheetItems.findIndex(x => x.id === id);
+      if (idx === -1) return;
+      sheetItems[idx].qty += delta;
+      if (sheetItems[idx].qty <= 0) sheetItems.splice(idx, 1);
+      updateBadges();
+      renderSheetItemsList();
+      appRenderSheetPreview();
+    }
+
+    function renderSheetItemsList() {
+      const el = document.getElementById('sheetItemsList');
+      if (!sheetItems.length) {
+        el.innerHTML = `<div class="text-xs text-zinc-500 bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-center">Nenhum modelo na folha. Use <strong>+1 Folha</strong> ou <strong>Preencher Folha</strong> no Estúdio.</div>`;
+        return;
+      }
+      el.innerHTML = sheetItems.map(it => `
+        <div class="flex items-center justify-between gap-2 bg-zinc-950 border border-zinc-800 rounded-xl p-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <img src="${it.dataUrl}" alt="" class="w-10 h-10 rounded-lg bg-white object-contain shrink-0" />
+            <div class="truncate">
+              <div class="text-xs font-bold text-white truncate">${it.name}</div>
+              <div class="text-[11px] text-zinc-400">Corte: ${it.frontMm + it.bleedMm}mm</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="appStepSheetItem('${it.id}', -1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-bold">−</button>
+            <span class="w-7 text-center text-xs font-extrabold text-indigo-300">${it.qty}</span>
+            <button type="button" onclick="appStepSheetItem('${it.id}', 1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-bold">+</button>
+            <button type="button" onclick="appStepSheetItem('${it.id}', -9999)" class="w-8 h-8 rounded-lg bg-rose-500/15 text-rose-300 text-xs font-bold">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function buildSheetPages300Dpi() {
+      const gap = Number(document.getElementById('rangeSheetGap').value) || 3;
+      document.getElementById('valSheetGap').textContent = `${gap} mm`;
+
+      let slots = [];
+      sheetItems.forEach(it => {
+        for (let i = 0; i < it.qty; i++) slots.push(it);
+      });
+      if (!slots.length) {
+        slots.push({ frontMm: state.frontMm, bleedMm: state.bleedMm, dataUrl: renderCurrentTile300Dpi() });
+      }
+
+      const maxCut = Math.max(...slots.map(s => s.frontMm + s.bleedMm));
+      const spec = getSheetSpec(maxCut);
+      const pxPerMm = 300 / 25.4;
+      const pageW = Math.round(spec.paper.w * pxPerMm);
+      const pageH = Math.round(spec.paper.h * pxPerMm);
+
+      const uniqueUrls = [...new Set(slots.map(s => s.dataUrl))];
+      const imgCache = {};
+      await Promise.all(uniqueUrls.map(u => new Promise(res => {
+        const im = new Image();
+        im.onload = () => { imgCache[u] = im; res(); };
+        im.onerror = () => res();
+        im.src = u;
+      })));
+
+      const totalPages = Math.ceil(slots.length / spec.perPage);
+      const pages = [];
+      const totalGridW = spec.cols * maxCut + (spec.cols - 1) * gap;
+      const startXmm = (spec.paper.w - totalGridW) / 2;
+
+      for (let p = 0; p < totalPages; p++) {
+        const canvas = document.createElement('canvas');
+        canvas.width = pageW;
+        canvas.height = pageH;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, pageW, pageH);
+
+        // Régua de calibração de 50mm
+        const rx = Math.round(10 * pxPerMm);
+        const ry = Math.round(7 * pxPerMm);
+        const rw = Math.round(50 * pxPerMm);
+        const rh = Math.round(4 * pxPerMm);
+        ctx.strokeStyle = '#09090b';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(rx, ry, rw, rh);
+        for (let m = 10; m < 50; m += 10) {
+          const tx = rx + Math.round(m * pxPerMm);
+          ctx.beginPath();
+          ctx.moveTo(tx, ry);
+          ctx.lineTo(tx, ry + rh);
+          ctx.stroke();
+        }
+        ctx.fillStyle = '#09090b';
+        ctx.font = `bold ${Math.round(3.1 * pxPerMm)}px Inter, sans-serif`;
+        ctx.fillText(`RÉGUA DE CALIBRAÇÃO: 50 mm • ${spec.paper.label} • Pág. ${p + 1}/${totalPages}`, rx + rw + Math.round(4 * pxPerMm), ry + rh * 0.85);
+
+        const slice = slots.slice(p * spec.perPage, (p + 1) * spec.perPage);
+        slice.forEach((slot, idx) => {
+          const col = idx % spec.cols;
+          const row = Math.floor(idx / spec.cols);
+          const sCut = slot.frontMm + slot.bleedMm;
+          const cxMm = startXmm + col * (maxCut + gap) + maxCut / 2;
+          const cyMm = spec.marginTop + row * (maxCut + gap) + maxCut / 2;
+          const dPx = Math.round(sCut * pxPerMm);
+          const im = imgCache[slot.dataUrl];
+          if (im) {
+            ctx.drawImage(im, Math.round(cxMm * pxPerMm - dPx / 2), Math.round(cyMm * pxPerMm - dPx / 2), dPx, dPx);
+          }
+        });
+
+        pages.push(canvas.toDataURL('image/png'));
+      }
+
+      document.getElementById('sheetCapacityText').textContent =
+        `Capacidade: ${spec.perPage} bottons por folha ${spec.paper.label} (${spec.cols} col × ${spec.rows} lin).`;
+      document.getElementById('sheetPagesBadge').textContent =
+        `${totalPages} ${totalPages === 1 ? 'página' : 'páginas'}`;
+      return pages;
+    }
+
+    async function appRenderSheetPreview() {
+      renderSheetItemsList();
+      const pages = await buildSheetPages300Dpi();
+      if (!pages.length) return;
+      const c = document.getElementById('sheetPreviewCanvas');
+      const im = new Image();
+      im.onload = () => {
+        c.width = im.width;
+        c.height = im.height;
+        c.getContext('2d').drawImage(im, 0, 0);
+      };
+      im.src = pages[0];
+    }
+
+    function appOpenPrintModal() {
+      const m = document.getElementById('printModal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function appClosePrintModal() {
+      const m = document.getElementById('printModal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    async function appTriggerBrowserPrint() {
+      showToast('Gerando folha 1:1...', '🖨️');
+      const pages = await buildSheetPages300Dpi();
+      document.getElementById('printArea').innerHTML = pages.map(u => `<img src="${u}" alt="" />`).join('');
+      appClosePrintModal();
+      setTimeout(() => window.print(), 250);
+    }
+
+    async function appDownloadSheetPng() {
+      showToast('Exportando PNG 300 DPI...', '⏳');
+      const pages = await buildSheetPages300Dpi();
+      const paper = document.getElementById('paperSelect').value || 'A4';
+      pages.forEach((url, i) => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Folha_Bottons_${paper}_300DPI_Pag${i + 1}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+      appClosePrintModal();
+      showToast('Folha PNG 300 DPI baixada!');
+    }
+
+    /* --------------------------------------------------------------------------
+       7. SALVOS (SELEÇÃO MÚLTIPLA COM QUANTIDADE + BACKUP JSON)
+       -------------------------------------------------------------------------- */
+    async function appSaveCurrentArt() {
+      const thumb = document.createElement('canvas');
+      thumb.width = 280;
+      thumb.height = 280;
+      renderButtonArt(thumb, state, true);
+
+      const title = state.text.trim() ? state.text.trim().slice(0, 22) : `Botton ${state.frontMm}mm`;
+      const item = {
+        id: 'art_' + Date.now(),
+        createdAt: Date.now(),
+        title,
+        date: new Date().toLocaleDateString('pt-BR'),
+        thumbUrl: thumb.toDataURL('image/png'),
+        config: {
+          shape: state.shape,
+          frontMm: state.frontMm,
+          bleedMm: state.bleedMm,
+          zoom: state.zoom,
+          posX: state.posX,
+          posY: state.posY,
+          rotation: state.rotation,
+          bgColor: state.bgColor,
+          text: state.text,
+          textMode: state.textMode,
+          fontSize: state.fontSize,
+          textOffset: state.textOffset,
+          textColor: state.textColor,
+          textStroke: state.textStroke,
+          brightness: state.brightness,
+          contrast: state.contrast,
+          ringWidth: state.ringWidth,
+          ringColor: state.ringColor,
+          qrLink: state.qrLink,
+          imageDataUrl: state.imageDataUrl
+        }
+      };
+
+      savedArts.unshift(item);
+      await persistSavedArts();
+      renderSavedArtsGrid();
+      showToast('Arte salva!');
+    }
+
+    function appToggleSelectSaved(id) {
+      if (selectedSaved.has(id)) selectedSaved.delete(id);
+      else selectedSaved.set(id, 1);
+      renderSavedArtsGrid();
+    }
+
+    function appStepSavedQty(id, delta) {
+      const cur = selectedSaved.get(id) || 1;
+      const next = Math.max(1, cur + delta);
+      selectedSaved.set(id, next);
+      renderSavedArtsGrid();
+    }
+
+    function appEditSavedArt(id) {
+      const found = savedArts.find(a => a.id === id);
+      if (!found) return;
+      const c = found.config;
+      Object.assign(state, {
+        shape: c.shape || 'circle',
+        frontMm: c.frontMm || 44,
+        bleedMm: c.bleedMm || 10,
+        zoom: c.zoom || 100,
+        posX: c.posX || 0,
+        posY: c.posY || 0,
+        rotation: c.rotation || 0,
+        bgColor: c.bgColor || '#ffffff',
+        text: c.text || '',
+        textMode: c.textMode || 'straight',
+        fontSize: c.fontSize || 34,
+        textOffset: c.textOffset !== undefined ? c.textOffset : 75,
+        textColor: c.textColor || '#111827',
+        textStroke: c.textStroke || '#ffffff',
+        brightness: c.brightness || 100,
+        contrast: c.contrast || 100,
+        ringWidth: c.ringWidth || 0,
+        ringColor: c.ringColor || '#6366f1',
+        qrLink: c.qrLink || ''
+      });
+      appSetShape(state.shape);
+      appSetTextMode(state.textMode);
+      syncInputsFromState();
+
+      if (c.imageDataUrl) {
+        const im = new Image();
+        im.onload = () => {
+          state.imageObj = im;
+          state.imageDataUrl = c.imageDataUrl;
+          appRenderCanvas();
+        };
+        im.src = c.imageDataUrl;
+      } else {
+        state.imageObj = null;
+        state.imageDataUrl = null;
+        appRenderCanvas();
+      }
+      appSwitchTab('studio');
+      showToast(`"${found.title}" carregada no Estúdio!`);
+    }
+
+    async function appDeleteSavedArt(id) {
+      savedArts = savedArts.filter(a => a.id !== id);
+      selectedSaved.delete(id);
+      await persistSavedArts();
+      renderSavedArtsGrid();
+      showToast('Arte excluída.');
+    }
+
+    async function appSendSelectedToSheet(distributeFullPage) {
+      if (selectedSaved.size === 0) {
+        showToast('Selecione pelo menos 1 arte salva.', '⚠️');
+        return;
+      }
+
+      const entries = [...selectedSaved.entries()];
+      const spec = getSheetSpec();
+      const perModelDist = Math.max(1, Math.floor(spec.perPage / entries.length));
+
+      for (const [id, customQty] of entries) {
+        const item = savedArts.find(a => a.id === id);
+        if (!item) continue;
+        const c = item.config;
+        const cutMm = c.frontMm + c.bleedMm;
+        const px = Math.round(cutMm * (300 / 25.4));
+        const off = document.createElement('canvas');
+        off.width = px;
+        off.height = px;
+
+        let im = null;
+        if (c.imageDataUrl) {
+          im = await new Promise(res => {
+            const img = new Image();
+            img.onload = () => res(img);
+            img.onerror = () => res(null);
+            img.src = c.imageDataUrl;
+          });
+        }
+        renderButtonArt(off, { ...c, imageObj: im }, true);
+
+        sheetItems.push({
+          id: 'sh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          name: `${item.title} (${c.frontMm}mm)`,
+          frontMm: c.frontMm,
+          bleedMm: c.bleedMm,
+          shape: c.shape,
+          qty: distributeFullPage ? perModelDist : customQty,
+          dataUrl: off.toDataURL('image/png')
+        });
+      }
+
+      updateBadges();
+      appSwitchTab('sheet');
+      showToast(distributeFullPage ? 'Modelos distribuídos na folha!' : 'Selecionados adicionados à folha!');
+    }
+
+    function renderSavedArtsGrid() {
+      const grid = document.getElementById('savedArtsGrid');
+      if (!savedArts.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-zinc-500 text-xs">Nenhuma arte salva ainda. No Estúdio, toque em <strong>💾 Salvar</strong>.</div>`;
+        return;
+      }
+      grid.innerHTML = savedArts.map(it => {
+        const isSel = selectedSaved.has(it.id);
+        const qty = selectedSaved.get(it.id) || 1;
+        return `
+          <div class="bg-zinc-950 border ${isSel ? 'border-indigo-500 ring-2 ring-indigo-500/30' : 'border-zinc-800'} rounded-2xl p-2.5 flex flex-col justify-between gap-2">
+            <div onclick="appToggleSelectSaved('${it.id}')" class="relative aspect-square rounded-xl bg-zinc-900 p-2 cursor-pointer flex items-center justify-center">
+              <img src="${it.thumbUrl}" alt="${it.title}" class="w-full h-full object-contain" />
+              <span class="absolute top-2 left-2 w-6 h-6 rounded-lg ${isSel ? 'bg-indigo-600 text-white' : 'bg-zinc-950/80 border border-zinc-700 text-transparent'} flex items-center justify-center text-xs font-bold">✓</span>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white truncate">${it.title}</div>
+              <div class="text-[10px] text-zinc-400">${it.config.frontMm}mm • ${it.date}</div>
+            </div>
+            ${isSel ? `
+              <div class="flex items-center justify-between bg-zinc-900 rounded-lg px-2 py-1 border border-zinc-800">
+                <span class="text-[10px] text-zinc-400">Cópias:</span>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="appStepSavedQty('${it.id}', -1)" class="w-6 h-6 rounded bg-zinc-800 text-white text-xs font-bold">−</button>
+                  <span class="text-xs font-extrabold text-indigo-300">${qty}</span>
+                  <button type="button" onclick="appStepSavedQty('${it.id}', 1)" class="w-6 h-6 rounded bg-zinc-800 text-white text-xs font-bold">+</button>
+                </div>
+              </div>
+            ` : ''}
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" onclick="appEditSavedArt('${it.id}')" class="py-1.5 rounded-lg bg-zinc-800 text-[11px] font-bold text-zinc-100">Editar</button>
+              <button type="button" onclick="appDeleteSavedArt('${it.id}')" class="py-1.5 rounded-lg bg-rose-500/15 text-[11px] font-bold text-rose-300">Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function appExportBackupJson() {
+      const blob = new Blob([JSON.stringify({ savedArts, orders }, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Backup_Bottons_Pro_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup .json exportado!');
+    }
+
+    function appImportBackupJson(input) {
+      const f = input.files && input.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = async e => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (Array.isArray(data.savedArts)) {
+            savedArts = data.savedArts;
+            await persistSavedArts();
+          }
+          if (Array.isArray(data.orders)) {
+            orders = data.orders;
+            localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(orders));
+          }
+          updateBadges();
+          renderSavedArtsGrid();
+          renderOrdersList();
+          showToast('Backup restaurado!');
+        } catch (err) {
+          showToast('Arquivo JSON inválido.', '⚠️');
+        }
+      };
+      reader.readAsText(f);
+      input.value = '';
+    }
+
+    /* --------------------------------------------------------------------------
+       8. ORÇAMENTO & WHATSAPP
+       -------------------------------------------------------------------------- */
+    const fmtBRL = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function appCalcQuote() {
+      const qty = Math.max(1, Number(document.getElementById('calcQty').value) || 1);
+      const perSheet = Math.max(1, Number(document.getElementById('calcPerSheet').value) || 1);
+      const supply = Math.max(0, Number(document.getElementById('calcSupplyUnit').value) || 0);
+      const sheetC = Math.max(0, Number(document.getElementById('calcSheetCost').value) || 0);
+      const packC = Math.max(0, Number(document.getElementById('calcPackCost').value) || 0);
+      const margin = Math.max(0, Number(document.getElementById('calcMargin').value) || 0);
+
+      const sheets = Math.ceil(qty / perSheet);
+      const totalCost = qty * supply + sheets * sheetC + packC;
+      const unitCost = totalCost / qty;
+      const totalPrice = totalCost * (1 + margin / 100);
+      const unitPrice = totalPrice / qty;
+      const profit = totalPrice - totalCost;
+
+      document.getElementById('outSheets').textContent = `${sheets} ${sheets === 1 ? 'folha' : 'folhas'}`;
+      document.getElementById('outUnitCost').textContent = fmtBRL(unitCost);
+      document.getElementById('outTotalCost').textContent = fmtBRL(totalCost);
+      document.getElementById('outUnitPrice').textContent = fmtBRL(unitPrice);
+      document.getElementById('outTotalPrice').textContent = fmtBRL(totalPrice);
+      document.getElementById('outProfit').textContent = fmtBRL(profit);
+      window._quoteSummary = { qty, unitPrice, totalPrice };
+    }
+
+    function appCopyWhatsAppQuote() {
+      appCalcQuote();
+      const q = window._quoteSummary;
+      const msg = `✨ *Orçamento de Bottons Personalizados* ✨\n\n` +
+        `• *Tamanho:* ${state.frontMm}mm (${state.shape === 'square' ? 'Quadrado' : 'Redondo'})\n` +
+        `• *Quantidade:* ${q.qty} unidades\n` +
+        `• *Valor Unitário:* ${fmtBRL(q.unitPrice)}\n` +
+        `• *Valor Total:* ${fmtBRL(q.totalPrice)}\n\n` +
+        `Fico à disposição para fechar seu pedido! 😊`;
+
+      const ta = document.createElement('textarea');
+      ta.value = msg;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Orçamento copiado para o WhatsApp!');
+      } catch (e) {
+        showToast('Não foi possível copiar.', '⚠️');
+      }
+      document.body.removeChild(ta);
+    }
+
+    /* --------------------------------------------------------------------------
+       9. PEDIDOS
+       -------------------------------------------------------------------------- */
+    function appAddOrder() {
+      const client = document.getElementById('ordClient').value.trim();
+      if (!client) {
+        showToast('Digite o nome do cliente.', '⚠️');
+        return;
+      }
+      orders.unshift({
+        id: 'ord_' + Date.now(),
+        client,
+        qty: Math.max(1, Number(document.getElementById('ordQty').value) || 1),
+        size: document.getElementById('ordSize').value,
+        status: document.getElementById('ordStatus').value,
+        date: new Date().toLocaleDateString('pt-BR')
+      });
+      document.getElementById('ordClient').value = '';
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(orders));
+      renderOrdersList();
+      showToast('Pedido cadastrado!');
+    }
+
+    function appChangeOrderStatus(id, status) {
+      const o = orders.find(x => x.id === id);
+      if (!o) return;
+      o.status = status;
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(orders));
+      renderOrdersList();
+      showToast(`Status: ${status}`);
+    }
+
+    function appDeleteOrder(id) {
+      orders = orders.filter(x => x.id !== id);
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(orders));
+      renderOrdersList();
+      showToast('Pedido removido.');
+    }
+
+    function renderOrdersList() {
+      const list = document.getElementById('ordersList');
+      if (!orders.length) {
+        list.innerHTML = `<div class="text-center py-6 text-zinc-500 text-xs">Nenhum pedido cadastrado ainda.</div>`;
+        return;
+      }
+      const badgeCls = {
+        'Aguardando Arte': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        'Impresso': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        'Prensado': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+        'Entregue': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+      };
+      list.innerHTML = orders.map(o => `
+        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="text-sm font-bold text-white">${o.client}</div>
+            <div class="text-xs text-zinc-400">${o.qty} un. • ${o.size} • ${o.date}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <select onchange="appChangeOrderStatus('${o.id}', this.value)" class="rounded-lg px-2.5 py-1.5 text-xs font-bold border ${badgeCls[o.status] || 'bg-zinc-900 text-white border-zinc-700'}">
+              <option value="Aguardando Arte" ${o.status === 'Aguardando Arte' ? 'selected' : ''}>Aguardando Arte</option>
+              <option value="Impresso" ${o.status === 'Impresso' ? 'selected' : ''}>Impresso</option>
+              <option value="Prensado" ${o.status === 'Prensado' ? 'selected' : ''}>Prensado</option>
+              <option value="Entregue" ${o.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
+            </select>
+            <button type="button" onclick="appDeleteOrder('${o.id}')" class="w-8 h-8 rounded-lg bg-rose-500/15 text-rose-300 text-xs font-bold">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* --------------------------------------------------------------------------
+       INICIALIZAÇÃO
+       -------------------------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAllPersistedData();
+      appUpdateDimensions();
+      appRenderCanvas();
+    });
+    window.addEventListener('resize', () => appRenderCanvas());
+  </script>
+</body>
+</html>
