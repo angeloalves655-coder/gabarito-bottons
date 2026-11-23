@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gabarito de Bottons Pro — Dark Studio 300 DPI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Gabarito de Bottons Pro v6 — Dark Studio 300 DPI</title>
 <style>
   :root {
     --bg: #09090b;
@@ -61,9 +61,10 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
+    touch-action: manipulation;
+    user-select: none;
   }
-  .btn:active { opacity: 0.78; transform: scale(0.98); }
+  .btn:active { opacity: 0.75; transform: scale(0.98); }
   .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
   .btn-emerald { background: var(--emerald); border-color: var(--emerald); color: #052e16; font-weight: 700; }
   .btn-danger { background: rgba(239, 68, 68, 0.16); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
@@ -72,12 +73,13 @@
 
   .nav-tabs {
     max-width: 1380px; margin: 12px auto 0; padding: 0 14px;
-    display: flex; gap: 6px; overflow-x: auto;
+    display: flex; gap: 6px; flex-wrap: wrap;
   }
   .tab-btn {
-    padding: 9px 14px; border-radius: 10px; border: 1px solid var(--border);
+    padding: 9px 13px; border-radius: 10px; border: 1px solid var(--border);
     background: var(--panel); color: var(--muted);
-    font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    touch-action: manipulation;
   }
   .tab-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
   .badge-count { background: rgba(0, 0, 0, 0.32); padding: 1px 7px; border-radius: 999px; font-size: 11px; }
@@ -100,7 +102,7 @@
   }
   .acc-header {
     display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; padding: 6px 2px;
+    cursor: pointer; padding: 6px 2px; touch-action: manipulation;
   }
   .acc-title { font-size: 14px; font-weight: 700; }
   .acc-body { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
@@ -114,6 +116,7 @@
   .mode-btn {
     padding: 9px; border-radius: 8px; border: none; background: transparent;
     color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer;
+    touch-action: manipulation;
   }
   .mode-btn.active { background: var(--primary); color: #fff; }
 
@@ -143,6 +146,7 @@
     border-radius: 10px; border: 1px solid var(--border);
     background: var(--card-2); color: var(--text);
     font-size: 20px; font-weight: 700; cursor: pointer;
+    touch-action: manipulation;
   }
   .step-btn:active { background: var(--primary); color: #fff; }
 
@@ -160,28 +164,30 @@
   .preset-btn {
     padding: 9px 4px; border-radius: 9px; border: 1px solid var(--border);
     background: var(--card-2); color: var(--text); font-size: 12px; font-weight: 700;
-    cursor: pointer; text-align: center;
+    cursor: pointer; text-align: center; touch-action: manipulation;
   }
   .preset-btn.star { border-color: rgba(245, 158, 11, 0.5); color: #fcd34d; }
   .preset-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
-  /* Botão Label nativo para iPhone Safari / Chrome */
-  .upload-label-btn {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  /* Caixa de upload com input cobrindo 100% da área para toque direto no iOS */
+  .upload-box-ios {
+    position: relative;
     border: 1.5px dashed #6366f1;
     background: rgba(99, 102, 241, 0.14);
     border-radius: 12px;
-    padding: 14px;
+    padding: 16px 12px;
     text-align: center;
-    cursor: pointer;
     margin-bottom: 10px;
+    overflow: hidden;
   }
-  .upload-label-btn:active { background: rgba(99, 102, 241, 0.25); }
-  .visually-hidden-file {
-    position: fixed;
-    top: -9999px;
-    left: -9999px;
+  .upload-box-ios input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
+    cursor: pointer;
+    z-index: 5;
   }
 
   .ai-box {
@@ -279,22 +285,22 @@
     <div class="brand">
       <div class="logo-badge">BP</div>
       <div>
-        <h1>Gabarito de Bottons Pro <span style="font-size:10px;background:#10b981;color:#052e16;padding:2px 6px;border-radius:6px;margin-left:4px;">v5</span></h1>
-        <p id="sys-status">Dark Studio 300 DPI • Escala Real 1:1</p>
+        <h1>Gabarito de Bottons Pro <span style="font-size:10px;background:#10b981;color:#052e16;padding:2px 6px;border-radius:6px;margin-left:4px;">v6</span></h1>
+        <p id="sys-status">Sistema Ativo • 300 DPI Escala 1:1</p>
       </div>
     </div>
     <div class="header-actions">
-      <button type="button" class="btn" onclick="window.appNewArt()">✨ Nova Arte</button>
-      <button type="button" class="btn btn-emerald" onclick="window.appOpenPrint()">🖨️ Imprimir / Baixar</button>
+      <button type="button" class="btn" data-act="newArt">✨ Nova Arte</button>
+      <button type="button" class="btn btn-emerald" data-act="openPrint">🖨️ Imprimir / Baixar</button>
     </div>
   </div>
 </header>
 
 <div class="nav-tabs">
-  <button type="button" class="tab-btn active" id="tabbtn-studio" onclick="window.appSwitchTab('studio')">🎨 Estúdio & Folha</button>
-  <button type="button" class="tab-btn" id="tabbtn-saved" onclick="window.appSwitchTab('saved')">💾 Arquivos Salvos <span class="badge-count" id="saved-badge">0</span></button>
-  <button type="button" class="tab-btn" id="tabbtn-calc" onclick="window.appSwitchTab('calc')">🧮 Calculadora</button>
-  <button type="button" class="tab-btn" id="tabbtn-orders" onclick="window.appSwitchTab('orders')">📦 Pedidos <span class="badge-count" id="orders-badge">0</span></button>
+  <button type="button" class="tab-btn active" id="tabbtn-studio" data-tab="studio">🎨 Estúdio & Folha</button>
+  <button type="button" class="tab-btn" id="tabbtn-saved" data-tab="saved">💾 Arquivos Salvos <span class="badge-count" id="saved-badge">0</span></button>
+  <button type="button" class="tab-btn" id="tabbtn-calc" data-tab="calc">🧮 Calculadora</button>
+  <button type="button" class="tab-btn" id="tabbtn-orders" data-tab="orders">📦 Pedidos <span class="badge-count" id="orders-badge">0</span></button>
 </div>
 
 <div class="container">
@@ -305,8 +311,8 @@
       <div id="tab-studio-center">
         <div class="stage-card">
           <div class="mode-switch">
-            <button type="button" class="mode-btn active" id="view-guide" onclick="window.appSetView('guide')">🎯 Modo Gabarito</button>
-            <button type="button" class="mode-btn" id="view-3d" onclick="window.appSetView('3d')">✨ Simulação 3D</button>
+            <button type="button" class="mode-btn active" id="view-guide" data-view="guide">🎯 Modo Gabarito</button>
+            <button type="button" class="mode-btn" id="view-3d" data-view="3d">✨ Simulação 3D</button>
           </div>
 
           <div class="canvas-wrap">
@@ -324,10 +330,10 @@
           </div>
 
           <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-            <button type="button" class="btn btn-full" onclick="window.appSaveArt()">💾 Salvar Arte</button>
+            <button type="button" class="btn btn-full" data-act="saveArt">💾 Salvar Arte</button>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <button type="button" class="btn btn-primary" onclick="window.appAddOne()">+ Adicionar 1 na Folha</button>
-              <button type="button" class="btn btn-emerald" onclick="window.appFillSheet()">Preencher Folha Inteira</button>
+              <button type="button" class="btn btn-primary" data-act="addOne">+ Adicionar 1 na Folha</button>
+              <button type="button" class="btn btn-emerald" data-act="fillSheet">Preencher Folha Inteira</button>
             </div>
           </div>
 
@@ -335,7 +341,7 @@
             <div style="font-size:12px;font-weight:700;color:#6ee7b7;" id="sheet-banner-text">
               ✅ Adicionado! Total na folha: 0 bottons.
             </div>
-            <button type="button" class="btn btn-emerald btn-sm btn-full" onclick="document.getElementById('sheet-column').scrollIntoView({behavior:'smooth'})">
+            <button type="button" class="btn btn-emerald btn-sm btn-full" data-act="scrollSheet">
               📄 Ver Folha de Impressão →
             </button>
           </div>
@@ -345,22 +351,22 @@
       <!-- CONTROLES -->
       <div id="tab-studio-left">
         <div class="card">
-          <div class="acc-header" onclick="window.appToggleAcc('acc-photo', this)">
+          <div class="acc-header" data-acc="acc-photo">
             <span class="acc-title">1. Foto, Gerador IA & Posição</span>
             <span>▼</span>
           </div>
           <div class="acc-body" id="acc-photo">
-            <input type="file" id="inp-file" class="visually-hidden-file" accept="image/*" onchange="window.appHandleFile(this)">
-            <label for="inp-file" class="upload-label-btn">
-              <div style="font-weight:700;font-size:14px;color:#fff;">📸 Escolher Foto da Galeria</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="quality-badge">Toque aqui para abrir suas fotos</div>
-            </label>
+            <div class="upload-box-ios">
+              <div style="font-weight:700;font-size:14px;color:#fff;">📸 Toque Aqui para Escolher Foto</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="quality-badge">Abre a galeria de fotos do celular</div>
+              <input type="file" id="inp-file" accept="image/*">
+            </div>
 
             <!-- GERADOR DE ARTE COM IA -->
             <div class="ai-box">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:6px;">
                 <span style="font-size:12px;font-weight:700;color:#c7d2fe;">✨ Gerador de Arte com IA</span>
-                <button type="button" class="btn btn-sm" onclick="window.appToggleKeyDrawer()" style="padding:4px 8px;font-size:11px;">🔑 Chave API</button>
+                <button type="button" class="btn btn-sm" data-act="toggleKeyDrawer" style="padding:4px 8px;font-size:11px;">🔑 Chave API</button>
               </div>
 
               <div class="ai-key-drawer" id="ai-key-drawer">
@@ -369,7 +375,7 @@
                 </div>
                 <div style="display:flex;gap:6px;">
                   <input type="text" id="inp-api-key" placeholder="Cole sua chave AIza... aqui">
-                  <button type="button" class="btn btn-emerald btn-sm" onclick="window.appSaveApiKey()">Salvar</button>
+                  <button type="button" class="btn btn-emerald btn-sm" data-act="saveApiKey">Salvar</button>
                 </div>
                 <div id="key-saved-msg" style="font-size:11px;color:#6ee7b7;margin-top:5px;display:none;"></div>
               </div>
@@ -386,7 +392,7 @@
                   <option value="minimalista">Minimalista</option>
                   <option value="realista">Realista</option>
                 </select>
-                <button type="button" class="btn btn-primary btn-sm" id="btn-ai-gen" onclick="window.appGenerateAI()">Gerar 4</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-ai-gen" data-act="generateAI">Gerar 4</button>
               </div>
               <div id="ai-status" style="font-size:11px;color:var(--muted);margin-top:6px;display:none;"></div>
               <div class="ai-grid" id="ai-results"></div>
@@ -398,9 +404,9 @@
                 <span class="ctrl-val mono" id="val-zoom">100%</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('zoom', -2)">−</button>
-                <input type="range" id="inp-zoom" min="30" max="300" step="1" value="100" oninput="window.appSet('zoom', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('zoom', 2)">+</button>
+                <button type="button" class="step-btn" data-step="zoom" data-delta="-2">−</button>
+                <input type="range" id="inp-zoom" data-bind="zoom" min="30" max="300" step="1" value="100">
+                <button type="button" class="step-btn" data-step="zoom" data-delta="2">+</button>
               </div>
             </div>
 
@@ -410,9 +416,9 @@
                 <span class="ctrl-val mono" id="val-x">0</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('x', -3)">−</button>
-                <input type="range" id="inp-x" min="-200" max="200" step="1" value="0" oninput="window.appSet('x', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('x', 3)">+</button>
+                <button type="button" class="step-btn" data-step="x" data-delta="-3">−</button>
+                <input type="range" id="inp-x" data-bind="x" min="-200" max="200" step="1" value="0">
+                <button type="button" class="step-btn" data-step="x" data-delta="3">+</button>
               </div>
             </div>
 
@@ -422,9 +428,9 @@
                 <span class="ctrl-val mono" id="val-y">0</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('y', -3)">−</button>
-                <input type="range" id="inp-y" min="-200" max="200" step="1" value="0" oninput="window.appSet('y', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('y', 3)">+</button>
+                <button type="button" class="step-btn" data-step="y" data-delta="-3">−</button>
+                <input type="range" id="inp-y" data-bind="y" min="-200" max="200" step="1" value="0">
+                <button type="button" class="step-btn" data-step="y" data-delta="3">+</button>
               </div>
             </div>
 
@@ -434,31 +440,31 @@
                 <span class="ctrl-val mono" id="val-rot">0°</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('rot', -1)">−</button>
-                <input type="range" id="inp-rot" min="-180" max="180" step="1" value="0" oninput="window.appSet('rot', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('rot', 1)">+</button>
+                <button type="button" class="step-btn" data-step="rot" data-delta="-1">−</button>
+                <input type="range" id="inp-rot" data-bind="rot" min="-180" max="180" step="1" value="0">
+                <button type="button" class="step-btn" data-step="rot" data-delta="1">+</button>
               </div>
             </div>
 
             <div class="ctrl-group" style="display:flex;align-items:center;justify-content:space-between;">
               <span style="font-size:12px;color:var(--muted);font-weight:600;">Cor de Fundo / Borda</span>
               <div style="display:flex;align-items:center;gap:6px;">
-                <button type="button" class="btn btn-sm" onclick="window.appCenterPhoto()">Centralizar</button>
-                <input type="color" id="inp-bg" value="#ffffff" oninput="window.appSetStr('bgColor', this.value)">
+                <button type="button" class="btn btn-sm" data-act="centerPhoto">Centralizar</button>
+                <input type="color" id="inp-bg" data-bind-str="bgColor" value="#ffffff">
               </div>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="acc-header" onclick="window.appToggleAcc('acc-size', this)">
+          <div class="acc-header" data-acc="acc-size">
             <span class="acc-title">2. Medida & Formato (25, 32, 44, 58mm)</span>
             <span>▼</span>
           </div>
           <div class="acc-body" id="acc-size">
             <div class="mode-switch" style="margin-bottom:10px;">
-              <button type="button" class="mode-btn active" id="shape-round" onclick="window.appSetShape('round')">⭕ Redondo</button>
-              <button type="button" class="mode-btn" id="shape-square" onclick="window.appSetShape('square')">⬜ Quadrado</button>
+              <button type="button" class="mode-btn active" id="shape-round" data-shape="round">⭕ Redondo</button>
+              <button type="button" class="mode-btn" id="shape-square" data-shape="square">⬜ Quadrado</button>
             </div>
             <div class="preset-grid" id="presets-container"></div>
 
@@ -468,9 +474,9 @@
                 <span class="ctrl-val mono" id="val-front">44 mm</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('frontMm', -1)">−</button>
-                <input type="range" id="inp-front" min="20" max="90" step="1" value="44" oninput="window.appSet('frontMm', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('frontMm', 1)">+</button>
+                <button type="button" class="step-btn" data-step="frontMm" data-delta="-1">−</button>
+                <input type="range" id="inp-front" data-bind="frontMm" min="20" max="90" step="1" value="44">
+                <button type="button" class="step-btn" data-step="frontMm" data-delta="1">+</button>
               </div>
             </div>
 
@@ -480,31 +486,31 @@
                 <span class="ctrl-val mono" id="val-bleed">+10 mm</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('bleedMm', -1)">−</button>
-                <input type="range" id="inp-bleed" min="4" max="20" step="1" value="10" oninput="window.appSet('bleedMm', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('bleedMm', 1)">+</button>
+                <button type="button" class="step-btn" data-step="bleedMm" data-delta="-1">−</button>
+                <input type="range" id="inp-bleed" data-bind="bleedMm" min="4" max="20" step="1" value="10">
+                <button type="button" class="step-btn" data-step="bleedMm" data-delta="1">+</button>
               </div>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="acc-header" onclick="window.appToggleAcc('acc-text', this)">
+          <div class="acc-header" data-acc="acc-text">
             <span class="acc-title">3. Texto & Curvatura</span>
             <span>▶</span>
           </div>
           <div class="acc-body collapsed" id="acc-text">
             <div class="ctrl-group">
               <div class="ctrl-label"><span>Texto no Botton</span></div>
-              <input type="text" id="inp-text" placeholder="Ex: Lembre-se de mim • 2026" oninput="window.appSetStr('text', this.value)">
+              <input type="text" id="inp-text" data-bind-str="text" placeholder="Ex: Lembre-se de mim • 2026">
             </div>
             <div style="display:flex;gap:8px;margin-bottom:10px;">
-              <select id="inp-text-mode" style="flex:1;" onchange="window.appSetStr('textMode', this.value)">
+              <select id="inp-text-mode" data-bind-str="textMode" style="flex:1;">
                 <option value="straight">Texto Reto</option>
                 <option value="arc-top">Curvado por Cima</option>
                 <option value="arc-bottom">Curvado por Baixo</option>
               </select>
-              <input type="color" id="inp-text-color" value="#ffffff" oninput="window.appSetStr('textColor', this.value)">
+              <input type="color" id="inp-text-color" data-bind-str="textColor" value="#ffffff">
             </div>
             <div class="ctrl-group">
               <div class="ctrl-label">
@@ -512,9 +518,9 @@
                 <span class="ctrl-val mono" id="val-fsize">22 px</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('fontSize', -1)">−</button>
-                <input type="range" id="inp-fsize" min="10" max="64" step="1" value="22" oninput="window.appSet('fontSize', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('fontSize', 1)">+</button>
+                <button type="button" class="step-btn" data-step="fontSize" data-delta="-1">−</button>
+                <input type="range" id="inp-fsize" data-bind="fontSize" min="10" max="64" step="1" value="22">
+                <button type="button" class="step-btn" data-step="fontSize" data-delta="1">+</button>
               </div>
             </div>
             <div class="ctrl-group">
@@ -523,16 +529,16 @@
                 <span class="ctrl-val mono" id="val-ty">65%</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('textY', -2)">−</button>
-                <input type="range" id="inp-ty" min="-95" max="95" step="1" value="65" oninput="window.appSet('textY', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('textY', 2)">+</button>
+                <button type="button" class="step-btn" data-step="textY" data-delta="-2">−</button>
+                <input type="range" id="inp-ty" data-bind="textY" min="-95" max="95" step="1" value="65">
+                <button type="button" class="step-btn" data-step="textY" data-delta="2">+</button>
               </div>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="acc-header" onclick="window.appToggleAcc('acc-fx', this)">
+          <div class="acc-header" data-acc="acc-fx">
             <span class="acc-title">4. Acabamento, Moldura & QR Code</span>
             <span>▶</span>
           </div>
@@ -543,9 +549,9 @@
                 <span class="ctrl-val mono" id="val-bright">100%</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('bright', -2)">−</button>
-                <input type="range" id="inp-bright" min="60" max="150" step="1" value="100" oninput="window.appSet('bright', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('bright', 2)">+</button>
+                <button type="button" class="step-btn" data-step="bright" data-delta="-2">−</button>
+                <input type="range" id="inp-bright" data-bind="bright" min="60" max="150" step="1" value="100">
+                <button type="button" class="step-btn" data-step="bright" data-delta="2">+</button>
               </div>
             </div>
             <div class="ctrl-group">
@@ -554,9 +560,9 @@
                 <span class="ctrl-val mono" id="val-contrast">100%</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStep('contrast', -2)">−</button>
-                <input type="range" id="inp-contrast" min="60" max="150" step="1" value="100" oninput="window.appSet('contrast', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('contrast', 2)">+</button>
+                <button type="button" class="step-btn" data-step="contrast" data-delta="-2">−</button>
+                <input type="range" id="inp-contrast" data-bind="contrast" min="60" max="150" step="1" value="100">
+                <button type="button" class="step-btn" data-step="contrast" data-delta="2">+</button>
               </div>
             </div>
             <div class="ctrl-group">
@@ -565,15 +571,15 @@
                 <span class="ctrl-val mono" id="val-ring">0 px</span>
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
-                <button type="button" class="step-btn" onclick="window.appStep('ringSize', -1)">−</button>
-                <input type="range" id="inp-ring" min="0" max="24" step="1" value="0" oninput="window.appSet('ringSize', this.value)">
-                <button type="button" class="step-btn" onclick="window.appStep('ringSize', 1)">+</button>
-                <input type="color" id="inp-ring-color" value="#f59e0b" oninput="window.appSetStr('ringColor', this.value)">
+                <button type="button" class="step-btn" data-step="ringSize" data-delta="-1">−</button>
+                <input type="range" id="inp-ring" data-bind="ringSize" min="0" max="24" step="1" value="0">
+                <button type="button" class="step-btn" data-step="ringSize" data-delta="1">+</button>
+                <input type="color" id="inp-ring-color" data-bind-str="ringColor" value="#f59e0b">
               </div>
             </div>
             <div class="ctrl-group">
               <div class="ctrl-label"><span>QR Code Centralizado</span></div>
-              <input type="text" id="inp-qr" placeholder="Cole o link aqui para gerar QR Code" oninput="window.appSetStr('qrText', this.value)">
+              <input type="text" id="inp-qr" data-bind-str="qrText" placeholder="Cole o link aqui para gerar QR Code">
             </div>
           </div>
         </div>
@@ -584,13 +590,13 @@
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <span style="font-size:14px;font-weight:700;">📄 Folha de Impressão (1:1)</span>
-            <button type="button" class="btn btn-danger btn-sm" onclick="window.appClearSheet()">Limpar Folha</button>
+            <button type="button" class="btn btn-danger btn-sm" data-act="clearSheet">Limpar Folha</button>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
             <div>
               <div class="ctrl-label"><span>Papel</span></div>
-              <select id="inp-paper" onchange="window.appSetPaper(this.value)">
+              <select id="inp-paper">
                 <option value="a4">A4 (210 × 297 mm)</option>
                 <option value="letter">Carta (215.9 × 279.4 mm)</option>
               </select>
@@ -601,9 +607,9 @@
                 <span class="ctrl-val mono" id="val-gap">4 mm</span>
               </div>
               <div class="stepper-row">
-                <button type="button" class="step-btn" onclick="window.appStepGap(-1)" style="width:34px;height:36px;">−</button>
-                <input type="range" id="inp-gap" min="1" max="15" step="1" value="4" oninput="window.appSetGap(this.value)">
-                <button type="button" class="step-btn" onclick="window.appStepGap(1)" style="width:34px;height:36px;">+</button>
+                <button type="button" class="step-btn" data-act="gapMinus" style="width:34px;height:36px;">−</button>
+                <input type="range" id="inp-gap" min="1" max="15" step="1" value="4">
+                <button type="button" class="step-btn" data-act="gapPlus" style="width:34px;height:36px;">+</button>
               </div>
             </div>
           </div>
@@ -625,11 +631,11 @@
           <p style="font-size:12px;color:var(--muted);">Selecione várias artes salvas para combinar na mesma folha.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          <button type="button" class="btn btn-sm" onclick="window.appToggleSelectAll()">☑️ Selecionar Todos</button>
-          <button type="button" class="btn btn-sm" onclick="window.appExportBackup()">⬇️ Backup (.json)</button>
-          <label class="btn btn-sm" style="cursor:pointer;">
-            ⬆️ Restaurar <input type="file" id="inp-import-backup" accept=".json" style="display:none;" onchange="window.appImportBackup(this)">
-          </label>
+          <button type="button" class="btn btn-sm" data-act="toggleSelectAll">☑️ Selecionar Todos</button>
+          <button type="button" class="btn btn-sm" data-act="exportBackup">⬇️ Backup (.json)</button>
+          <div class="btn btn-sm" style="position:relative;overflow:hidden;">
+            ⬆️ Restaurar <input type="file" id="inp-import-backup" accept=".json" style="position:absolute;inset:0;opacity:0;">
+          </div>
         </div>
       </div>
 
@@ -637,8 +643,8 @@
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
           <span style="font-size:13px;font-weight:700;" id="batch-summary">0 selecionados</span>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button type="button" class="btn btn-primary btn-sm" onclick="window.appBatchAdd()">+ Adicionar Selecionados à Folha</button>
-            <button type="button" class="btn btn-emerald btn-sm" onclick="window.appBatchFill()">Distribuir Selecionados na Folha</button>
+            <button type="button" class="btn btn-primary btn-sm" data-act="batchAdd">+ Adicionar Selecionados à Folha</button>
+            <button type="button" class="btn btn-emerald btn-sm" data-act="batchFill">Distribuir Selecionados na Folha</button>
           </div>
         </div>
       </div>
@@ -654,31 +660,31 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
         <div>
           <div class="ctrl-label"><span>Quantidade do Pedido</span></div>
-          <input type="number" id="calc-qty" value="50" min="1" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-qty" value="50" min="1">
         </div>
         <div>
           <div class="ctrl-label"><span>Bottons por Folha</span></div>
-          <input type="number" id="calc-per-sheet" value="12" min="1" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-per-sheet" value="12" min="1">
         </div>
         <div>
           <div class="ctrl-label"><span>Insumo Unitário (R$)</span></div>
-          <input type="number" id="calc-unit-insumo" value="0.65" step="0.05" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-unit-insumo" value="0.65" step="0.05">
         </div>
         <div>
           <div class="ctrl-label"><span>Papel + Tinta / Folha (R$)</span></div>
-          <input type="number" id="calc-sheet-cost" value="1.50" step="0.10" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-sheet-cost" value="1.50" step="0.10">
         </div>
         <div>
           <div class="ctrl-label"><span>Embalagem / Outros (R$)</span></div>
-          <input type="number" id="calc-pack" value="0.15" step="0.05" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-pack" value="0.15" step="0.05">
         </div>
         <div>
           <div class="ctrl-label"><span>Margem de Lucro (%)</span></div>
-          <input type="number" id="calc-margin" value="150" step="10" oninput="window.appUpdateCalc()">
+          <input type="number" id="calc-margin" value="150" step="10">
         </div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;" id="calc-result"></div>
-      <button type="button" class="btn btn-emerald btn-full" onclick="window.appCopyQuote()">📋 Copiar Orçamento para WhatsApp</button>
+      <button type="button" class="btn btn-emerald btn-full" data-act="copyQuote">📋 Copiar Orçamento para WhatsApp</button>
     </div>
   </div>
 
@@ -696,7 +702,7 @@
           <option value="58mm">58mm</option>
           <option value="Quadrado">Quadrado</option>
         </select>
-        <button type="button" class="btn btn-primary" onclick="window.appAddOrder()">+ Pedido</button>
+        <button type="button" class="btn btn-primary" data-act="addOrder">+ Pedido</button>
       </div>
       <div id="orders-list"></div>
     </div>
@@ -708,14 +714,14 @@
   <div class="modal-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <h3 style="font-size:16px;font-weight:700;">🖨️ Folha Pronta em 300 DPI (Escala 1:1)</h3>
-      <button type="button" class="btn btn-sm" onclick="document.getElementById('print-modal').classList.remove('open')">✕ Fechar</button>
+      <button type="button" class="btn btn-sm" data-act="closePrint">✕ Fechar</button>
     </div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
       Para impressão exata sem redução: clique em <b>Imprimir Direto</b> e marque <b>"Tamanho Real / Escala 100%"</b>, ou baixe a imagem PNG em 300 DPI para imprimir pela galeria/computador.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-      <button type="button" class="btn btn-primary" onclick="window.appNativePrint()">🖨️ Imprimir Direto (Ctrl+P)</button>
-      <button type="button" class="btn btn-emerald" onclick="window.appDownloadPngs()">⬇️ Baixar Folha PNG (300 DPI)</button>
+      <button type="button" class="btn btn-primary" data-act="nativePrint">🖨️ Imprimir Direto (Ctrl+P)</button>
+      <button type="button" class="btn btn-emerald" data-act="downloadPngs">⬇️ Baixar Folha PNG (300 DPI)</button>
     </div>
     <div id="modal-pages-preview" style="display:flex;flex-direction:column;gap:12px;align-items:center;"></div>
   </div>
@@ -724,6 +730,11 @@
 <script>
 (function() {
   var $ = function(id) { return document.getElementById(id); };
+
+  function setStatus(msg) {
+    var el = $('sys-status');
+    if (el) el.textContent = msg;
+  }
 
   var PRESETS = [
     { label: '★ 25mm', size: 25, bleed: 8, star: true },
@@ -780,7 +791,7 @@
     return new Promise(function(resolve) {
       try {
         if (!window.indexedDB) return resolve(null);
-        var req = indexedDB.open('BottonsProDB_v5', 1);
+        var req = indexedDB.open('BottonsProDB_v6', 1);
         req.onupgradeneeded = function(e) {
           var d = e.target.result;
           if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
@@ -838,6 +849,22 @@
       img.onerror = function(err) { reject(err); };
       img.src = src;
     });
+  }
+
+  // Otimiza fotos de alta resolução do iPhone (12MP/48MP) para não estourar memória do Safari
+  function normalizeImageForIos(img) {
+    var maxSide = 1600;
+    var w = img.naturalWidth || img.width;
+    var h = img.naturalHeight || img.height;
+    var scale = Math.min(1, maxSide / Math.max(w, h));
+    var tw = Math.round(w * scale);
+    var th = Math.round(h * scale);
+    var c = document.createElement('canvas');
+    c.width = tw;
+    c.height = th;
+    var ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, tw, th);
+    return { canvas: c, dataUrl: c.toDataURL('image/jpeg', 0.92), width: tw, height: th };
   }
 
   function drawBottonArtwork(ctx, sizePx, cfg, imgElement, is3DPreview) {
@@ -1001,7 +1028,7 @@
     var canvas = $('editor-canvas');
     if (!canvas) return;
     var rect = canvas.getBoundingClientRect();
-    var dpr = Math.max(window.devicePixelRatio || 1, 3);
+    var dpr = Math.min(window.devicePixelRatio || 2, 3);
     var px = Math.round((rect.width || 310) * dpr);
     canvas.width = px;
     canvas.height = px;
@@ -1073,13 +1100,8 @@
       b.type = 'button';
       b.className = 'preset-btn' + (p.star ? ' star' : '') + (state.frontMm === p.size ? ' active' : '');
       b.textContent = p.label;
-      b.onclick = function() {
-        state.frontMm = p.size;
-        state.bleedMm = p.bleed;
-        syncUI();
-        renderEditor();
-        savePersist();
-      };
+      b.setAttribute('data-preset-size', p.size);
+      b.setAttribute('data-preset-bleed', p.bleed);
       wrap.appendChild(b);
     });
   }
@@ -1124,7 +1146,7 @@
 
     var badge = $('quality-badge');
     if (!state.imgObj) {
-      badge.textContent = 'Toque aqui para abrir suas fotos';
+      badge.textContent = 'Abre a galeria de fotos do celular';
       badge.style.color = 'var(--muted)';
     } else {
       badge.textContent = '✅ Foto carregada: ' + state.imgObj.width + '×' + state.imgObj.height + 'px';
@@ -1132,125 +1154,54 @@
     }
   }
 
-  // --- FUNÇÕES GLOBAIS EXPOSTAS EM WINDOW ---
-  window.appStep = function(key, delta) {
-    var lim = LIMITS[key] || [-999, 999];
-    state[key] = Math.max(lim[0], Math.min(lim[1], (Number(state[key]) || 0) + delta));
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appSet = function(key, val) {
-    state[key] = parseFloat(val);
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appSetStr = function(key, val) {
-    state[key] = val;
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appSetShape = function(sh) {
-    state.shape = sh;
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appSetView = function(mode) {
-    state.viewMode = mode;
-    $('view-guide').classList.toggle('active', mode === 'guide');
-    $('view-3d').classList.toggle('active', mode === '3d');
-    $('guide-legend').style.display = mode === 'guide' ? 'flex' : 'none';
-    renderEditor();
-  };
-
-  window.appCenterPhoto = function() {
-    state.x = 0; state.y = 0; state.rot = 0;
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appToggleAcc = function(bodyId, headerEl) {
-    var body = $(bodyId);
-    if (!body) return;
-    var collapsed = body.classList.toggle('collapsed');
-    if (headerEl && headerEl.querySelector('span:last-child')) {
-      headerEl.querySelector('span:last-child').textContent = collapsed ? '▶' : '▼';
-    }
-  };
-
-  window.appSwitchTab = function(tabName) {
-    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-    var btn = $('tabbtn-' + tabName);
-    var panel = $('tab-' + tabName);
-    if (btn) btn.classList.add('active');
-    if (panel) panel.classList.add('active');
-    if (tabName === 'studio') renderEditor();
-  };
-
-  window.appHandleFile = function(inputEl) {
-    var file = inputEl.files && inputEl.files[0];
+  // --- UPLOAD DE FOTO OTIMIZADO PARA IPHONE ---
+  function processUploadedFile(file) {
     if (!file) return;
-    $('quality-badge').textContent = '⏳ Carregando foto...';
+    $('quality-badge').textContent = '⏳ Processando foto...';
     $('quality-badge').style.color = '#fcd34d';
+    setStatus('Carregando imagem...');
 
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      var dataUrl = ev.target.result;
-      var img = new Image();
-      img.onload = function() {
-        state.imgDataUrl = dataUrl;
-        state.imgObj = img;
-        state.x = 0;
-        state.y = 0;
-        state.zoom = 100;
-        syncUI();
-        renderEditor();
-        savePersist();
-      };
-      img.onerror = function() {
-        $('quality-badge').textContent = '⚠️ Não foi possível abrir esta foto.';
-      };
-      img.src = dataUrl;
+    var objUrl = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function() {
+      var norm = normalizeImageForIos(img);
+      state.imgObj = norm.canvas;
+      state.imgDataUrl = norm.dataUrl;
+      state.x = 0;
+      state.y = 0;
+      state.zoom = 100;
+      URL.revokeObjectURL(objUrl);
+      syncUI();
+      renderEditor();
+      savePersist();
+      setStatus('✅ Foto aplicada com sucesso');
     };
-    reader.onerror = function() {
-      var objUrl = URL.createObjectURL(file);
-      var img2 = new Image();
-      img2.onload = function() {
-        state.imgObj = img2;
-        state.x = 0; state.y = 0; state.zoom = 100;
-        syncUI();
-        renderEditor();
+    img.onerror = function() {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var img2 = new Image();
+        img2.onload = function() {
+          var norm = normalizeImageForIos(img2);
+          state.imgObj = norm.canvas;
+          state.imgDataUrl = norm.dataUrl;
+          state.x = 0; state.y = 0; state.zoom = 100;
+          syncUI();
+          renderEditor();
+          savePersist();
+          setStatus('✅ Foto aplicada com sucesso');
+        };
+        img2.onerror = function() {
+          $('quality-badge').textContent = '⚠️ Não foi possível abrir este arquivo.';
+        };
+        img2.src = ev.target.result;
       };
-      img2.src = objUrl;
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
+    img.src = objUrl;
+  }
 
-  window.appToggleKeyDrawer = function() {
-    $('ai-key-drawer').classList.toggle('open');
-  };
-
-  window.appSaveApiKey = function() {
-    state.apiKey = $('inp-api-key').value.trim();
-    savePersist();
-    var msg = $('key-saved-msg');
-    msg.style.display = 'block';
-    msg.textContent = state.apiKey
-      ? '✅ Chave salva! O motor Google Gemini/Imagen será usado.'
-      : 'ℹ️ Chave removida. Usando o gerador gratuito.';
-    setTimeout(function() { $('ai-key-drawer').classList.remove('open'); }, 1200);
-  };
-
-  window.appGenerateAI = async function() {
+  // --- GERADOR DE IA ---
+  async function generateAI() {
     var topic = $('ai-prompt').value.trim();
     var statusEl = $('ai-status');
     var gridEl = $('ai-results');
@@ -1340,7 +1291,7 @@
     statusEl.textContent = '✅ Toque na imagem desejada para aplicar no botton:';
     genBtn.disabled = false;
     genBtn.textContent = 'Gerar 4';
-  };
+  }
 
   function renderAiGrid(urls) {
     var gridEl = $('ai-results');
@@ -1348,6 +1299,7 @@
     urls.forEach(function(url, idx) {
       var div = document.createElement('div');
       div.className = 'ai-thumb';
+      div.setAttribute('data-ai-url', url);
       var im = document.createElement('img');
       im.crossOrigin = 'anonymous';
       im.src = url;
@@ -1356,32 +1308,11 @@
       badge.textContent = 'Opção ' + (idx + 1);
       div.appendChild(im);
       div.appendChild(badge);
-
-      div.onclick = async function() {
-        $('quality-badge').textContent = '⏳ Aplicando arte selecionada...';
-        try {
-          var loaded = await loadImageFromSource(url, true);
-          state.imgObj = loaded;
-          state.x = 0; state.y = 0; state.zoom = 100;
-          syncUI();
-          renderEditor();
-          try {
-            var c = document.createElement('canvas');
-            c.width = loaded.naturalWidth || 768;
-            c.height = loaded.naturalHeight || 768;
-            c.getContext('2d').drawImage(loaded, 0, 0);
-            state.imgDataUrl = c.toDataURL('image/png');
-            savePersist();
-          } catch (e) {}
-          $('tab-studio-center').scrollIntoView({ behavior: 'smooth' });
-        } catch (err) {
-          alert('Aguarde a miniatura terminar de carregar e toque novamente.');
-        }
-      };
       gridEl.appendChild(div);
     });
   }
 
+  // --- FOLHA DE IMPRESSÃO ---
   function getPaperDimsMm() {
     return state.paper === 'letter' ? { w: 215.9, h: 279.4, label: 'Carta' } : { w: 210, h: 297, label: 'A4' };
   }
@@ -1404,72 +1335,6 @@
     }
   }
 
-  window.appAddOne = function() {
-    var dataUrl300 = generate300DpiDataUrl(state, state.imgObj);
-    var cutMm = state.frontMm + state.bleedMm;
-    state.sheetItems.push({
-      id: Date.now() + Math.random(),
-      name: 'Botton ' + state.frontMm + 'mm (' + (state.shape === 'square' ? 'Quad' : 'Red') + ')',
-      frontMm: state.frontMm, bleedMm: state.bleedMm, cutMm: cutMm,
-      shape: state.shape, qty: 1, dataUrl300: dataUrl300
-    });
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-  };
-
-  window.appFillSheet = function() {
-    var dataUrl300 = generate300DpiDataUrl(state, state.imgObj);
-    var cutMm = state.frontMm + state.bleedMm;
-    var cap = calculateCapacityForItem(cutMm);
-    state.sheetItems = [{
-      id: Date.now(),
-      name: 'Botton ' + state.frontMm + 'mm (' + (state.shape === 'square' ? 'Quad' : 'Red') + ')',
-      frontMm: state.frontMm, bleedMm: state.bleedMm, cutMm: cutMm,
-      shape: state.shape, qty: cap, dataUrl300: dataUrl300
-    }];
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-  };
-
-  window.appClearSheet = function() {
-    state.sheetItems = [];
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-  };
-
-  window.appSetPaper = function(v) { state.paper = v; renderSheetPages(); savePersist(); };
-  window.appSetGap = function(v) { state.gapMm = parseFloat(v); $('val-gap').textContent = state.gapMm + ' mm'; renderSheetPages(); savePersist(); };
-  window.appStepGap = function(d) {
-    state.gapMm = Math.max(1, Math.min(15, state.gapMm + d));
-    $('inp-gap').value = state.gapMm;
-    $('val-gap').textContent = state.gapMm + ' mm';
-    renderSheetPages();
-    savePersist();
-  };
-
-  window.appSheetQty = function(idx, delta) {
-    state.sheetItems[idx].qty += delta;
-    if (state.sheetItems[idx].qty <= 0) state.sheetItems.splice(idx, 1);
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-  };
-
-  window.appSheetDel = function(idx) {
-    state.sheetItems.splice(idx, 1);
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-  };
-
   function renderSheetItemsList() {
     var list = $('sheet-items-list');
     list.innerHTML = '';
@@ -1485,10 +1350,10 @@
           '</div>' +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:5px;">' +
-          '<button type="button" class="btn btn-sm" onclick="window.appSheetQty(' + idx + ',-1)">−</button>' +
+          '<button type="button" class="btn btn-sm" data-sheet-qty="' + idx + '" data-delta="-1">−</button>' +
           '<span class="mono" style="font-size:12px;font-weight:700;min-width:22px;text-align:center;">' + item.qty + '</span>' +
-          '<button type="button" class="btn btn-sm" onclick="window.appSheetQty(' + idx + ',1)">+</button>' +
-          '<button type="button" class="btn btn-danger btn-sm" onclick="window.appSheetDel(' + idx + ')">✕</button>' +
+          '<button type="button" class="btn btn-sm" data-sheet-qty="' + idx + '" data-delta="1">+</button>' +
+          '<button type="button" class="btn btn-danger btn-sm" data-sheet-del="' + idx + '">✕</button>' +
         '</div>';
       list.appendChild(row);
     });
@@ -1614,84 +1479,6 @@
     });
   }
 
-  window.appOpenPrint = async function() {
-    var modal = $('print-modal');
-    var prev = $('modal-pages-preview');
-    prev.innerHTML = '<div style="padding:20px;color:var(--muted);">Gerando folhas em 300 DPI reais...</div>';
-    modal.classList.add('open');
-    exportCanvases300 = await buildSheetCanvases(300);
-    prev.innerHTML = '';
-    exportCanvases300.forEach(function(c, idx) {
-      var wrap = document.createElement('div');
-      wrap.style.cssText = 'width:100%;text-align:center;';
-      var title = document.createElement('div');
-      title.style.cssText = 'font-size:12px;font-weight:700;margin-bottom:6px;color:#6ee7b7;';
-      title.textContent = 'Página ' + (idx + 1) + ' (' + c.width + ' × ' + c.height + ' px • 300 DPI)';
-      c.style.maxHeight = '380px';
-      wrap.appendChild(title);
-      wrap.appendChild(c);
-      prev.appendChild(wrap);
-    });
-  };
-
-  window.appNativePrint = function() {
-    $('print-modal').classList.remove('open');
-    setTimeout(function() { window.print(); }, 150);
-  };
-
-  window.appDownloadPngs = function() {
-    exportCanvases300.forEach(function(c, idx) {
-      var a = document.createElement('a');
-      a.download = 'folha-bottons-300dpi-pag' + (idx + 1) + '.png';
-      a.href = c.toDataURL('image/png');
-      a.click();
-    });
-  };
-
-  window.appNewArt = function() {
-    var keepSheet = state.sheetItems.length > 0 && confirm('Manter os bottons que já estão na folha de impressão?
-
-OK = Limpar só o editor
-Cancelar = Zerar tudo');
-    state.imgDataUrl = null;
-    state.imgObj = null;
-    state.x = 0; state.y = 0; state.zoom = 100; state.rot = 0;
-    state.text = ''; state.qrText = ''; state.ringSize = 0;
-    state.bright = 100; state.contrast = 100;
-    $('inp-file').value = '';
-    if (!keepSheet) {
-      state.sheetItems = [];
-      renderSheetItemsList();
-      renderSheetPages();
-      showSheetBanner();
-    }
-    syncUI();
-    renderEditor();
-    savePersist();
-  };
-
-  window.appSaveArt = function() {
-    var defaultName = 'Botton ' + state.frontMm + 'mm #' + (state.savedArts.length + 1);
-    var name = prompt('Nome para salvar esta arte:', defaultName);
-    if (!name) return;
-    var thumbUrl = generate300DpiDataUrl(state, state.imgObj);
-    var snapshot = {
-      shape: state.shape, frontMm: state.frontMm, bleedMm: state.bleedMm,
-      zoom: state.zoom, x: state.x, y: state.y, rot: state.rot,
-      bgColor: state.bgColor, text: state.text, textMode: state.textMode,
-      textColor: state.textColor, fontSize: state.fontSize, textY: state.textY,
-      bright: state.bright, contrast: state.contrast, ringSize: state.ringSize,
-      ringColor: state.ringColor, qrText: state.qrText, imgDataUrl: state.imgDataUrl
-    };
-    state.savedArts.unshift({
-      id: Date.now(), name: name.trim(), snapshot: snapshot,
-      thumbUrl: thumbUrl, selected: false, batchQty: 1
-    });
-    renderSavedGrid();
-    savePersist();
-    alert('✅ Arte salva na aba "Arquivos Salvos"!');
-  };
-
   function renderSavedGrid() {
     $('saved-badge').textContent = state.savedArts.length;
     var grid = $('saved-grid');
@@ -1717,135 +1504,30 @@ Cancelar = Zerar tudo');
       card.className = 'saved-card' + (art.selected ? ' selected' : '');
       card.innerHTML =
         '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-          '<label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;">' +
-            '<input type="checkbox" onchange="window.appSavedToggle(' + idx + ')" ' + (art.selected ? 'checked' : '') + ' style="width:18px;height:18px;"> Selecionar' +
-          '</label>' +
+          '<button type="button" class="btn btn-sm" data-saved-toggle="' + idx + '" style="padding:4px 8px;">' + (art.selected ? '☑️ Selecionado' : '⬜ Selecionar') + '</button>' +
           '<span class="mono" style="font-size:11px;color:var(--muted);">' + art.snapshot.frontMm + 'mm</span>' +
         '</div>' +
-        '<img src="' + art.thumbUrl + '" class="saved-preview" onclick="window.appSavedToggle(' + idx + ')">' +
+        '<img src="' + art.thumbUrl + '" class="saved-preview" data-saved-toggle="' + idx + '">' +
         '<div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + art.name + '</div>' +
         (art.selected ?
           '<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);padding:5px 8px;border-radius:8px;border:1px solid var(--border);">' +
             '<span style="font-size:11px;color:var(--muted);">Cópias na folha:</span>' +
             '<div style="display:flex;align-items:center;gap:6px;">' +
-              '<button type="button" class="btn btn-sm" onclick="window.appSavedBatchQty(' + idx + ',-1)" style="padding:3px 9px;">−</button>' +
+              '<button type="button" class="btn btn-sm" data-saved-bqty="' + idx + '" data-delta="-1" style="padding:3px 9px;">−</button>' +
               '<span class="mono" style="font-size:12px;font-weight:700;">' + (art.batchQty || 1) + '</span>' +
-              '<button type="button" class="btn btn-sm" onclick="window.appSavedBatchQty(' + idx + ',1)" style="padding:3px 9px;">+</button>' +
+              '<button type="button" class="btn btn-sm" data-saved-bqty="' + idx + '" data-delta="1" style="padding:3px 9px;">+</button>' +
             '</div>' +
           '</div>' : '') +
         '<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;">' +
-          '<button type="button" class="btn btn-primary btn-sm" onclick="window.appSavedEdit(' + idx + ')">Editar</button>' +
-          '<button type="button" class="btn btn-emerald btn-sm" onclick="window.appSavedAddOne(' + idx + ')">+1 Folha</button>' +
-          '<button type="button" class="btn btn-danger btn-sm" onclick="window.appSavedDel(' + idx + ')">🗑️</button>' +
+          '<button type="button" class="btn btn-primary btn-sm" data-saved-edit="' + idx + '">Editar</button>' +
+          '<button type="button" class="btn btn-emerald btn-sm" data-saved-add="' + idx + '">+1 Folha</button>' +
+          '<button type="button" class="btn btn-danger btn-sm" data-saved-del="' + idx + '">🗑️</button>' +
         '</div>';
       grid.appendChild(card);
     });
   }
 
-  window.appSavedToggle = function(idx) {
-    state.savedArts[idx].selected = !state.savedArts[idx].selected;
-    if (!state.savedArts[idx].batchQty) state.savedArts[idx].batchQty = 1;
-    renderSavedGrid();
-  };
-  window.appSavedBatchQty = function(idx, d) {
-    state.savedArts[idx].batchQty = Math.max(1, (state.savedArts[idx].batchQty || 1) + d);
-    renderSavedGrid();
-  };
-  window.appSavedEdit = async function(idx) {
-    var art = state.savedArts[idx];
-    Object.assign(state, art.snapshot);
-    state.imgObj = state.imgDataUrl ? await loadImageFromSource(state.imgDataUrl, false) : null;
-    syncUI();
-    renderEditor();
-    window.appSwitchTab('studio');
-  };
-  window.appSavedAddOne = function(idx) {
-    var art = state.savedArts[idx];
-    state.sheetItems.push({
-      id: Date.now() + Math.random(), name: art.name,
-      frontMm: art.snapshot.frontMm, bleedMm: art.snapshot.bleedMm,
-      cutMm: art.snapshot.frontMm + art.snapshot.bleedMm,
-      shape: art.snapshot.shape, qty: 1, dataUrl300: art.thumbUrl
-    });
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-    window.appSwitchTab('studio');
-  };
-  window.appSavedDel = function(idx) {
-    if (confirm('Excluir "' + state.savedArts[idx].name + '"?')) {
-      state.savedArts.splice(idx, 1);
-      renderSavedGrid();
-      savePersist();
-    }
-  };
-  window.appToggleSelectAll = function() {
-    var all = state.savedArts.length > 0 && state.savedArts.every(function(a) { return a.selected; });
-    state.savedArts.forEach(function(a) { a.selected = !all; if (!a.batchQty) a.batchQty = 1; });
-    renderSavedGrid();
-  };
-  window.appBatchAdd = function() {
-    state.savedArts.filter(function(a) { return a.selected; }).forEach(function(art) {
-      state.sheetItems.push({
-        id: Date.now() + Math.random(), name: art.name,
-        frontMm: art.snapshot.frontMm, bleedMm: art.snapshot.bleedMm,
-        cutMm: art.snapshot.frontMm + art.snapshot.bleedMm,
-        shape: art.snapshot.shape, qty: art.batchQty || 1, dataUrl300: art.thumbUrl
-      });
-    });
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-    window.appSwitchTab('studio');
-  };
-  window.appBatchFill = function() {
-    var sel = state.savedArts.filter(function(a) { return a.selected; });
-    if (!sel.length) return;
-    var firstCut = sel[0].snapshot.frontMm + sel[0].snapshot.bleedMm;
-    var cap = calculateCapacityForItem(firstCut);
-    var perModel = Math.max(1, Math.floor(cap / sel.length));
-    state.sheetItems = sel.map(function(art) {
-      return {
-        id: Date.now() + Math.random(), name: art.name,
-        frontMm: art.snapshot.frontMm, bleedMm: art.snapshot.bleedMm,
-        cutMm: art.snapshot.frontMm + art.snapshot.bleedMm,
-        shape: art.snapshot.shape, qty: perModel, dataUrl300: art.thumbUrl
-      };
-    });
-    renderSheetItemsList();
-    renderSheetPages();
-    showSheetBanner();
-    savePersist();
-    window.appSwitchTab('studio');
-  };
-  window.appExportBackup = function() {
-    var blob = new Blob([JSON.stringify({ savedArts: state.savedArts, orders: state.orders })], { type: 'application/json' });
-    var a = document.createElement('a');
-    a.download = 'backup-bottons-pro.json';
-    a.href = URL.createObjectURL(blob);
-    a.click();
-  };
-  window.appImportBackup = function(inp) {
-    var f = inp.files && inp.files[0];
-    if (!f) return;
-    var r = new FileReader();
-    r.onload = function(ev) {
-      try {
-        var parsed = JSON.parse(ev.target.result);
-        if (Array.isArray(parsed.savedArts)) state.savedArts = parsed.savedArts;
-        if (Array.isArray(parsed.orders)) state.orders = parsed.orders;
-        renderSavedGrid();
-        renderOrders();
-        savePersist();
-        alert('✅ Backup restaurado!');
-      } catch (e) { alert('Backup inválido.'); }
-    };
-    r.readAsText(f);
-  };
-
-  window.appUpdateCalc = function() {
+  function updateCalc() {
     var qty = Math.max(1, parseFloat($('calc-qty').value) || 1);
     var perSheet = Math.max(1, parseFloat($('calc-per-sheet').value) || 1);
     var insumo = parseFloat($('calc-unit-insumo').value) || 0;
@@ -1870,22 +1552,7 @@ Cancelar = Zerar tudo');
         '<div style="color:#fcd34d;font-size:15px;">Lucro Líquido: <b>R$ ' + profit.toFixed(2) + '</b></div>' +
       '</div>';
     return { qty: qty, unitSell: unitSell, totalSell: totalSell };
-  };
-
-  window.appCopyQuote = function() {
-    var res = window.appUpdateCalc();
-    var msg = '✨ *Orçamento de Bottons Personalizados*
-• Quantidade: ' + res.qty + ' unidades
-• Valor unitário: R$ ' + res.unitSell.toFixed(2) + '
-• *Valor Total: R$ ' + res.totalSell.toFixed(2) + '*
-
-Produção em alta definição (300 DPI)!';
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(msg).then(function() { alert('📋 Orçamento copiado!'); });
-    } else {
-      alert(msg);
-    }
-  };
+  }
 
   function renderOrders() {
     $('orders-badge').textContent = state.orders.length;
@@ -1903,38 +1570,461 @@ Produção em alta definição (300 DPI)!';
         '<div><div style="font-size:13px;font-weight:700;">' + o.client + '</div>' +
         '<div style="font-size:11px;color:var(--muted);">' + o.qty + ' un. • ' + o.size + '</div></div>' +
         '<div style="display:flex;align-items:center;gap:6px;">' +
-          '<select onchange="window.appOrderStatus(' + idx + ', this.value)" style="padding:5px 8px;font-size:12px;">' +
+          '<select data-ord-status="' + idx + '" style="padding:5px 8px;font-size:12px;">' +
             statuses.map(function(s) { return '<option value="' + s + '"' + (o.status === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') +
           '</select>' +
-          '<button type="button" class="btn btn-danger btn-sm" onclick="window.appOrderDel(' + idx + ')">✕</button>' +
+          '<button type="button" class="btn btn-danger btn-sm" data-ord-del="' + idx + '">✕</button>' +
         '</div>';
       list.appendChild(div);
     });
   }
-  window.appAddOrder = function() {
-    var client = $('ord-client').value.trim();
-    if (!client) return;
-    state.orders.unshift({ client: client, qty: parseInt($('ord-qty').value, 10) || 10, size: $('ord-size').value, status: 'Aguardando Arte' });
-    $('ord-client').value = '';
-    renderOrders();
-    savePersist();
-  };
-  window.appOrderStatus = function(idx, val) { state.orders[idx].status = val; savePersist(); };
-  window.appOrderDel = function(idx) { state.orders.splice(idx, 1); renderOrders(); savePersist(); };
 
-  // --- INICIALIZAÇÃO SEGURA ---
-  try {
-    syncUI();
-    renderEditor();
-    renderSheetItemsList();
-    renderSheetPages();
-    renderSavedGrid();
-    window.appUpdateCalc();
-    renderOrders();
-    window.addEventListener('resize', renderEditor);
-  } catch (err) {
-    console.error(err);
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    var btn = $('tabbtn-' + tabName);
+    var panel = $('tab-' + tabName);
+    if (btn) btn.classList.add('active');
+    if (panel) panel.classList.add('active');
+    if (tabName === 'studio') renderEditor();
+    setStatus('Aba: ' + tabName);
   }
+
+  // --- DELEGAÇÃO CENTRAL DE CLIQUES E INPUTS (100% COMPATÍVEL COM SAFARI iOS) ---
+  document.addEventListener('click', async function(e) {
+    var el = e.target.closest('[data-act], [data-tab], [data-view], [data-shape], [data-acc], [data-step], [data-preset-size], [data-ai-url], [data-sheet-qty], [data-sheet-del], [data-saved-toggle], [data-saved-bqty], [data-saved-edit], [data-saved-add], [data-saved-del], [data-ord-del]');
+    if (!el) return;
+
+    if (el.hasAttribute('data-tab')) {
+      switchTab(el.getAttribute('data-tab'));
+      return;
+    }
+
+    if (el.hasAttribute('data-view')) {
+      var mode = el.getAttribute('data-view');
+      state.viewMode = mode;
+      $('view-guide').classList.toggle('active', mode === 'guide');
+      $('view-3d').classList.toggle('active', mode === '3d');
+      $('guide-legend').style.display = mode === 'guide' ? 'flex' : 'none';
+      renderEditor();
+      setStatus(mode === '3d' ? 'Simulação 3D' : 'Modo Gabarito');
+      return;
+    }
+
+    if (el.hasAttribute('data-shape')) {
+      state.shape = el.getAttribute('data-shape');
+      syncUI();
+      renderEditor();
+      savePersist();
+      setStatus('Formato: ' + state.shape);
+      return;
+    }
+
+    if (el.hasAttribute('data-acc')) {
+      var body = $(el.getAttribute('data-acc'));
+      if (body) {
+        var collapsed = body.classList.toggle('collapsed');
+        var arrow = el.querySelector('span:last-child');
+        if (arrow) arrow.textContent = collapsed ? '▶' : '▼';
+      }
+      return;
+    }
+
+    if (el.hasAttribute('data-step')) {
+      var k = el.getAttribute('data-step');
+      var d = parseFloat(el.getAttribute('data-delta'));
+      var lim = LIMITS[k] || [-999, 999];
+      state[k] = Math.max(lim[0], Math.min(lim[1], (Number(state[k]) || 0) + d));
+      syncUI();
+      renderEditor();
+      savePersist();
+      return;
+    }
+
+    if (el.hasAttribute('data-preset-size')) {
+      state.frontMm = parseInt(el.getAttribute('data-preset-size'), 10);
+      state.bleedMm = parseInt(el.getAttribute('data-preset-bleed'), 10);
+      syncUI();
+      renderEditor();
+      savePersist();
+      setStatus('Medida: ' + state.frontMm + 'mm');
+      return;
+    }
+
+    if (el.hasAttribute('data-ai-url')) {
+      var url = el.getAttribute('data-ai-url');
+      $('quality-badge').textContent = '⏳ Aplicando arte...';
+      try {
+        var loaded = await loadImageFromSource(url, true);
+        var norm = normalizeImageForIos(loaded);
+        state.imgObj = norm.canvas;
+        state.imgDataUrl = norm.dataUrl;
+        state.x = 0; state.y = 0; state.zoom = 100;
+        syncUI();
+        renderEditor();
+        savePersist();
+        $('tab-studio-center').scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        alert('Aguarde a miniatura terminar de carregar e toque novamente.');
+      }
+      return;
+    }
+
+    if (el.hasAttribute('data-sheet-qty')) {
+      var idx = parseInt(el.getAttribute('data-sheet-qty'), 10);
+      var delta = parseInt(el.getAttribute('data-delta'), 10);
+      state.sheetItems[idx].qty += delta;
+      if (state.sheetItems[idx].qty <= 0) state.sheetItems.splice(idx, 1);
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      return;
+    }
+
+    if (el.hasAttribute('data-sheet-del')) {
+      var idxD = parseInt(el.getAttribute('data-sheet-del'), 10);
+      state.sheetItems.splice(idxD, 1);
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      return;
+    }
+
+    if (el.hasAttribute('data-saved-toggle')) {
+      var sIdx = parseInt(el.getAttribute('data-saved-toggle'), 10);
+      state.savedArts[sIdx].selected = !state.savedArts[sIdx].selected;
+      if (!state.savedArts[sIdx].batchQty) state.savedArts[sIdx].batchQty = 1;
+      renderSavedGrid();
+      return;
+    }
+
+    if (el.hasAttribute('data-saved-bqty')) {
+      var sbIdx = parseInt(el.getAttribute('data-saved-bqty'), 10);
+      var sbDel = parseInt(el.getAttribute('data-delta'), 10);
+      state.savedArts[sbIdx].batchQty = Math.max(1, (state.savedArts[sbIdx].batchQty || 1) + sbDel);
+      renderSavedGrid();
+      return;
+    }
+
+    if (el.hasAttribute('data-saved-edit')) {
+      var seIdx = parseInt(el.getAttribute('data-saved-edit'), 10);
+      var art = state.savedArts[seIdx];
+      Object.assign(state, art.snapshot);
+      state.imgObj = state.imgDataUrl ? await loadImageFromSource(state.imgDataUrl, false) : null;
+      syncUI();
+      renderEditor();
+      switchTab('studio');
+      return;
+    }
+
+    if (el.hasAttribute('data-saved-add')) {
+      var saIdx = parseInt(el.getAttribute('data-saved-add'), 10);
+      var artA = state.savedArts[saIdx];
+      state.sheetItems.push({
+        id: Date.now() + Math.random(), name: artA.name,
+        frontMm: artA.snapshot.frontMm, bleedMm: artA.snapshot.bleedMm,
+        cutMm: artA.snapshot.frontMm + artA.snapshot.bleedMm,
+        shape: artA.snapshot.shape, qty: 1, dataUrl300: artA.thumbUrl
+      });
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      switchTab('studio');
+      return;
+    }
+
+    if (el.hasAttribute('data-saved-del')) {
+      var sdIdx = parseInt(el.getAttribute('data-saved-del'), 10);
+      if (confirm('Excluir "' + state.savedArts[sdIdx].name + '"?')) {
+        state.savedArts.splice(sdIdx, 1);
+        renderSavedGrid();
+        savePersist();
+      }
+      return;
+    }
+
+    if (el.hasAttribute('data-ord-del')) {
+      var odIdx = parseInt(el.getAttribute('data-ord-del'), 10);
+      state.orders.splice(odIdx, 1);
+      renderOrders();
+      savePersist();
+      return;
+    }
+
+    var act = el.getAttribute('data-act');
+    if (act === 'newArt') {
+      var keepSheet = state.sheetItems.length > 0 && confirm('Manter os bottons que já estão na folha?
+
+OK = Limpar só o editor
+Cancelar = Zerar tudo');
+      state.imgDataUrl = null;
+      state.imgObj = null;
+      state.x = 0; state.y = 0; state.zoom = 100; state.rot = 0;
+      state.text = ''; state.qrText = ''; state.ringSize = 0;
+      state.bright = 100; state.contrast = 100;
+      $('inp-file').value = '';
+      if (!keepSheet) {
+        state.sheetItems = [];
+        renderSheetItemsList();
+        renderSheetPages();
+        showSheetBanner();
+      }
+      syncUI();
+      renderEditor();
+      savePersist();
+      setStatus('Nova arte iniciada');
+    } else if (act === 'openPrint') {
+      var modal = $('print-modal');
+      var prev = $('modal-pages-preview');
+      prev.innerHTML = '<div style="padding:20px;color:var(--muted);">Gerando folhas em 300 DPI reais...</div>';
+      modal.classList.add('open');
+      exportCanvases300 = await buildSheetCanvases(300);
+      prev.innerHTML = '';
+      exportCanvases300.forEach(function(c, idx) {
+        var wrap = document.createElement('div');
+        wrap.style.cssText = 'width:100%;text-align:center;';
+        var title = document.createElement('div');
+        title.style.cssText = 'font-size:12px;font-weight:700;margin-bottom:6px;color:#6ee7b7;';
+        title.textContent = 'Página ' + (idx + 1) + ' (' + c.width + ' × ' + c.height + ' px • 300 DPI)';
+        c.style.maxHeight = '380px';
+        wrap.appendChild(title);
+        wrap.appendChild(c);
+        prev.appendChild(wrap);
+      });
+    } else if (act === 'closePrint') {
+      $('print-modal').classList.remove('open');
+    } else if (act === 'nativePrint') {
+      $('print-modal').classList.remove('open');
+      setTimeout(function() { window.print(); }, 150);
+    } else if (act === 'downloadPngs') {
+      exportCanvases300.forEach(function(c, idx) {
+        var a = document.createElement('a');
+        a.download = 'folha-bottons-300dpi-pag' + (idx + 1) + '.png';
+        a.href = c.toDataURL('image/png');
+        a.click();
+      });
+    } else if (act === 'saveArt') {
+      var defaultName = 'Botton ' + state.frontMm + 'mm #' + (state.savedArts.length + 1);
+      var name = prompt('Nome para salvar esta arte:', defaultName);
+      if (!name) return;
+      var thumbUrl = generate300DpiDataUrl(state, state.imgObj);
+      var snapshot = {
+        shape: state.shape, frontMm: state.frontMm, bleedMm: state.bleedMm,
+        zoom: state.zoom, x: state.x, y: state.y, rot: state.rot,
+        bgColor: state.bgColor, text: state.text, textMode: state.textMode,
+        textColor: state.textColor, fontSize: state.fontSize, textY: state.textY,
+        bright: state.bright, contrast: state.contrast, ringSize: state.ringSize,
+        ringColor: state.ringColor, qrText: state.qrText, imgDataUrl: state.imgDataUrl
+      };
+      state.savedArts.unshift({
+        id: Date.now(), name: name.trim(), snapshot: snapshot,
+        thumbUrl: thumbUrl, selected: false, batchQty: 1
+      });
+      renderSavedGrid();
+      savePersist();
+      alert('✅ Arte salva na aba "Arquivos Salvos"!');
+    } else if (act === 'addOne') {
+      var d300 = generate300DpiDataUrl(state, state.imgObj);
+      var cutMm = state.frontMm + state.bleedMm;
+      state.sheetItems.push({
+        id: Date.now() + Math.random(),
+        name: 'Botton ' + state.frontMm + 'mm (' + (state.shape === 'square' ? 'Quad' : 'Red') + ')',
+        frontMm: state.frontMm, bleedMm: state.bleedMm, cutMm: cutMm,
+        shape: state.shape, qty: 1, dataUrl300: d300
+      });
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      setStatus('+1 adicionado à folha');
+    } else if (act === 'fillSheet') {
+      var d300F = generate300DpiDataUrl(state, state.imgObj);
+      var cutMmF = state.frontMm + state.bleedMm;
+      var cap = calculateCapacityForItem(cutMmF);
+      state.sheetItems = [{
+        id: Date.now(),
+        name: 'Botton ' + state.frontMm + 'mm (' + (state.shape === 'square' ? 'Quad' : 'Red') + ')',
+        frontMm: state.frontMm, bleedMm: state.bleedMm, cutMm: cutMmF,
+        shape: state.shape, qty: cap, dataUrl300: d300F
+      }];
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      setStatus('Folha preenchida (' + cap + ' un.)');
+    } else if (act === 'scrollSheet') {
+      $('sheet-column').scrollIntoView({ behavior: 'smooth' });
+    } else if (act === 'clearSheet') {
+      state.sheetItems = [];
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+    } else if (act === 'gapMinus') {
+      state.gapMm = Math.max(1, state.gapMm - 1);
+      $('inp-gap').value = state.gapMm;
+      $('val-gap').textContent = state.gapMm + ' mm';
+      renderSheetPages();
+      savePersist();
+    } else if (act === 'gapPlus') {
+      state.gapMm = Math.min(15, state.gapMm + 1);
+      $('inp-gap').value = state.gapMm;
+      $('val-gap').textContent = state.gapMm + ' mm';
+      renderSheetPages();
+      savePersist();
+    } else if (act === 'centerPhoto') {
+      state.x = 0; state.y = 0; state.rot = 0;
+      syncUI();
+      renderEditor();
+      savePersist();
+    } else if (act === 'toggleKeyDrawer') {
+      $('ai-key-drawer').classList.toggle('open');
+    } else if (act === 'saveApiKey') {
+      state.apiKey = $('inp-api-key').value.trim();
+      savePersist();
+      var msg = $('key-saved-msg');
+      msg.style.display = 'block';
+      msg.textContent = state.apiKey
+        ? '✅ Chave salva! Motor Google Gemini/Imagen ativo.'
+        : 'ℹ️ Chave removida. Usando gerador gratuito.';
+      setTimeout(function() { $('ai-key-drawer').classList.remove('open'); }, 1200);
+    } else if (act === 'generateAI') {
+      generateAI();
+    } else if (act === 'toggleSelectAll') {
+      var all = state.savedArts.length > 0 && state.savedArts.every(function(a) { return a.selected; });
+      state.savedArts.forEach(function(a) { a.selected = !all; if (!a.batchQty) a.batchQty = 1; });
+      renderSavedGrid();
+    } else if (act === 'batchAdd') {
+      state.savedArts.filter(function(a) { return a.selected; }).forEach(function(art) {
+        state.sheetItems.push({
+          id: Date.now() + Math.random(), name: art.name,
+          frontMm: art.snapshot.frontMm, bleedMm: art.snapshot.bleedMm,
+          cutMm: art.snapshot.frontMm + art.snapshot.bleedMm,
+          shape: art.snapshot.shape, qty: art.batchQty || 1, dataUrl300: art.thumbUrl
+        });
+      });
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      switchTab('studio');
+    } else if (act === 'batchFill') {
+      var sel = state.savedArts.filter(function(a) { return a.selected; });
+      if (!sel.length) return;
+      var firstCut = sel[0].snapshot.frontMm + sel[0].snapshot.bleedMm;
+      var capB = calculateCapacityForItem(firstCut);
+      var perModel = Math.max(1, Math.floor(capB / sel.length));
+      state.sheetItems = sel.map(function(art) {
+        return {
+          id: Date.now() + Math.random(), name: art.name,
+          frontMm: art.snapshot.frontMm, bleedMm: art.snapshot.bleedMm,
+          cutMm: art.snapshot.frontMm + art.snapshot.bleedMm,
+          shape: art.snapshot.shape, qty: perModel, dataUrl300: art.thumbUrl
+        };
+      });
+      renderSheetItemsList();
+      renderSheetPages();
+      showSheetBanner();
+      savePersist();
+      switchTab('studio');
+    } else if (act === 'exportBackup') {
+      var blob = new Blob([JSON.stringify({ savedArts: state.savedArts, orders: state.orders })], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.download = 'backup-bottons-pro.json';
+      a.href = URL.createObjectURL(blob);
+      a.click();
+    } else if (act === 'copyQuote') {
+      var res = updateCalc();
+      var txtQ = '✨ *Orçamento de Bottons Personalizados*
+• Quantidade: ' + res.qty + ' unidades
+• Valor unitário: R$ ' + res.unitSell.toFixed(2) + '
+• *Valor Total: R$ ' + res.totalSell.toFixed(2) + '*
+
+Produção em alta definição (300 DPI)!';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(txtQ).then(function() { alert('📋 Orçamento copiado!'); });
+      } else {
+        alert(txtQ);
+      }
+    } else if (act === 'addOrder') {
+      var client = $('ord-client').value.trim();
+      if (!client) return;
+      state.orders.unshift({ client: client, qty: parseInt($('ord-qty').value, 10) || 10, size: $('ord-size').value, status: 'Aguardando Arte' });
+      $('ord-client').value = '';
+      renderOrders();
+      savePersist();
+    }
+  });
+
+  // Listeners de input / change
+  document.addEventListener('input', function(e) {
+    var t = e.target;
+    if (t.hasAttribute('data-bind')) {
+      state[t.getAttribute('data-bind')] = parseFloat(t.value);
+      syncUI();
+      renderEditor();
+      savePersist();
+    } else if (t.hasAttribute('data-bind-str')) {
+      state[t.getAttribute('data-bind-str')] = t.value;
+      syncUI();
+      renderEditor();
+      savePersist();
+    } else if (t.id === 'inp-gap') {
+      state.gapMm = parseFloat(t.value);
+      $('val-gap').textContent = state.gapMm + ' mm';
+      renderSheetPages();
+      savePersist();
+    } else if (t.id && t.id.indexOf('calc-') === 0) {
+      updateCalc();
+    }
+  });
+
+  document.addEventListener('change', function(e) {
+    var t = e.target;
+    if (t.id === 'inp-file' && t.files && t.files[0]) {
+      processUploadedFile(t.files[0]);
+    } else if (t.id === 'inp-paper') {
+      state.paper = t.value;
+      renderSheetPages();
+      savePersist();
+    } else if (t.hasAttribute('data-bind-str')) {
+      state[t.getAttribute('data-bind-str')] = t.value;
+      syncUI();
+      renderEditor();
+      savePersist();
+    } else if (t.hasAttribute('data-ord-status')) {
+      var idx = parseInt(t.getAttribute('data-ord-status'), 10);
+      state.orders[idx].status = t.value;
+      savePersist();
+    } else if (t.id === 'inp-import-backup' && t.files && t.files[0]) {
+      var r = new FileReader();
+      r.onload = function(ev) {
+        try {
+          var parsed = JSON.parse(ev.target.result);
+          if (Array.isArray(parsed.savedArts)) state.savedArts = parsed.savedArts;
+          if (Array.isArray(parsed.orders)) state.orders = parsed.orders;
+          renderSavedGrid();
+          renderOrders();
+          savePersist();
+          alert('✅ Backup restaurado!');
+        } catch (err) { alert('Backup inválido.'); }
+      };
+      r.readAsText(t.files[0]);
+    }
+  });
+
+  // Inicialização
+  syncUI();
+  renderEditor();
+  renderSheetItemsList();
+  renderSheetPages();
+  renderSavedGrid();
+  updateCalc();
+  renderOrders();
+  window.addEventListener('resize', renderEditor);
 
   try {
     state.apiKey = localStorage.getItem('bottonsProKey') || '';
